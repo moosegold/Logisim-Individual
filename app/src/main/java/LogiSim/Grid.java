@@ -32,7 +32,7 @@ class Grid extends AbstractScreenPartition {
     void resetGrid() {
         components.clear();
         fillGrid();
-        //TEST
+        //TESTING SOME MORE THINGS!
     }
 
     private void fillGrid() {
