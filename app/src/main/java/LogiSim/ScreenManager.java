@@ -6,12 +6,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.media.ImageWriter;
 import android.view.Display;
 import android.widget.ImageView;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.LinkedList;
 
 public class ScreenManager {
@@ -19,6 +17,7 @@ public class ScreenManager {
     private LinkedList<IScreenPartition> partitions;
     private Display display;
     private Canvas mainCanvas;
+    private ImageView imageView;
 
     final Context appContext;
 
@@ -26,6 +25,7 @@ public class ScreenManager {
         this.partitions = new LinkedList<>();
         this.display = display;
         this.appContext = appContext;
+        this.imageView = imageView;
         createCanvas();
     }
 
@@ -58,11 +58,15 @@ public class ScreenManager {
             try {
                 File directory = new File(System.getProperty("java.io.tmpdir"));
 
+//                File file = new File(directory, "img");
+//                System.out.println((file.createNewFile() ? "Created file: " : "Failed to create file: ") + file.getAbsolutePath());
+//                partition.getPartitionBitmap().compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(file));
+//                System.exit(0);
 
-                File file = new File(directory, "img");
-                System.out.println((file.createNewFile() ? "Created file: " : "Failed to create file: ") + file.getAbsolutePath());
-                partition.getPartitionBitmap().compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(file));
-                System.exit(0);
+                this.imageView.setImageBitmap(partition.getPartitionBitmap());
+//                System.out.println("Sleeping");
+//                Thread.sleep(10000000);
+//                System.out.println("Done sleeping");
             } catch (Exception ex) {
                 System.out.println("Caught exception: " + ex.getMessage());
                 ex.printStackTrace();

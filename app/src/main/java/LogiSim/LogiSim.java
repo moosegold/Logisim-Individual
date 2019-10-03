@@ -26,12 +26,14 @@ public class LogiSim extends Activity {
     void setupScreenManager() {
         ImageView imageView = new ImageView(this);
         this.screenManager = new ScreenManager(getWindowManager().getDefaultDisplay(), imageView, this.getApplicationContext());
-        setContentView(imageView);
 
         addSidebarPartition();
 //        addGridPartition(setupGrid(GRID_WIDTH));
         setupGrid(GRID_WIDTH);
         screenManager.draw();
+
+        setContentView(imageView);
+
     }
 
 //    Grid setupGrid(int width) {
