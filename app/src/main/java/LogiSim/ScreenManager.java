@@ -55,22 +55,8 @@ public class ScreenManager {
             partition.draw();
             ScreenPoint origin = partition.getOrigin();
 
-            try {
-                File directory = new File(System.getProperty("java.io.tmpdir"));
+            this.imageView.setImageBitmap(partition.getPartitionBitmap());
 
-//                File file = new File(directory, "img");
-//                System.out.println((file.createNewFile() ? "Created file: " : "Failed to create file: ") + file.getAbsolutePath());
-//                partition.getPartitionBitmap().compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(file));
-//                System.exit(0);
-
-                this.imageView.setImageBitmap(partition.getPartitionBitmap());
-//                System.out.println("Sleeping");
-//                Thread.sleep(10000000);
-//                System.out.println("Done sleeping");
-            } catch (Exception ex) {
-                System.out.println("Caught exception: " + ex.getMessage());
-                ex.printStackTrace();
-            }
             mainCanvas.drawBitmap(partition.getPartitionBitmap(), origin.x, origin.y, new Paint());
         }
     }
