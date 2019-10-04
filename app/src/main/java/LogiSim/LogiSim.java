@@ -8,7 +8,8 @@ import android.widget.ImageView;
 
 public class LogiSim extends Activity {
 
-    private static final int SIDEBAR_WIDTH_PX = 150;
+    private static final double SIDEBAR_WIDTH_RATIO = 1.0/10;
+    private int sidebar_width;
 
     private static final int GRID_WIDTH = 20;
 
@@ -27,6 +28,8 @@ public class LogiSim extends Activity {
         ImageView imageView = new ImageView(this);
         this.screenManager = new ScreenManager(getWindowManager().getDefaultDisplay(), imageView, this.getApplicationContext());
 
+        calculateSidebarWidth();
+
         addSidebarPartition();
 //        addGridPartition(setupGrid(GRID_WIDTH));
         setupGrid(GRID_WIDTH);
@@ -36,13 +39,10 @@ public class LogiSim extends Activity {
 
     }
 
-//    Grid setupGrid(int width) {
-//        Size displaySize = screenManager.getDisplaySize();
-//        int tileWidthPx = displaySize.width / width;
-//        // How many tiles will fit vertically given the width of the tile. Tiles are squares.
-//        int height = (displaySize.height - displaySize.height % tileWidthPx) / tileWidthPx;
-//        return new Grid(width, height, tileWidthPx, screenManager, );
-//    }
+    void calculateSidebarWidth() {
+        sidebar_width = (int) (screenManager.getDisplaySize().width * SIDEBAR_WIDTH_RATIO);
+        System.out.println("Sidebar width set to : " + sidebar_width);
+    }
 
     Grid setupGrid(int width) {
         Size displaySize = screenManager.getDisplaySize();
@@ -50,8 +50,8 @@ public class LogiSim extends Activity {
         // How many tiles will fit vertically given the width of the tile. Tiles are squares.
         int height = (displaySize.height - displaySize.height % tileWidthPx) / tileWidthPx;
 
-        int gridWidth = SIDEBAR_WIDTH_PX - displaySize.width;
-        int startX = SIDEBAR_WIDTH_PX;
+        int gridWidth = sidebar_width - displaySize.width;
+        int startX = sidebar_width;
         ScreenPoint origin = new ScreenPoint(startX, 0);
         Size size = new Size(displaySize.width - origin.x, displaySize.height);
 //        screenManager.addPartition(new GridScreen(origin, size, grid));
@@ -63,14 +63,14 @@ public class LogiSim extends Activity {
 
     private void addSidebarPartition() {
         ScreenPoint origin = new ScreenPoint(0, 0);
-        Size size = new Size(SIDEBAR_WIDTH_PX, screenManager.getDisplaySize().height);
+        Size size = new Size(sidebar_width, screenManager.getDisplaySize().height);
         screenManager.addPartition(new ComponentSidebar(origin, size));
     }
 
 //    private void addGridPartition(Grid grid) {
 //        Size screenSize = screenManager.getDisplaySize();
-//        int gridWidth = SIDEBAR_WIDTH_PX - screenSize.width;
-//        int startX = SIDEBAR_WIDTH_PX;
+//        int gridWidth = SIDEBAR_WIDTH_RATIO - screenSize.width;
+//        int startX = SIDEBAR_WIDTH_RATIO;
 //        ScreenPoint origin = new ScreenPoint(startX, 0);
 //        Size size = new Size(screenSize.width - origin.x, screenSize.height);
 //        screenManager.addPartition(new GridScreen(origin, size, grid));
