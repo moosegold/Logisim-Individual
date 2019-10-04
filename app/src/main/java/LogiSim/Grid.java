@@ -1,6 +1,10 @@
 package LogiSim;
 
 
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,7 +36,6 @@ class Grid extends AbstractScreenPartition {
     void resetGrid() {
         components.clear();
         fillGrid();
-        //TESTING SOME MORE THINGS!
     }
 
     private void fillGrid() {
@@ -71,11 +74,18 @@ class Grid extends AbstractScreenPartition {
 
     @Override
     public void draw() {
+        fillBackground();
         for (int x = 0; x < this.gridSize.width ; x++) {
             for (int y = 0; y < this.gridSize.height ; y++) {
                 getTile(new GridPoint(x, y)).draw(this.canvas);
             }
         }
+    }
+
+    private void fillBackground() {
+        Paint backgroundPaint = new Paint();
+        backgroundPaint.setColor(Color.WHITE);
+        this.canvas.drawRect(new Rect(0, 0, getSize().width, getSize().height), backgroundPaint);
     }
 
     private GridPoint convertToGridPoint(ScreenPoint localPoint) {

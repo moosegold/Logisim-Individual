@@ -9,7 +9,6 @@ import android.graphics.Rect;
 import android.view.Display;
 import android.widget.ImageView;
 
-import java.io.File;
 import java.util.LinkedList;
 
 public class ScreenManager {
@@ -17,6 +16,7 @@ public class ScreenManager {
     private LinkedList<IScreenPartition> partitions;
     private Display display;
     private Canvas mainCanvas;
+    private Bitmap mainImage;
     private ImageView imageView;
 
     final Context appContext;
@@ -55,18 +55,20 @@ public class ScreenManager {
             partition.draw();
             ScreenPoint origin = partition.getOrigin();
 
-            this.imageView.setImageBitmap(partition.getPartitionBitmap());
+//            this.imageView.setImageBitmap(partition.getPartitionBitmap());
 
             mainCanvas.drawBitmap(partition.getPartitionBitmap(), origin.x, origin.y, new Paint());
+
         }
+        this.imageView.setImageBitmap(this.mainImage);
     }
 
     private void createCanvas() {
-        Bitmap image = Bitmap.createBitmap(getDisplaySize().width,
+        this.mainImage = Bitmap.createBitmap(getDisplaySize().width,
                 getDisplaySize().height,
                 Bitmap.Config.ARGB_8888);
 
-        this.mainCanvas = new Canvas(image);
+        this.mainCanvas = new Canvas(this.mainImage);
     }
 
     private boolean touchIsInside(IScreenPartition partition, ScreenPoint screenPoint) {

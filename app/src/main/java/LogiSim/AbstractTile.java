@@ -37,7 +37,9 @@ abstract class AbstractTile {
     abstract void draw(Canvas canvas);
 
     Rect getRect() {
-        return new Rect(gridPoint.x, gridPoint.y, gridPoint.x + grid.tileSize, gridPoint.y + grid.tileSize);
+        ScreenPoint screenPoint = grid.convertToScreenPoint(gridPoint);
+        return new Rect(
+                screenPoint.x, screenPoint.y, screenPoint.x + grid.tileSize, screenPoint.y + grid.tileSize);
     }
 
 }
