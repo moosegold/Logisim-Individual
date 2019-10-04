@@ -25,12 +25,16 @@ public class SidebarButton {
     }
 
     public void draw() {
-        //partition.canvas.drawBitmap(getImage(), point.x, point.y, null);
-        Rect orgImgRect = new Rect(point.x, point.y, getImage().getWidth(), getImage().getWidth());
-        Rect transformImgRect = new Rect(point.x, point.y, point.x + length, point.y + length);
-        partition.canvas.drawBitmap(getImage(), orgImgRect, transformImgRect, null);
+        drawImage();
         drawBounds();
         drawDebugText();
+    }
+
+    void drawImage() {
+        Rect orgImgRect = new Rect(point.x, point.y, getImage().getWidth(), getImage().getWidth());
+        Rect transformImgRect = new Rect(point.x, point.y, point.x + length, point.y + length);
+        transformImgRect.offsetTo(point.x, point.y + (length / 2) - transformImgRect.centerY() / 2);
+        partition.canvas.drawBitmap(getImage(), orgImgRect, transformImgRect, null);
     }
 
     void drawBounds() {
