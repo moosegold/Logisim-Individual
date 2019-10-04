@@ -39,8 +39,8 @@ public class SidebarButton {
     void drawImage() {
         Rect orgImgRect = new Rect(point.x, point.y, getImage().getWidth(), getImage().getWidth());
         Rect transformImgRect = new Rect(point.x, point.y, point.x + length, point.y + length);
-        transformImgRect.offsetTo(point.x, point.y + (length / 2) - (transformImgRect.centerY() - transformImgRect.top) / 2);
-        debugText.addText("Img size: " + new Size(getImage().getWidth(), getImage().getHeight()));
+        transformImgRect.offsetTo(point.x, point.y + (length / 4));
+        debugText.addText("Img size: " + new Size(transformImgRect.width(), transformImgRect.height()));
         debugText.addText("Img at: " + new ScreenPoint(transformImgRect.left, transformImgRect.top));
         partition.canvas.drawBitmap(getImage(), orgImgRect, transformImgRect, null);
     }
@@ -56,6 +56,7 @@ public class SidebarButton {
 
     private Bitmap getImage() {
         return BitmapFactory.decodeResource(partition.screenManager.appContext.getResources(), Rresource);
+
     }
 
 }

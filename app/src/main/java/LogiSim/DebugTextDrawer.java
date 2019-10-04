@@ -51,7 +51,7 @@ public class DebugTextDrawer {
         for (float cwidth : widths) {
             width += cwidth;
         }
-        canvas.drawRect(startPos.x, yCoord - TEXT_SIZE, startPos.x + (int) width, yCoord, createBackgroundPaint());
+        canvas.drawRect(startPos.x, yCoord - TEXT_SIZE, startPos.x + (int) width, yCoord + 2, createBackgroundPaint());
     }
 
     private Paint createTextPaint() {
