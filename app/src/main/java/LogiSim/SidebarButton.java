@@ -28,7 +28,7 @@ public class SidebarButton {
         this.Rresource = Rresource;
         createCanvas();
         this.partition = partition;
-        this.debugText = new DebugTextDrawer(point, partition.canvas, true);
+        this.debugText = new DebugTextDrawer(point, partition.canvas, false);
     }
 
     private void createCanvas() {

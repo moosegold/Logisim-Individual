@@ -11,7 +11,7 @@ public class LogiSim extends Activity {
     private static final double SIDEBAR_WIDTH_RATIO = 1.0/10;
     private int sidebar_width;
 
-    private static final int GRID_WIDTH = 20;
+    private static final int GRID_WIDTH_TILES = 15;
 
     private ScreenManager screenManager;
 
@@ -31,7 +31,7 @@ public class LogiSim extends Activity {
         calculateSidebarWidth();
 
         addSidebarPartition();
-        setupGrid(GRID_WIDTH);
+        setupGrid(GRID_WIDTH_TILES);
         screenManager.draw();
 
         setContentView(imageView);
@@ -44,14 +44,15 @@ public class LogiSim extends Activity {
 
     void setupGrid(int width) {
         Size displaySize = screenManager.getDisplaySize();
-        int tileWidthPx = displaySize.width / width;
-        // How many tiles will fit vertically given the width of the tile. Tiles are squares.
-        int height = (displaySize.height - displaySize.height % tileWidthPx) / tileWidthPx;
 
-        int gridWidth = sidebar_width - displaySize.width;
+        int gridWidth = displaySize.width - sidebar_width;
         int startX = sidebar_width;
         ScreenPoint origin = new ScreenPoint(startX, 0);
         Size size = new Size(displaySize.width - origin.x, displaySize.height);
+
+        int tileWidthPx = gridWidth / width;
+        // How many tiles will fit vertically given the width of the tile. Tiles are squares.
+        int height = (displaySize.height - displaySize.height % tileWidthPx) / tileWidthPx;
 
         Grid grid = new Grid(width, height, tileWidthPx, screenManager, origin, size);
         screenManager.addPartition(grid);

@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,7 +17,7 @@ class Grid extends AbstractScreenPartition {
     // the length in pixels of a tile. The tiles are square so only 1 value is needed.
     final int tileSize;
 
-    private List<UnaryComponent> components = new LinkedList<>();
+//    private List<UnaryComponent> components = new LinkedList<>();
 
     private List<AbstractTile> tiles;
 
@@ -31,8 +30,11 @@ class Grid extends AbstractScreenPartition {
     }
 
     void resetGrid() {
-        components.clear();
         fillGrid();
+    }
+
+    private void setTile(GridPoint point, AbstractTile tile) {
+        tiles.set(getTileIndex(point), tile);
     }
 
     private void fillGrid() {
@@ -51,9 +53,9 @@ class Grid extends AbstractScreenPartition {
     /*
      * These getters are here to allow GameScreen access to render them.
      */
-    List<UnaryComponent> getComponents() {
-        return Collections.unmodifiableList(components);
-    }
+//    List<UnaryComponent> getComponents() {
+//        return Collections.unmodifiableList(components);
+//    }
 
     ScreenPoint convertToScreenPoint(GridPoint gridPoint) {
         return new ScreenPoint(gridPoint.x * this.tileSize, gridPoint.y * this.tileSize);

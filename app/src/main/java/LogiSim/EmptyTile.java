@@ -1,6 +1,8 @@
 package LogiSim;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 
 public class EmptyTile extends AbstractTile {
 
@@ -15,9 +17,17 @@ public class EmptyTile extends AbstractTile {
     @Override
     void draw(Canvas canvas) {
         fillTile();
+        drawBounds();
     }
 
-    void fillTile() {
+    private void drawBounds() {
+        Paint boundsPaint = new Paint();
+        boundsPaint.setColor(Color.BLACK);
+        boundsPaint.setStyle(Paint.Style.STROKE);
+        canvas.drawRect(getRect(), boundsPaint);
+    }
+
+    private void fillTile() {
         canvas.drawRect(getRect(), defaultBackgroundColor);
     }
 
