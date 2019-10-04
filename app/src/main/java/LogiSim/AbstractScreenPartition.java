@@ -5,18 +5,20 @@ import android.graphics.Canvas;
 
 abstract class AbstractScreenPartition implements IScreenPartition {
 
+    final ScreenManager screenManager;
+
     private ScreenPoint origin;
     private Size size;
 
     Canvas canvas;
     private Bitmap image;
 
-    AbstractScreenPartition(ScreenPoint origin, Size size) {
+    AbstractScreenPartition(ScreenPoint origin, Size size, ScreenManager screenManager) {
         this.origin = origin;
         this.size = size;
         image = Bitmap.createBitmap(size.width, size.height, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(image);
-        //canvas = new Canvas(Bitmap.createBitmap(size.width, size.height, Bitmap.Config.ARGB_8888));
+        this.screenManager = screenManager;
     }
 
     @Override

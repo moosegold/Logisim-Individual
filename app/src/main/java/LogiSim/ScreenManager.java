@@ -54,11 +54,7 @@ public class ScreenManager {
         for (IScreenPartition partition : partitions) {
             partition.draw();
             ScreenPoint origin = partition.getOrigin();
-
-//            this.imageView.setImageBitmap(partition.getPartitionBitmap());
-
             mainCanvas.drawBitmap(partition.getPartitionBitmap(), origin.x, origin.y, new Paint());
-
         }
         this.imageView.setImageBitmap(this.mainImage);
     }

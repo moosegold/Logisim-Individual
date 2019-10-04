@@ -31,7 +31,6 @@ public class LogiSim extends Activity {
         calculateSidebarWidth();
 
         addSidebarPartition();
-//        addGridPartition(setupGrid(GRID_WIDTH));
         setupGrid(GRID_WIDTH);
         screenManager.draw();
 
@@ -41,10 +40,9 @@ public class LogiSim extends Activity {
 
     void calculateSidebarWidth() {
         sidebar_width = (int) (screenManager.getDisplaySize().width * SIDEBAR_WIDTH_RATIO);
-        System.out.println("Sidebar width set to : " + sidebar_width);
     }
 
-    Grid setupGrid(int width) {
+    void setupGrid(int width) {
         Size displaySize = screenManager.getDisplaySize();
         int tileWidthPx = displaySize.width / width;
         // How many tiles will fit vertically given the width of the tile. Tiles are squares.
@@ -54,27 +52,16 @@ public class LogiSim extends Activity {
         int startX = sidebar_width;
         ScreenPoint origin = new ScreenPoint(startX, 0);
         Size size = new Size(displaySize.width - origin.x, displaySize.height);
-//        screenManager.addPartition(new GridScreen(origin, size, grid));
 
         Grid grid = new Grid(width, height, tileWidthPx, screenManager, origin, size);
         screenManager.addPartition(grid);
-        return grid;
     }
 
     private void addSidebarPartition() {
         ScreenPoint origin = new ScreenPoint(0, 0);
         Size size = new Size(sidebar_width, screenManager.getDisplaySize().height);
-        screenManager.addPartition(new ComponentSidebar(origin, size));
+        screenManager.addPartition(new ComponentSidebar(origin, size, screenManager));
     }
-
-//    private void addGridPartition(Grid grid) {
-//        Size screenSize = screenManager.getDisplaySize();
-//        int gridWidth = SIDEBAR_WIDTH_RATIO - screenSize.width;
-//        int startX = SIDEBAR_WIDTH_RATIO;
-//        ScreenPoint origin = new ScreenPoint(startX, 0);
-//        Size size = new Size(screenSize.width - origin.x, screenSize.height);
-//        screenManager.addPartition(new GridScreen(origin, size, grid));
-//    }
 
     /**
      * The touch event is part of the Activity class so it must be dispatched to the screen manager

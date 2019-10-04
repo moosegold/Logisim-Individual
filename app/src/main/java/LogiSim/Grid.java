@@ -18,18 +18,15 @@ class Grid extends AbstractScreenPartition {
     // the size in pixels of a tile. The tiles are square so only 1 value is needed.
     final int tileSize;
 
-    private final ScreenManager screenManager;
-
     private List<UnaryComponent> components = new LinkedList<>();
 
     private List<AbstractTile> tiles;
 
     Grid(int width, int height, int tileSize, ScreenManager screenManager, ScreenPoint origin, Size size) {
-        super(origin, size);
+        super(origin, size, screenManager);
         this.gridSize = new Size(width, height);
         this.tileSize = tileSize;
         tiles = new LinkedList<>();
-        this.screenManager = screenManager;
         resetGrid();
     }
 
