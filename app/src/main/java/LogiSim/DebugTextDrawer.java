@@ -9,7 +9,8 @@ import java.util.LinkedList;
 
 public class DebugTextDrawer {
 
-    private final int TEXT_SIZE = 12;
+    private static final int TEXT_SIZE = 12;
+    private static final int BACKGROUND_OPACITY = 150;
 
     private ScreenPoint startPos;
     private Canvas canvas;
@@ -29,24 +30,42 @@ public class DebugTextDrawer {
 
     public void draw(Canvas canvas) {
         if (active) {
-            Paint paint = createPaint();
-            int yCoord = (int) (startPos.y + paint.getTextSize());
+            int yCoord = (int) (startPos.y + TEXT_SIZE);
             for (String text : textToDraw) {
-                drawString(text, yCoord, paint);
-                yCoord += paint.getTextSize() + 1;
+                drawString(text, yCoord);
+                yCoord += TEXT_SIZE + 1;
             }
         }
         textToDraw.clear();
     }
 
-    private void drawString(String text, int yCoord, Paint paint) {
-        canvas.drawText(text, startPos.x, yCoord, paint);
+    private void drawString(String text, int yCoord) {
+        drawBackground(text, yCoord);
+        canvas.drawText(text, startPos.x, yCoord, createTextPaint());
     }
 
-    private Paint createPaint() {
+    private void drawBackground(String text, int yCoord) {
+        float[] widths = new float[text.length()];
+        createBackgroundPaint().getTextWidths(text, widths);
+        float width = 0.0f;
+        for (float cwidth : widths) {
+            width += cwidth;
+        }
+        canvas.drawRect(startPos.x, yCoord - TEXT_SIZE, startPos.x + (int) width, yCoord, createBackgroundPaint());
+    }
+
+    private Paint createTextPaint() {
         Paint newPaint = new Paint();
-        newPaint.setTextSize(12);
+        newPaint.setTextSize(TEXT_SIZE);
         newPaint.setColor(Color.BLACK);
+        return newPaint;
+    }
+
+    private Paint createBackgroundPaint() {
+        Paint newPaint = new Paint();
+        newPaint.setTextSize(TEXT_SIZE);
+        newPaint.setColor(Color.WHITE);
+        newPaint.setAlpha(BACKGROUND_OPACITY);
         return newPaint;
     }
 
