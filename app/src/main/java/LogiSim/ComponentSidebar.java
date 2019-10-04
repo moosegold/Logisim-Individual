@@ -4,10 +4,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.List;
 
 public class ComponentSidebar extends AbstractScreenPartition {
 
@@ -35,12 +33,12 @@ public class ComponentSidebar extends AbstractScreenPartition {
         // Add button below last
         int yPos = insetPx;
         if (buttons.size() > 0) {
-            yPos += buttons.getLast().size;
+            yPos += buttons.getLast().point.y + buttons.getLast().length;
         }
         int xPos = insetPx;
         // Buttons are squares.
         int length = getSize().width - (insetPx * 2);
-        System.out.println("Adding button at: (" + xPos + " " + yPos + ")");
+        System.out.println("Adding " + action + " button at: " + new ScreenPoint(xPos, yPos));
         buttons.addLast(new SidebarButton(new ScreenPoint(xPos, yPos), length, action, Rresource, this));
     }
 

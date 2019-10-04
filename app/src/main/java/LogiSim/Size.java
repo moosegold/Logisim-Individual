@@ -1,7 +1,7 @@
 package LogiSim;
 
 /**
- * Immutable class containing information about an object's size
+ * Immutable class containing information about an object's length
  */
 class Size {
     final int width;

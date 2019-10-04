@@ -13,9 +13,9 @@ import java.util.List;
  * Maintains the grid and components.
  */
 class Grid extends AbstractScreenPartition {
-    // The size of the grid in tiles (not pixels).
+    // The length of the grid in tiles (not pixels).
     final Size gridSize;
-    // the size in pixels of a tile. The tiles are square so only 1 value is needed.
+    // the length in pixels of a tile. The tiles are square so only 1 value is needed.
     final int tileSize;
 
     private List<UnaryComponent> components = new LinkedList<>();
