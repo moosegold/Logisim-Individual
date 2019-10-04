@@ -38,6 +38,7 @@ public class SidebarButton {
         Paint borderPaint = new Paint();
         borderPaint.setColor(Color.BLUE);
         borderPaint.setStyle(Paint.Style.STROKE);
+
         partition.canvas.drawRect(bounds, borderPaint);
     }
 
