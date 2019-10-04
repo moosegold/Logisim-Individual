@@ -35,11 +35,12 @@ public class ComponentSidebar extends AbstractScreenPartition {
         // Add button below last
         int yPos = insetPx;
         if (buttons.size() > 0) {
-            yPos = buttons.getLast().size;
+            yPos += buttons.getLast().size;
         }
         int xPos = insetPx;
         // Buttons are squares.
         int length = getSize().width - (insetPx * 2);
+        System.out.println("Adding button at: (" + xPos + " " + yPos + ")");
         buttons.addLast(new SidebarButton(new ScreenPoint(xPos, yPos), length, action, Rresource, this));
     }
 
