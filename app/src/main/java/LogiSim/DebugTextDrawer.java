@@ -13,15 +13,17 @@ public class DebugTextDrawer {
     private static final int BACKGROUND_OPACITY = 150;
 
     private ScreenPoint startPos;
-    private Canvas canvas;
     private boolean active;
 
     private Deque<String> textToDraw = new LinkedList<>();
 
-    DebugTextDrawer(ScreenPoint pos, Canvas canvas, boolean active) {
+    DebugTextDrawer(ScreenPoint pos, boolean active) {
         this.startPos = pos;
-        this.canvas = canvas;
         this.active = active;
+    }
+
+    DebugTextDrawer(boolean active) {
+        this(new ScreenPoint(1, 1), active);
     }
 
     public void addText(String string) {
@@ -32,19 +34,23 @@ public class DebugTextDrawer {
         if (active) {
             int yCoord = (int) (startPos.y + TEXT_SIZE);
             for (String text : textToDraw) {
-                drawString(text, yCoord);
+                drawString(canvas, text, yCoord);
                 yCoord += TEXT_SIZE + 1;
             }
         }
         textToDraw.clear();
     }
 
-    private void drawString(String text, int yCoord) {
-        drawBackground(text, yCoord);
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    private void drawString(Canvas canvas, String text, int yCoord) {
+        drawBackground(canvas, text, yCoord);
         canvas.drawText(text, startPos.x, yCoord, createTextPaint());
     }
 
-    private void drawBackground(String text, int yCoord) {
+    private void drawBackground(Canvas canvas, String text, int yCoord) {
         float[] widths = new float[text.length()];
         createBackgroundPaint().getTextWidths(text, widths);
         float width = 0.0f;
