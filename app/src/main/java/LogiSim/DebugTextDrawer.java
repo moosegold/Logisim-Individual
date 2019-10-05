@@ -34,7 +34,7 @@ public class DebugTextDrawer {
     }
 
     public void draw(Canvas canvas) {
-        if (active) {
+        if (active && LogiSim.DEBUG_TEXT_ENABLED) {
             if (this.drawDownwards)
                 drawDownwards(canvas);
             else

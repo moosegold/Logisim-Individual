@@ -21,6 +21,8 @@ class Grid extends AbstractScreenPartition {
 
     private List<AbstractTile> tiles;
 
+    private AbstractTile lastTouched;
+
     Grid(int width, int height, int tileLength, ScreenManager screenManager, ScreenPoint origin, Size size) {
         super(origin, size, screenManager);
         this.gridSize = new Size(width, height);
@@ -68,13 +70,17 @@ class Grid extends AbstractScreenPartition {
     public void processTouch(ScreenPoint localPoint) {
         GridPoint gridPoint = convertToGridPoint(localPoint);
         AbstractTile tile = getTile(gridPoint);
+        lastTouched = tile;
         tile.debugText.setActive(!tile.debugText.getActive());
     }
 
     @Override
     public void draw() {
         fillBackground();
-
+        screenManager.debugText.addText("");
+        screenManager.debugText.addText("Grid Size: " + gridSize);
+        screenManager.debugText.addText("Tile Length: " + tileLength);
+        screenManager.debugText.addText("Last Tile: " + (lastTouched == null ? null : lastTouched.getPoint()));
         for (AbstractTile tile : tiles) {
             tile.draw();
             tile.drawDebugText();

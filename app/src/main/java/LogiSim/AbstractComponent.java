@@ -37,5 +37,4 @@ public abstract class AbstractComponent extends AbstractTile {
         debugText.addText("isize:" + new ScreenPoint(transformRect.width(), transformRect.height()));
         canvas.drawBitmap(componentImage, orgRect, transformRect, null);
     }
-
 }

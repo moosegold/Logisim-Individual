@@ -18,7 +18,7 @@ public class ScreenManager {
     private Canvas mainCanvas;
     private Bitmap mainImage;
     private ImageView imageView;
-    private DebugTextDrawer debugText;
+    DebugTextDrawer debugText;
 
     final Context appContext;
 
@@ -76,17 +76,12 @@ public class ScreenManager {
             debugText.addText(partition.getName() + " size: " + partition.getSize());
             mainCanvas.drawBitmap(partition.getPartitionBitmap(), origin.x, origin.y, new Paint());
         }
-        drawDebugText();
-        this.imageView.setImageBitmap(this.mainImage);
-    }
-
-    private void drawDebugText() {
         debugText.addText("");
         debugText.addText("Global Touch: " + lastTouch);
         debugText.addText("Partition: " + lastPartition);
         debugText.addText("Local Touch: " + lastLocalPoint);
-
         debugText.draw(mainCanvas);
+        this.imageView.setImageBitmap(this.mainImage);
     }
 
     private void createCanvas() {
