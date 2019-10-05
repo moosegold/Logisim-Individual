@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import androidx.annotation.Nullable;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,7 +56,13 @@ class Grid extends AbstractScreenPartition {
         }
     }
 
+    @Nullable
     AbstractTile getTile(GridPoint point) {
+        if (
+                point.x > gridSize.width || point.x < 0 ||
+                point.y > gridSize.height || point.y < 0) {
+            return null;
+        }
         return tiles.get(getTileIndex(point));
     }
 
@@ -71,7 +79,9 @@ class Grid extends AbstractScreenPartition {
         GridPoint gridPoint = convertToGridPoint(localPoint);
         AbstractTile tile = getTile(gridPoint);
         lastTouched = tile;
-        tile.debugText.setActive(!tile.debugText.getActive());
+        if (tile != null) {
+            tile.debugText.setActive(!tile.debugText.getActive());
+        }
     }
 
     @Override
