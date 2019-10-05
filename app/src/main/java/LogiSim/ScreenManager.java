@@ -42,7 +42,8 @@ public class ScreenManager {
     public void handleTouch(ScreenPoint screenPoint) {
         for (IScreenPartition partition : partitions) {
             if (touchIsInside(partition, screenPoint)) {
-                screenPoint.offset(partition.getOrigin().x, partition.getOrigin().y);
+                System.out.println("Screen touched: " + screenPoint);
+                screenPoint.offset(-partition.getOrigin().x, -partition.getOrigin().y);
                 partition.processTouch(screenPoint);
             }
         }

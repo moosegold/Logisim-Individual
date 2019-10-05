@@ -43,8 +43,9 @@ class Grid extends AbstractScreenPartition {
     }
 
     private void fillGrid() {
-        for (int x = 0; x < gridSize.width; x++) {
-            for (int y = 0; y < gridSize.height; y++) {
+        int i = 0;
+        for (int y = 0; y <= gridSize.height; y++) {
+            for (int x = 0; x <= gridSize.width; x++) {
                 GridPoint point = new GridPoint(x, y);
                 tiles.add(new EmptyTile(point, this));
             }
@@ -67,25 +68,27 @@ class Grid extends AbstractScreenPartition {
     }
 
     private int getTileIndex(GridPoint gridPoint) {
-        return gridPoint.y * gridSize.width + gridPoint.x;
+        return gridPoint.y * (gridSize.width + 1) + gridPoint.x;
     }
 
     @Override
     public void processTouch(ScreenPoint localPoint) {
+        System.out.println("Grid touched at localpoint: " + localPoint);
         GridPoint gridPoint = convertToGridPoint(localPoint);
-        getTile(gridPoint);
+        System.out.println("Grid touched at gridpoint: " + gridPoint);
+        AbstractTile tile = getTile(gridPoint);
+        tile.debugText.setActive(!tile.debugText.getActive());
     }
 
     @Override
     public void draw() {
         fillBackground();
-        for (int x = 0; x < this.gridSize.width ; x++) {
-            for (int y = 0; y < this.gridSize.height ; y++) {
-                AbstractTile tile = getTile(new GridPoint(x, y));
-                tile.draw();
-                ScreenPoint screenPoint = convertToScreenPoint(tile.gridPoint);
-                canvas.drawBitmap(tile.getImage(), screenPoint.x, screenPoint.y, null);
-            }
+
+        for (AbstractTile tile : tiles) {
+            tile.draw();
+            tile.drawDebugText();
+            ScreenPoint drawPoint = convertToScreenPoint(tile.getPoint());
+            canvas.drawBitmap(tile.getImage(), drawPoint.x, drawPoint.y, null);
         }
     }
 

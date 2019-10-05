@@ -45,6 +45,10 @@ public class DebugTextDrawer {
         this.active = active;
     }
 
+    public boolean getActive() {
+        return active;
+    }
+
     private void drawString(Canvas canvas, String text, int yCoord) {
         drawBackground(canvas, text, yCoord);
         canvas.drawText(text, startPos.x, yCoord, createTextPaint());

@@ -20,11 +20,9 @@ public abstract class AbstractComponent extends AbstractTile {
     @Override
     void draw() {
         super.draw();
-        debugText.addText("pos: " + grid.convertToScreenPoint(gridPoint));
+        debugText.addText("spos: " + grid.convertToScreenPoint(gridPoint));
         debugText.addText("size: " + grid.tileLength);
         drawComponentImage();
-
-        debugText.draw(canvas);
     }
 
     private void drawComponentImage() {

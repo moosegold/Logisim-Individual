@@ -25,7 +25,7 @@ abstract class AbstractTile {
         this.gridPoint = gridPoint;
         this.grid = grid;
         this.defaultBackgroundColor.setColor(Color.WHITE);
-        this.debugText = new DebugTextDrawer(false);
+        this.debugText = new DebugTextDrawer(true);
     }
 
     AbstractTile(AbstractTile tile) {
@@ -38,6 +38,11 @@ abstract class AbstractTile {
 
     void draw() {
         createCanvas();
+        debugText.addText("gpos: " + getPoint());
+    }
+
+    void drawDebugText() {
+        debugText.draw(canvas);
     }
 
     //TODO Remove duplicated code between here and SidebarButton
