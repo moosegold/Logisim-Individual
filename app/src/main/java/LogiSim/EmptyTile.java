@@ -1,13 +1,13 @@
 package LogiSim;
 
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 
 public class EmptyTile extends AbstractTile {
 
-    public EmptyTile(GridPoint gridPoint, Grid grid, ScreenManager screenManager, Canvas canvas) {
-        super(gridPoint, grid, screenManager, canvas);
+    public EmptyTile(GridPoint gridPoint, Grid grid) {
+        super(gridPoint, grid);
     }
 
     EmptyTile(AbstractTile tile) {
@@ -15,7 +15,8 @@ public class EmptyTile extends AbstractTile {
     }
 
     @Override
-    void draw(Canvas canvas) {
+    void draw() {
+        super.draw();
         fillTile();
         drawBounds();
     }
@@ -24,7 +25,7 @@ public class EmptyTile extends AbstractTile {
         Paint boundsPaint = new Paint();
         boundsPaint.setColor(Color.BLACK);
         boundsPaint.setStyle(Paint.Style.STROKE);
-        canvas.drawRect(getRect(), boundsPaint);
+        canvas.drawRect(new Rect(0, 0, grid.tileLength - 1, grid.tileLength - 1), boundsPaint);
     }
 
     private void fillTile() {

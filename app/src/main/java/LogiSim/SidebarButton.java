@@ -12,7 +12,7 @@ public class SidebarButton {
     final String action;
 
     private final AbstractScreenPartition partition;
-    Bitmap image;
+    private Bitmap image;
     private Canvas canvas;
 
     final ScreenPoint point;
@@ -28,7 +28,7 @@ public class SidebarButton {
         this.Rresource = Rresource;
         createCanvas();
         this.partition = partition;
-        this.debugText = new DebugTextDrawer(point, partition.canvas, false);
+        this.debugText = new DebugTextDrawer(false);
     }
 
     private void createCanvas() {
@@ -47,12 +47,12 @@ public class SidebarButton {
     }
 
     private void drawComponentImage() {
-        Rect orgImgRect = new Rect(0, 0, getImage().getWidth(), getImage().getWidth());
+        Rect orgImgRect = new Rect(0, 0, getComponentImage().getWidth(), getComponentImage().getWidth());
         Rect transformImgRect = new Rect(0, 0, length, length);
         transformImgRect.offsetTo(0, length / 4);
         debugText.addText("Img size: " + new Size(transformImgRect.width(), transformImgRect.height()));
         debugText.addText("Img at: " + new ScreenPoint(transformImgRect.left, transformImgRect.top));
-        canvas.drawBitmap(getImage(), orgImgRect, transformImgRect, null);
+        canvas.drawBitmap(getComponentImage(), orgImgRect, transformImgRect, null);
     }
 
     private void drawBounds() {
@@ -64,9 +64,12 @@ public class SidebarButton {
         canvas.drawRect(bounds, borderPaint);
     }
 
-    private Bitmap getImage() {
+    private Bitmap getComponentImage() {
         return BitmapFactory.decodeResource(partition.screenManager.appContext.getResources(), Rresource);
+    }
 
+    public Bitmap getImage() {
+        return image;
     }
 
 }

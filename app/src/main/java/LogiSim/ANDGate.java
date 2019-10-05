@@ -14,8 +14,8 @@ public class ANDGate extends CommutativeComponent {
         return this.getInput(0) && this.getInput(1);
     }
 
-    public Bitmap getImage() {
-        return BitmapFactory.decodeResource(screenManager.appContext.getResources(), R.drawable.and_gate);
+    public Bitmap getComponentImage() {
+        return BitmapFactory.decodeResource(grid.screenManager.appContext.getResources(), R.drawable.and_gate);
     }
 
 }

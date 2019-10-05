@@ -15,18 +15,23 @@ class Grid extends AbstractScreenPartition {
     // The length of the grid in tiles (not pixels).
     final Size gridSize;
     // the length in pixels of a tile. The tiles are square so only 1 value is needed.
-    final int tileSize;
+    final int tileLength;
 
 //    private List<UnaryComponent> components = new LinkedList<>();
 
     private List<AbstractTile> tiles;
 
-    Grid(int width, int height, int tileSize, ScreenManager screenManager, ScreenPoint origin, Size size) {
+    Grid(int width, int height, int tileLength, ScreenManager screenManager, ScreenPoint origin, Size size) {
         super(origin, size, screenManager);
         this.gridSize = new Size(width, height);
-        this.tileSize = tileSize;
+        this.tileLength = tileLength;
         tiles = new LinkedList<>();
         resetGrid();
+
+        //Test
+        setTile(new GridPoint(0, 0), new ANDGate(getTile(new GridPoint(0, 0))));
+        setTile(new GridPoint(1, 1), new ORGate(getTile(new GridPoint(1, 1))));
+        setTile(new GridPoint(2, 3), new NOTGate(getTile(new GridPoint(2, 3))));
     }
 
     void resetGrid() {
@@ -41,7 +46,7 @@ class Grid extends AbstractScreenPartition {
         for (int x = 0; x < gridSize.width; x++) {
             for (int y = 0; y < gridSize.height; y++) {
                 GridPoint point = new GridPoint(x, y);
-                tiles.add(new EmptyTile(point, this, screenManager, canvas));
+                tiles.add(new EmptyTile(point, this));
             }
         }
     }
@@ -58,7 +63,7 @@ class Grid extends AbstractScreenPartition {
 //    }
 
     ScreenPoint convertToScreenPoint(GridPoint gridPoint) {
-        return new ScreenPoint(gridPoint.x * this.tileSize, gridPoint.y * this.tileSize);
+        return new ScreenPoint(gridPoint.x * this.tileLength, gridPoint.y * this.tileLength);
     }
 
     private int getTileIndex(GridPoint gridPoint) {
@@ -76,7 +81,10 @@ class Grid extends AbstractScreenPartition {
         fillBackground();
         for (int x = 0; x < this.gridSize.width ; x++) {
             for (int y = 0; y < this.gridSize.height ; y++) {
-                getTile(new GridPoint(x, y)).draw(this.canvas);
+                AbstractTile tile = getTile(new GridPoint(x, y));
+                tile.draw();
+                ScreenPoint screenPoint = convertToScreenPoint(tile.gridPoint);
+                canvas.drawBitmap(tile.getImage(), screenPoint.x, screenPoint.y, null);
             }
         }
     }
@@ -88,8 +96,8 @@ class Grid extends AbstractScreenPartition {
     }
 
     private GridPoint convertToGridPoint(ScreenPoint localPoint) {
-        int gridPointX = localPoint.x / tileSize;
-        int gridPointY = localPoint.y / tileSize;
+        int gridPointX = localPoint.x / tileLength;
+        int gridPointY = localPoint.y / tileLength;
         return new GridPoint(gridPointX, gridPointY);
     }
 

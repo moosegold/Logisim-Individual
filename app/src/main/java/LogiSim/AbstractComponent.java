@@ -1,7 +1,7 @@
 package LogiSim;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
+import android.graphics.Rect;
 
 public abstract class AbstractComponent extends AbstractTile {
 
@@ -15,13 +15,29 @@ public abstract class AbstractComponent extends AbstractTile {
      */
     public abstract void processConnection(ILogicComponent source);
 
-    public abstract Bitmap getImage();
+    public abstract Bitmap getComponentImage();
 
     @Override
-    void draw(Canvas canvas) {
-        Bitmap image = this.getImage();
-        ScreenPoint screenPoint = grid.convertToScreenPoint(this.gridPoint);
-        canvas.drawBitmap(image, screenPoint.x, screenPoint.y, null);
+    void draw() {
+        super.draw();
+        debugText.addText("pos: " + grid.convertToScreenPoint(gridPoint));
+        debugText.addText("size: " + grid.tileLength);
+        drawComponentImage();
+
+        debugText.draw(canvas);
+    }
+
+    private void drawComponentImage() {
+//        Rect orgImgRect = new Rect(0, 0, getImage().getWidth(), getImage().getWidth());
+//        Rect transformImgRect = new Rect(0, 0, length, length);
+//        transformImgRect.offsetTo(0, length / 4);
+        Bitmap componentImage = getComponentImage();
+        Rect orgRect = new Rect(0, 0, componentImage.getWidth(), componentImage.getWidth());
+        Rect transformRect = new Rect(0, 0, grid.tileLength, grid.tileLength);
+        transformRect.offsetTo(0, grid.tileLength / 4);
+        debugText.addText("imgpos:" + new ScreenPoint(transformRect.left, transformRect.top));
+        debugText.addText("imgsize:" + new ScreenPoint(transformRect.width(), transformRect.height()));
+        canvas.drawBitmap(componentImage, orgRect, transformRect, null);
     }
 
 }

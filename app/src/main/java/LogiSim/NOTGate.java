@@ -15,8 +15,8 @@ class NOTGate extends UnaryComponent {
     }
 
     @Override
-    public Bitmap getImage() {
-        return BitmapFactory.decodeResource(screenManager.appContext.getResources(), R.drawable.not_gate);
+    public Bitmap getComponentImage() {
+        return BitmapFactory.decodeResource(grid.screenManager.appContext.getResources(), R.drawable.not_gate);
     }
 
 }

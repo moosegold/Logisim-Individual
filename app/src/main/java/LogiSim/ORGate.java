@@ -15,7 +15,7 @@ public class ORGate extends CommutativeComponent {
     }
 
     @Override
-    public Bitmap getImage() {
-        return BitmapFactory.decodeResource(screenManager.appContext.getResources(), R.drawable.or_gate);
+    public Bitmap getComponentImage() {
+        return BitmapFactory.decodeResource(grid.screenManager.appContext.getResources(), R.drawable.or_gate);
     }
 }

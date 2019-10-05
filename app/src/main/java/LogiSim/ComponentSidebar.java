@@ -48,7 +48,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
 
         for (SidebarButton button : buttons) {
             button.draw();
-            canvas.drawBitmap(button.image, button.point.x, button.point.y, null);
+            canvas.drawBitmap(button.getImage(), button.point.x, button.point.y, null);
         }
     }
 

@@ -11,7 +11,8 @@ public class LogiSim extends Activity {
     private static final double SIDEBAR_WIDTH_RATIO = 1.0/10;
     private int sidebar_width;
 
-    private static final int GRID_WIDTH_TILES = 15;
+//    private static final int GRID_WIDTH_TILES = 15;
+private static final int GRID_WIDTH_TILES = 15;
 
     private ScreenManager screenManager;
 
