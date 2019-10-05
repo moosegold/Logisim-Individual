@@ -4,18 +4,21 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import java.util.Deque;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 public class DebugTextDrawer {
 
-    private static final int TEXT_SIZE = 12;
+    private static final int TEXT_SIZE = 14;
+    private static final int VERTICAL_SPACING = 1;
     private static final int BACKGROUND_OPACITY = 150;
 
     private ScreenPoint startPos;
     private boolean active;
 
-    private Deque<String> textToDraw = new LinkedList<>();
+    boolean drawDownwards = true;
+    private List<String> textToDraw = new LinkedList<>();
 
     DebugTextDrawer(ScreenPoint pos, boolean active) {
         this.startPos = pos;
@@ -27,18 +30,34 @@ public class DebugTextDrawer {
     }
 
     public void addText(String string) {
-        textToDraw.addLast(string);
+        textToDraw.add(string);
     }
 
     public void draw(Canvas canvas) {
         if (active) {
-            int yCoord = (int) (startPos.y + TEXT_SIZE);
-            for (String text : textToDraw) {
-                drawString(canvas, text, yCoord);
-                yCoord += TEXT_SIZE + 1;
-            }
+            if (this.drawDownwards)
+                drawDownwards(canvas);
+            else
+                drawUpwards(canvas);
         }
         textToDraw.clear();
+    }
+
+    private void drawDownwards(Canvas canvas) {
+        int yCoord = startPos.y + TEXT_SIZE;
+        for (String text : textToDraw) {
+            drawString(canvas, text, yCoord);
+            yCoord += TEXT_SIZE + VERTICAL_SPACING;
+        }
+    }
+
+    private void drawUpwards(Canvas canvas) {
+        Collections.reverse(textToDraw);
+        int yCoord = startPos.y;
+        for (String text : textToDraw) {
+            drawString(canvas, text, yCoord);
+            yCoord -= TEXT_SIZE + VERTICAL_SPACING;
+        }
     }
 
     public void setActive(boolean active) {

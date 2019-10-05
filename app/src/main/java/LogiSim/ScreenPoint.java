@@ -9,4 +9,8 @@ public class ScreenPoint extends SpecializedPoint {
         super(x, y);
     }
 
+    ScreenPoint copy() {
+        return new ScreenPoint(x, y);
+    }
+
 }

@@ -10,6 +10,8 @@ public interface IScreenPartition {
 
     Bitmap getPartitionBitmap();
 
+    String getName();
+
     ScreenPoint getOrigin();
 
     Size getSize();

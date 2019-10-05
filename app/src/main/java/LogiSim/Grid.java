@@ -56,13 +56,6 @@ class Grid extends AbstractScreenPartition {
         return tiles.get(getTileIndex(point));
     }
 
-    /*
-     * These getters are here to allow GameScreen access to render them.
-     */
-//    List<UnaryComponent> getComponents() {
-//        return Collections.unmodifiableList(components);
-//    }
-
     ScreenPoint convertToScreenPoint(GridPoint gridPoint) {
         return new ScreenPoint(gridPoint.x * this.tileLength, gridPoint.y * this.tileLength);
     }
@@ -90,6 +83,11 @@ class Grid extends AbstractScreenPartition {
             ScreenPoint drawPoint = convertToScreenPoint(tile.getPoint());
             canvas.drawBitmap(tile.getImage(), drawPoint.x, drawPoint.y, null);
         }
+    }
+
+    @Override
+    public String getName() {
+        return "Grid";
     }
 
     private void fillBackground() {

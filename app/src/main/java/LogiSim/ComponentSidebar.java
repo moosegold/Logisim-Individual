@@ -23,6 +23,11 @@ public class ComponentSidebar extends AbstractScreenPartition {
         addButtons();
     }
 
+    @Override
+    public String getName() {
+        return "Sidebar";
+    }
+
     private void addButtons() {
         addButton("AND", R.drawable.and_gate);
         addButton("OR", R.drawable.or_gate);

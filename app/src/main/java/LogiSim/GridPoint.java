@@ -9,4 +9,8 @@ public class GridPoint extends SpecializedPoint {
         super(x, y);
     }
 
+    GridPoint copy() {
+        return new GridPoint(x, y);
+    }
+
 }

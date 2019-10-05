@@ -18,14 +18,21 @@ public class ScreenManager {
     private Canvas mainCanvas;
     private Bitmap mainImage;
     private ImageView imageView;
+    private DebugTextDrawer debugText;
 
     final Context appContext;
+
+    private ScreenPoint lastTouch = null;
+    private String lastPartition = null;
+    private ScreenPoint lastLocalPoint = null;
 
     ScreenManager(Display display, ImageView imageView, Context appContext) {
         this.partitions = new LinkedList<>();
         this.display = display;
         this.appContext = appContext;
         this.imageView = imageView;
+        debugText = new DebugTextDrawer(new ScreenPoint(1, getDisplaySize().height - 4), true);
+        debugText.drawDownwards = false;
         createCanvas();
     }
 
@@ -40,10 +47,12 @@ public class ScreenManager {
     }
 
     public void handleTouch(ScreenPoint screenPoint) {
+        this.lastTouch = screenPoint.copy();
         for (IScreenPartition partition : partitions) {
             if (touchIsInside(partition, screenPoint)) {
-                System.out.println("Screen touched: " + screenPoint);
+                this.lastPartition = partition.getName();
                 screenPoint.offset(-partition.getOrigin().x, -partition.getOrigin().y);
+                this.lastLocalPoint = screenPoint.copy();
                 partition.processTouch(screenPoint);
             }
         }
@@ -57,7 +66,17 @@ public class ScreenManager {
             ScreenPoint origin = partition.getOrigin();
             mainCanvas.drawBitmap(partition.getPartitionBitmap(), origin.x, origin.y, new Paint());
         }
+        drawDebugText();
         this.imageView.setImageBitmap(this.mainImage);
+    }
+
+    private void drawDebugText() {
+        debugText.addText("");
+        debugText.addText("Global Touch: " + lastTouch);
+        debugText.addText("Partition: " + lastPartition);
+        debugText.addText("Local Touch: " + lastLocalPoint);
+
+        debugText.draw(mainCanvas);
     }
 
     private void createCanvas() {

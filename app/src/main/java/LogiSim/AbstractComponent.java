@@ -20,7 +20,7 @@ public abstract class AbstractComponent extends AbstractTile {
     @Override
     void draw() {
         super.draw();
-        debugText.addText("spos: " + grid.convertToScreenPoint(gridPoint));
+        debugText.addText("pos: " + grid.convertToScreenPoint(gridPoint));
         debugText.addText("size: " + grid.tileLength);
         drawComponentImage();
     }
@@ -33,8 +33,8 @@ public abstract class AbstractComponent extends AbstractTile {
         Rect orgRect = new Rect(0, 0, componentImage.getWidth(), componentImage.getWidth());
         Rect transformRect = new Rect(0, 0, grid.tileLength, grid.tileLength);
         transformRect.offsetTo(0, grid.tileLength / 4);
-        debugText.addText("imgpos:" + new ScreenPoint(transformRect.left, transformRect.top));
-        debugText.addText("imgsize:" + new ScreenPoint(transformRect.width(), transformRect.height()));
+        debugText.addText("ipos:" + new ScreenPoint(transformRect.left, transformRect.top));
+        debugText.addText("isize:" + new ScreenPoint(transformRect.width(), transformRect.height()));
         canvas.drawBitmap(componentImage, orgRect, transformRect, null);
     }
 
