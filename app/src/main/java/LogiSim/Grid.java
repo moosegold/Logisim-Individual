@@ -66,9 +66,7 @@ class Grid extends AbstractScreenPartition {
 
     @Override
     public void processTouch(ScreenPoint localPoint) {
-        System.out.println("Grid touched at localpoint: " + localPoint);
         GridPoint gridPoint = convertToGridPoint(localPoint);
-        System.out.println("Grid touched at gridpoint: " + gridPoint);
         AbstractTile tile = getTile(gridPoint);
         tile.debugText.setActive(!tile.debugText.getActive());
     }

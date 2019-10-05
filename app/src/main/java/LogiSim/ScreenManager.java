@@ -48,22 +48,32 @@ public class ScreenManager {
 
     public void handleTouch(ScreenPoint screenPoint) {
         this.lastTouch = screenPoint.copy();
+        boolean foundPartition = false;
         for (IScreenPartition partition : partitions) {
             if (touchIsInside(partition, screenPoint)) {
+                foundPartition = true;
                 this.lastPartition = partition.getName();
                 screenPoint.offset(-partition.getOrigin().x, -partition.getOrigin().y);
                 this.lastLocalPoint = screenPoint.copy();
                 partition.processTouch(screenPoint);
             }
         }
+        if (!foundPartition) {
+            this.lastPartition = null;
+            this.lastLocalPoint = null;
+        }
 
         this.draw();
     }
 
     public void draw() {
+        debugText.addText("Display Size: " + getDisplaySize());
         for (IScreenPartition partition : partitions) {
             partition.draw();
             ScreenPoint origin = partition.getOrigin();
+            debugText.addText("");
+            debugText.addText(partition.getName() + " origin: " + partition.getOrigin());
+            debugText.addText(partition.getName() + " size: " + partition.getSize());
             mainCanvas.drawBitmap(partition.getPartitionBitmap(), origin.x, origin.y, new Paint());
         }
         drawDebugText();
@@ -91,8 +101,8 @@ public class ScreenManager {
         Rect partitionBounds = new Rect(
                 partition.getOrigin().x,
                 partition.getOrigin().y,
-                partition.getSize().width,
-                partition.getSize().height
+                partition.getOrigin().x + partition.getSize().width,
+                partition.getOrigin().y + partition.getSize().height
         );
 
         return partitionBounds.contains(screenPoint.x, screenPoint.y);
