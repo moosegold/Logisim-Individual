@@ -8,7 +8,7 @@ import android.widget.ImageView;
 
 public class LogiSim extends Activity {
 
-    private static final double SIDEBAR_WIDTH_RATIO = 1.0/10;
+    private static final double SIDEBAR_WIDTH_RATIO = 1.0/12;
     private int sidebar_width;
 
     private static final int GRID_WIDTH_TILES = 16;

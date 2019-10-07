@@ -32,6 +32,8 @@ public class ComponentSidebar extends AbstractScreenPartition {
         addButton("AND", R.drawable.and_gate);
         addButton("OR", R.drawable.or_gate);
         addButton("NOT", R.drawable.not_gate);
+        addButton("SWITCH", R.drawable.switch_off);
+        addButton("LED", R.drawable.led_on);
     }
 
     private void addButton(String action, int Rresource) {
