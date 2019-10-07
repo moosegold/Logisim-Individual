@@ -53,6 +53,10 @@ public class SidebarButton {
         canvas.drawRect(bounds, borderPaint);
     }
 
+    ScreenPoint getCenter() {
+        return new ScreenPoint(point.x + size.width / 2, point.y + size.height / 2);
+    }
+
     public Bitmap getImage() {
         return image;
     }

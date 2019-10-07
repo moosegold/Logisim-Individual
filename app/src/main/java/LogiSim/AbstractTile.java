@@ -25,7 +25,7 @@ abstract class AbstractTile {
         this.gridPoint = gridPoint;
         this.grid = grid;
         this.defaultBackgroundColor.setColor(Color.WHITE);
-        this.debugText = new DebugTextDrawer(true);
+        this.debugText = new DebugTextDrawer(false);
     }
 
     AbstractTile(AbstractTile tile) {

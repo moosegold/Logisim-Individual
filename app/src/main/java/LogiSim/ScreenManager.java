@@ -31,7 +31,7 @@ public class ScreenManager {
         this.display = display;
         this.appContext = appContext;
         this.imageView = imageView;
-        debugText = new DebugTextDrawer(new ScreenPoint(1, getDisplaySize().height - 4), true);
+        debugText = new DebugTextDrawer(new ScreenPoint(1, getDisplaySize().height - 4), false);
         debugText.drawDownwards = false;
         createCanvas();
     }

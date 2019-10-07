@@ -74,7 +74,7 @@ public class DebugTextDrawer {
     }
 
     private void drawBackground(Canvas canvas, String text, int yCoord) {
-        float width = TextDrawUtil.getTextWidth(text, createBackgroundPaint());
+        float width = TextDrawUtil.getTextWidthPx(text, createBackgroundPaint());
         canvas.drawRect(startPos.x, yCoord - TEXT_SIZE, startPos.x + (int) width, yCoord + 2, createBackgroundPaint());
     }
 
