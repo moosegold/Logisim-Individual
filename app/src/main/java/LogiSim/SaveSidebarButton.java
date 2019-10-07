@@ -20,8 +20,9 @@ public class SaveSidebarButton extends SidebarButton {
 
     private void drawText() {
         Paint paint = createPaint();
-        int xPos = getCenter().x - TextDrawUtil.getTextWidthPx(label, paint) / 2;
-        int yPos = getCenter().y - (int) paint.getTextSize() / 2;
+        int xPos = getLocalCenter().x - TextDrawUtil.getTextWidthPx(label, paint) / 2;
+        int yPos = getLocalCenter().y - (int) paint.getTextSize() / 2;
+        debugText.addText("labelPos: " + new ScreenPoint(xPos, yPos));
         canvas.drawText(label, xPos, yPos, paint);
     }
 
