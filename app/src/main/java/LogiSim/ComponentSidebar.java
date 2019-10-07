@@ -67,9 +67,11 @@ public class ComponentSidebar extends AbstractScreenPartition {
         int width = getButtonLength();
         int height = width / 2;
         int xPos = insetPx;
-        int yPos = getSize().height - insetPx - height;
-        if (lastSaveButton != null) {
-            yPos -= lastSaveButton.point.y - insetPx - height;
+        int yPos;
+        if (lastSaveButton == null) {
+            yPos = getSize().height - insetPx - height;
+        } else {
+            yPos = lastSaveButton.point.y - insetPx - height;
         }
         System.out.println("Adding " + label + " save button at: " + new ScreenPoint(xPos, yPos));
         lastSaveButton = new SaveSidebarButton(new ScreenPoint(xPos, yPos), new Size(width, height), label, "SAVE", this);
