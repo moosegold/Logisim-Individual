@@ -11,61 +11,46 @@ public class SidebarButton {
 
     final String action;
 
-    private final AbstractScreenPartition partition;
+    final AbstractScreenPartition partition;
     private Bitmap image;
-    private Canvas canvas;
+    Canvas canvas;
 
     final ScreenPoint point;
-    final int length;
-    private final int Rresource;
+    final Size size;
 
-    private final DebugTextDrawer debugText;
+    final DebugTextDrawer debugText;
 
-    public SidebarButton(ScreenPoint point, int length, String action, int Rresource, AbstractScreenPartition partition) {
+    public SidebarButton(ScreenPoint point, Size size, String action, AbstractScreenPartition partition) {
         this.point = point;
-        this.length = length;
+        this.size = size;
         this.action = action;
-        this.Rresource = Rresource;
         createCanvas();
         this.partition = partition;
         this.debugText = new DebugTextDrawer(false);
     }
 
     private void createCanvas() {
-        image = Bitmap.createBitmap(length, length, Bitmap.Config.ARGB_8888);
+        image = Bitmap.createBitmap(size.width, size.height, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(image);
     }
 
     public void draw() {
         createCanvas();
         debugText.addText("Button Loc: " + point);
-        debugText.addText("Button Size: " + length);
-        drawComponentImage();
+        debugText.addText("Button Size: " + size);
+
         drawBounds();
 
         debugText.draw(canvas);
     }
 
-    private void drawComponentImage() {
-        Rect orgImgRect = new Rect(0, 0, getComponentImage().getWidth(), getComponentImage().getWidth());
-        Rect transformImgRect = new Rect(0, 0, length, length);
-        transformImgRect.offsetTo(0, length / 4);
-        debugText.addText("Img size: " + new Size(transformImgRect.width(), transformImgRect.height()));
-        debugText.addText("Img at: " + new ScreenPoint(transformImgRect.left, transformImgRect.top));
-        canvas.drawBitmap(getComponentImage(), orgImgRect, transformImgRect, null);
-    }
-
     private void drawBounds() {
-        Rect bounds = new Rect(0, 0, length - 1, length - 1);
+        Rect bounds = new Rect(0, 0, size.width - 1, size.height - 1);
         Paint borderPaint = new Paint();
         borderPaint.setColor(Color.BLUE);
         borderPaint.setStyle(Paint.Style.STROKE);
 
         canvas.drawRect(bounds, borderPaint);
-    }
-
-    private Bitmap getComponentImage() {
-        return BitmapFactory.decodeResource(partition.screenManager.appContext.getResources(), Rresource);
     }
 
     public Bitmap getImage() {
