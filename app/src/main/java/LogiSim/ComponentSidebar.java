@@ -14,7 +14,9 @@ public class ComponentSidebar extends AbstractScreenPartition {
     final double BUTTON_INSET_RATIO = 1.0/20;
     int insetPx;
 
-    private Deque<SidebarButton> buttons = new LinkedList<>();
+    private Deque<SidebarButton> componentButtons = new LinkedList<>();
+
+    private Deque<SidebarButton> saveButtons = new LinkedList<>();
 
     ComponentSidebar(ScreenPoint origin, Size size, ScreenManager screenManager) {
         super(origin, size, screenManager);
@@ -29,31 +31,54 @@ public class ComponentSidebar extends AbstractScreenPartition {
     }
 
     private void addButtons() {
-        addButton("AND", R.drawable.and_gate);
-        addButton("OR", R.drawable.or_gate);
-        addButton("NOT", R.drawable.not_gate);
-        addButton("SWITCH", R.drawable.switch_off);
-        addButton("LED", R.drawable.led_on);
+        addComponentButton("AND", R.drawable.and_gate);
+        addComponentButton("OR", R.drawable.or_gate);
+        addComponentButton("NOT", R.drawable.not_gate);
+        addComponentButton("SWITCH", R.drawable.switch_off);
+        addComponentButton("LED", R.drawable.led_on);
+
+        addSaveButton("C");
+        addSaveButton("B");
+        addSaveButton("A");
     }
 
-    private void addButton(String action, int Rresource) {
+    /**
+     * Adds a new button below the last button added starting from the top of the sidebar.
+     */
+    private void addComponentButton(String action, int Rresource) {
         // Add button below last
         int yPos = insetPx;
-        if (buttons.size() > 0) {
-            yPos += buttons.getLast().point.y + buttons.getLast().length;
+        if (componentButtons.size() > 0) {
+            yPos += componentButtons.getLast().point.y + componentButtons.getLast().length;
         }
         int xPos = insetPx;
         // Buttons are squares.
-        int length = getSize().width - (insetPx * 2);
+        int length = getButtonLength();
         System.out.println("Adding " + action + " button at: " + new ScreenPoint(xPos, yPos));
-        buttons.addLast(new SidebarButton(new ScreenPoint(xPos, yPos), length, action, Rresource, this));
+        componentButtons.addLast(new SidebarButton(new ScreenPoint(xPos, yPos), length, action, Rresource, this));
+    }
+
+    /**
+     * Adds a save button above the previous button starting from the bottom of the sidebar.
+     */
+    private void addSaveButton(String label) {
+        int length = getButtonLength();
+        int height = length / 2;
+        int xPos = insetPx;
+        int yPos = getSize().height - insetPx - height;
+        //componentButtons.addLast(new SidebarButton(new ScreenPoint(xPos, yPos), length, label, ));
+
+    }
+
+    private int getButtonLength() {
+        return getSize().width - (insetPx * 2);
     }
 
     @Override
     public void draw() {
         fillBackground();
 
-        for (SidebarButton button : buttons) {
+        for (SidebarButton button : componentButtons) {
             button.draw();
             canvas.drawBitmap(button.getImage(), button.point.x, button.point.y, null);
         }
