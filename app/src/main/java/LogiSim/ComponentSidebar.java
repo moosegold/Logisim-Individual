@@ -106,7 +106,9 @@ public class ComponentSidebar extends AbstractScreenPartition {
 
     public void processTouch(ScreenPoint localPoint) {
         for (SidebarButton button : buttons) {
-            //if ()
+            Rect buttonBounds = Util.getRect(button.point, button.size);
+
+            buttonBounds.contains(localPoint.x, localPoint.y);
         }
     }
 
