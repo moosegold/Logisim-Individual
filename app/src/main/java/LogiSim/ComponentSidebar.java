@@ -56,7 +56,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
         // Buttons are squares.
         int length = getButtonLength();
         System.out.println("Adding " + action + " button at: " + new ScreenPoint(xPos, yPos));
-        lastComponentButton = new ComponentSidebarButton(new ScreenPoint(xPos, yPos), length, action, Rresource, this);;
+        lastComponentButton = new ComponentSidebarButton(new ScreenPoint(xPos, yPos), length, action, Rresource, this);
         buttons.addLast(lastComponentButton);
     }
 
