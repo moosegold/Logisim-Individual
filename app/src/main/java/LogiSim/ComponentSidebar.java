@@ -105,7 +105,9 @@ public class ComponentSidebar extends AbstractScreenPartition {
     }
 
     public void processTouch(ScreenPoint localPoint) {
-
+        for (SidebarButton button : buttons) {
+            //if ()
+        }
     }
 
     private void setupPaints() {

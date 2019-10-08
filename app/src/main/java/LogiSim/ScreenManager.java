@@ -31,7 +31,7 @@ public class ScreenManager {
         this.display = display;
         this.appContext = appContext;
         this.imageView = imageView;
-        debugText = new DebugTextDrawer(new ScreenPoint(1, getDisplaySize().height - 4), false);
+        debugText = new DebugTextDrawer(new ScreenPoint(1, getDisplaySize().height - 4), true);
         debugText.drawDownwards = false;
         createCanvas();
     }
@@ -93,12 +93,7 @@ public class ScreenManager {
     }
 
     private boolean touchIsInside(IScreenPartition partition, ScreenPoint screenPoint) {
-        Rect partitionBounds = new Rect(
-                partition.getOrigin().x,
-                partition.getOrigin().y,
-                partition.getOrigin().x + partition.getSize().width,
-                partition.getOrigin().y + partition.getSize().height
-        );
+        Rect partitionBounds = Util.getRect(partition.getOrigin(), partition.getSize());
 
         return partitionBounds.contains(screenPoint.x, screenPoint.y);
     }
