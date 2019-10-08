@@ -7,6 +7,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import androidx.annotation.NonNull;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 public class SidebarButton {
 
     final String action;
@@ -65,4 +72,13 @@ public class SidebarButton {
         return image;
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + getToStringData();
+    }
+
+    List<String> getToStringData() {
+        return new LinkedList<>(Collections.singletonList(action));
+    }
 }

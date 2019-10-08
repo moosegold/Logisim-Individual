@@ -3,6 +3,8 @@ package LogiSim;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import java.util.List;
+
 public class SaveSidebarButton extends SidebarButton {
 
     String label;
@@ -32,5 +34,12 @@ public class SaveSidebarButton extends SidebarButton {
         newPaint.setFakeBoldText(true);
         newPaint.setColor(Color.BLUE);
         return newPaint;
+    }
+
+    @Override
+    List<String> getToStringData() {
+        List<String> data = super.getToStringData();
+        data.add(label);
+        return data;
     }
 }
