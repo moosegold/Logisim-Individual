@@ -14,4 +14,8 @@ public class TextDrawUtil {
         return (int) width;
     }
 
+    public static int getTextHeightPx(Paint paint) {
+        return (int) paint.getTextSize();
+    }
+
 }

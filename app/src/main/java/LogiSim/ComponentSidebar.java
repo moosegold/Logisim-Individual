@@ -78,6 +78,16 @@ public class ComponentSidebar extends AbstractScreenPartition {
         buttons.addLast(lastSaveButton);
     }
 
+    private void drawSaveLabel() {
+        String text = "Save";
+        Paint paint = PaintBuilder.start().setColor(Color.BLACK).setTextSize(18f).makePaint();
+        int width = getButtonLength();
+        int height = TextDrawUtil.getTextHeightPx(paint);
+        int xPos = getSize().width / 2 - TextDrawUtil.getTextWidthPx(text, paint) / 2;
+        int yPos = lastSaveButton.point.y - insetPx;
+        canvas.drawText(text, xPos, yPos, paint);
+    }
+
     private int getButtonLength() {
         return getSize().width - (insetPx * 2);
     }
@@ -90,6 +100,8 @@ public class ComponentSidebar extends AbstractScreenPartition {
             button.draw();
             canvas.drawBitmap(button.getImage(), button.point.x, button.point.y, null);
         }
+
+        drawSaveLabel();
     }
 
     public void processTouch(ScreenPoint localPoint) {
