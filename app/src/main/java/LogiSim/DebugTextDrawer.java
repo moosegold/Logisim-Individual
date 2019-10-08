@@ -1,8 +1,6 @@
 package LogiSim;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -10,9 +8,7 @@ import java.util.List;
 
 public class DebugTextDrawer {
 
-    private static final int TEXT_SIZE = 14;
     private static final int VERTICAL_SPACING = 1;
-    private static final int BACKGROUND_OPACITY = 150;
 
     private ScreenPoint startPos;
     private boolean active;
@@ -44,10 +40,10 @@ public class DebugTextDrawer {
     }
 
     private void drawDownwards(Canvas canvas) {
-        int yCoord = startPos.y + TEXT_SIZE;
+        int yCoord = startPos.y + Paints.DEBUG_TEXT_SIZE;
         for (String text : textToDraw) {
             drawString(canvas, text, yCoord);
-            yCoord += TEXT_SIZE + VERTICAL_SPACING;
+            yCoord += Paints.DEBUG_TEXT_SIZE + VERTICAL_SPACING;
         }
     }
 
@@ -56,7 +52,7 @@ public class DebugTextDrawer {
         int yCoord = startPos.y;
         for (String text : textToDraw) {
             drawString(canvas, text, yCoord);
-            yCoord -= TEXT_SIZE + VERTICAL_SPACING;
+            yCoord -= Paints.DEBUG_TEXT_SIZE + VERTICAL_SPACING;
         }
     }
 
@@ -70,27 +66,12 @@ public class DebugTextDrawer {
 
     private void drawString(Canvas canvas, String text, int yCoord) {
         drawBackground(canvas, text, yCoord);
-        canvas.drawText(text, startPos.x, yCoord, createTextPaint());
+        canvas.drawText(text, startPos.x, yCoord, Paints.DEBUG_TEXT);
     }
 
     private void drawBackground(Canvas canvas, String text, int yCoord) {
-        float width = TextDrawUtil.getTextWidthPx(text, createBackgroundPaint());
-        canvas.drawRect(startPos.x, yCoord - TEXT_SIZE, startPos.x + (int) width, yCoord + 2, createBackgroundPaint());
-    }
-
-    private Paint createTextPaint() {
-        Paint newPaint = new Paint();
-        newPaint.setTextSize(TEXT_SIZE);
-        newPaint.setColor(Color.BLACK);
-        return newPaint;
-    }
-
-    private Paint createBackgroundPaint() {
-        Paint newPaint = new Paint();
-        newPaint.setTextSize(TEXT_SIZE);
-        newPaint.setColor(Color.WHITE);
-        newPaint.setAlpha(BACKGROUND_OPACITY);
-        return newPaint;
+        float width = TextDrawUtil.getTextWidthPx(text, Paints.DEBUG_BACKGROUND_COLOR);
+        canvas.drawRect(startPos.x, yCoord - Paints.DEBUG_TEXT_SIZE, startPos.x + (int) width, yCoord + 2, Paints.DEBUG_BACKGROUND_COLOR);
     }
 
 }

@@ -19,12 +19,27 @@ public class PaintBuilder {
         return paint;
     }
 
+    public PaintBuilder setAlpha(int alpha) {
+        paint.setAlpha(alpha);
+        return this;
+    }
+
+    public PaintBuilder setBold(boolean bold) {
+        paint.setFakeBoldText(bold);
+        return this;
+    }
+
     public PaintBuilder setColor(int color) {
         paint.setColor(color);
         return this;
     }
 
-    public PaintBuilder setTextSize(float size) {
+    public PaintBuilder setStyle(Paint.Style style) {
+        paint.setStyle(style);
+        return this;
+    }
+
+    public PaintBuilder setTextSize(int size) {
         paint.setTextSize(size);
         return this;
     }

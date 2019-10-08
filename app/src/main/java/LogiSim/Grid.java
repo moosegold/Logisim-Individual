@@ -105,9 +105,7 @@ class Grid extends AbstractScreenPartition {
     }
 
     private void fillBackground() {
-        Paint backgroundPaint = new Paint();
-        backgroundPaint.setColor(Color.WHITE);
-        this.canvas.drawRect(new Rect(0, 0, getSize().width, getSize().height), backgroundPaint);
+        this.canvas.drawRect(new Rect(0, 0, getSize().width, getSize().height), Paints.GRID_BACKGROUND_COLOR);
     }
 
     private GridPoint convertToGridPoint(ScreenPoint localPoint) {

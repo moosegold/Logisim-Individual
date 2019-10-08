@@ -9,8 +9,6 @@ import java.util.LinkedList;
 
 public class ComponentSidebar extends AbstractScreenPartition {
 
-    final Paint backgroundColor = new Paint();
-
     final double BUTTON_INSET_RATIO = 1.0/20;
     int insetPx;
 
@@ -21,7 +19,6 @@ public class ComponentSidebar extends AbstractScreenPartition {
 
     ComponentSidebar(ScreenPoint origin, Size size, ScreenManager screenManager) {
         super(origin, size, screenManager);
-        setupPaints();
         calculateInsets();
         addButtons();
     }
@@ -80,7 +77,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
 
     private void drawSaveLabel() {
         String text = "Save";
-        Paint paint = PaintBuilder.start().setColor(Color.BLACK).setTextSize(18f).makePaint();
+        Paint paint = Paints.LABEL_TEXT;
         int xPos = getSize().width / 2 - TextDrawUtil.getTextWidthPx(text, paint) / 2;
         int yPos = lastSaveButton.point.y - insetPx;
         canvas.drawText(text, xPos, yPos, paint);
@@ -117,16 +114,12 @@ public class ComponentSidebar extends AbstractScreenPartition {
         return null;
     }
 
-    private void setupPaints() {
-        backgroundColor.setColor(Color.GRAY);
-    }
-
     private void calculateInsets() {
         insetPx = (int) (getSize().width * BUTTON_INSET_RATIO);
     }
 
     public void fillBackground() {
-        canvas.drawRect(new Rect(0, 0, getSize().width, getSize().height), backgroundColor);
+        canvas.drawRect(new Rect(0, 0, getSize().width, getSize().height), Paints.SIDEBAR_BACKGROUND_COLOR);
     }
 
 }

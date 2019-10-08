@@ -22,10 +22,7 @@ public class EmptyTile extends AbstractTile {
     }
 
     private void drawBounds() {
-        Paint boundsPaint = new Paint();
-        boundsPaint.setColor(Color.BLACK);
-        boundsPaint.setStyle(Paint.Style.STROKE);
-        canvas.drawRect(new Rect(0, 0, grid.tileLength - 1, grid.tileLength - 1), boundsPaint);
+        canvas.drawRect(new Rect(0, 0, grid.tileLength - 1, grid.tileLength - 1), Paints.TILE_BORDER_COLOR);
     }
 
     private void fillTile() {

@@ -53,11 +53,7 @@ public class SidebarButton {
 
     private void drawBounds() {
         Rect bounds = new Rect(0, 0, size.width - 1, size.height - 1);
-        Paint borderPaint = new Paint();
-        borderPaint.setColor(Color.BLUE);
-        borderPaint.setStyle(Paint.Style.STROKE);
-
-        canvas.drawRect(bounds, borderPaint);
+        canvas.drawRect(bounds, Paints.BUTTON_BORDER_COLOR);
     }
 
     ScreenPoint getCenterForPartition() {
