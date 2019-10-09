@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.Build;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.widget.ImageView;
@@ -23,7 +24,6 @@ public class ScreenManager {
 
     final Context appContext;
 
-    private ScreenPoint lastTouch = null;
     private String lastPartition = null;
     private ScreenPoint lastLocalPoint = null;
 
@@ -49,49 +49,40 @@ public class ScreenManager {
 
 
     public void handleTouch(ScreenPoint screenPoint, int action) {
-        IScreenPartition partition =
-        if (action == MotionEvent.ACTION_DOWN) {
-            handleTouchDown(screenPoint);
-        } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
-            if (action == MotionEvent.ACTION_CANCEL)
-                System.out.println("The motion event was ACTION_CANCEL");
-            handleTouchUp(screenPoint);
-        } else if (action == MotionEvent.ACTION_MOVE) {
-            handleTouchDrag(screenPoint);
+        if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
+            // Fire the release touch event on all partitions so they can reset their state.
+            for (IScreenPartition partition : partitions)
+                partition.processTouchUp(getLocalPoint(partition, screenPoint));
+        } else {
+            IScreenPartition partition = getTouchedPartition(screenPoint);
+            if (partition != null) {
+                ScreenPoint localPoint = getLocalPoint(partition, screenPoint);
+                if (action == MotionEvent.ACTION_DOWN) {
+                    //handleTouchDown(screenPoint);
+                    partition.processTouchDown(localPoint);
+                } else if (action == MotionEvent.ACTION_MOVE) {
+                    //handleTouchDrag(screenPoint);
+                    partition.processTouchDrag(localPoint);
+                }
+            }
         }
-//        this.lastTouch = screenPoint.copy();
-//        boolean foundPartition = false;
-//        for (IScreenPartition partition : partitions) {
-//            if (touchIsInside(partition, screenPoint)) {
-//                foundPartition = true;
-//                this.lastPartition = partition.getName();
-//                screenPoint.offset(-partition.getOrigin().x, -partition.getOrigin().y);
-//                this.lastLocalPoint = screenPoint.copy();
-//                partition.processTouch(screenPoint);
-//            }
-//        }
-//        if (!foundPartition) {
-//            this.lastPartition = null;
-//            this.lastLocalPoint = null;
-//        }
-//
-//        this.draw();
+
+        this.draw();
     }
 
-    public void handleTouchDown(ScreenPoint localPoint) {
-
+    private IScreenPartition getTouchedPartition(ScreenPoint screenPoint) {
+        for (IScreenPartition partition : partitions) {
+            if (touchIsInside(partition, screenPoint)) {
+                return partition;
+            }
+        }
+        return null;
     }
 
-    public void handleTouchUp(ScreenPoint localPoint) {
-
-    }
-
-    public void handleTouchDrag(ScreenPoint localPoint) {
-
-    }
-
-    private IScreenPartition getPartition() {
-        
+    private ScreenPoint getLocalPoint(IScreenPartition partition, ScreenPoint screenPoint) {
+        ScreenPoint newPoint = screenPoint.copy();
+        newPoint.offset(-partition.getOrigin().x, -partition.getOrigin().y);
+        return newPoint;
     }
 
     public void draw() {
@@ -105,9 +96,9 @@ public class ScreenManager {
             mainCanvas.drawBitmap(partition.getPartitionBitmap(), origin.x, origin.y, new Paint());
         }
         debugText.addText("");
-        debugText.addText("Global Touch: " + lastTouch);
-        debugText.addText("Partition: " + lastPartition);
-        debugText.addText("Local Touch: " + lastLocalPoint);
+//        debugText.addText("Global Touch: " + lastTouch);
+//        debugText.addText("Partition: " + lastPartition);
+//        debugText.addText("Local Touch: " + lastLocalPoint);
         debugText.draw(mainCanvas);
         this.imageView.setImageBitmap(this.mainImage);
     }

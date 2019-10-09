@@ -45,7 +45,6 @@ abstract class AbstractTile {
         debugText.draw(canvas);
     }
 
-    //TODO Remove duplicated code between here and SidebarButton
     private void createCanvas() {
         image = Bitmap.createBitmap(grid.tileLength, grid.tileLength, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(image);

@@ -23,9 +23,10 @@ class Grid extends AbstractScreenPartition {
 
     private List<AbstractTile> tiles;
 
-    private AbstractTile lastTouched;
-
-    private AbstractTile tileBeingTouched;
+    /**
+     * The tile touched when a touch or drag began.
+     */
+    private GridPoint tileBeingTouched;
     private boolean touchInProgress;
 
     Grid(int width, int height, int tileLength, ScreenManager screenManager, ScreenPoint origin, Size size) {
@@ -77,27 +78,22 @@ class Grid extends AbstractScreenPartition {
         return gridPoint.y * (gridSize.width + 1) + gridPoint.x;
     }
 
-//    @Override
-//    public void processTouch(ScreenPoint localPoint) {
-//        GridPoint gridPoint = convertToGridPoint(localPoint);
-//        AbstractTile tile = getTile(gridPoint);
-//        lastTouched = tile;
-//        if (tile != null) {
-//            tile.debugText.setActive(!tile.debugText.getActive());
-//        }
-//    }
-
     public void processTouchUp(ScreenPoint localPoint) {
-        AbstractTile touchedTile = getTileTouched(localPoint);
-        if (touchedTile == tileBeingTouched)
-            System.out.println("Touched button: " + touchedTile);
+        GridPoint gridPoint = convertToGridPoint(localPoint);
+        if (tileBeingTouched != null && tileBeingTouched.equals(gridPoint)) {
+            System.out.println("Touched button: " + gridPoint);
+            AbstractTile tileTouched = getTileTouched(localPoint);
+            if (tileTouched != null)
+                tileTouched.debugText.setActive(tileTouched.debugText.getActive());
+        }
+        tileBeingTouched = null;
         touchInProgress = false;
     }
 
     public void processTouchDown(ScreenPoint localPoint) {
-        AbstractTile tile = getTileTouched(localPoint);
+        GridPoint gridTouch = convertToGridPoint(localPoint);
         if (!touchInProgress) {
-            tileBeingTouched = tile;
+            tileBeingTouched = gridTouch;
         }
         touchInProgress = true;
     }
@@ -109,7 +105,6 @@ class Grid extends AbstractScreenPartition {
     private AbstractTile getTileTouched(ScreenPoint localPoint) {
         GridPoint gridPoint = convertToGridPoint(localPoint);
         AbstractTile tile = getTile(gridPoint);
-        lastTouched = tile;
         return tile;
     }
 
@@ -119,7 +114,7 @@ class Grid extends AbstractScreenPartition {
         screenManager.debugText.addText("");
         screenManager.debugText.addText("Grid Size: " + gridSize);
         screenManager.debugText.addText("Tile Length: " + tileLength);
-        screenManager.debugText.addText("Last Tile: " + (lastTouched == null ? null : lastTouched.getPoint()));
+        //screenManager.debugText.addText("Last Tile: " + (lastTouched == null ? null : lastTouched.getPoint()));
         for (AbstractTile tile : tiles) {
             tile.draw();
             tile.drawDebugText();
