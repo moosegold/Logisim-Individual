@@ -20,7 +20,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
      * Set to the button a touch began on.
      * Becomes null when the drag ends.
      */
-    private SidebarButton componentButtonBeingTouched;
+    private SidebarButton buttonBeingTouched;
     private boolean touchInProgress;
 
     ComponentSidebar(ScreenPoint origin, Size size, ScreenManager screenManager) {
@@ -107,15 +107,15 @@ public class ComponentSidebar extends AbstractScreenPartition {
 
     public void processTouchUp(ScreenPoint localPoint) {
         SidebarButton touchedButton = getButtonPress(localPoint);
-        if (touchedButton == componentButtonBeingTouched)
+        if (touchedButton == buttonBeingTouched)
             System.out.println("Touched button: " + touchedButton);
         touchInProgress = false;
     }
 
     public void processTouchDown(ScreenPoint localPoint) {
         SidebarButton touchedButton = getButtonPress(localPoint);
-        if (touchedButton instanceof ComponentSidebarButton && !touchInProgress) {
-            this.componentButtonBeingTouched = touchedButton;
+        if (!touchInProgress) {
+            this.buttonBeingTouched = touchedButton;
         }
         touchInProgress = true;
     }
