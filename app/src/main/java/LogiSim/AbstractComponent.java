@@ -26,9 +26,6 @@ public abstract class AbstractComponent extends AbstractTile {
     }
 
     private void drawComponentImage() {
-//        Rect orgImgRect = new Rect(0, 0, getImage().getWidth(), getImage().getWidth());
-//        Rect transformImgRect = new Rect(0, 0, length, length);
-//        transformImgRect.offsetTo(0, length / 4);
         Bitmap componentImage = getComponentImage();
         Rect orgRect = new Rect(0, 0, componentImage.getWidth(), componentImage.getWidth());
         Rect transformRect = new Rect(0, 0, grid.tileLength, grid.tileLength);
