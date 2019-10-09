@@ -107,8 +107,8 @@ public class ComponentSidebar extends AbstractScreenPartition {
 
     public void processTouchUp(ScreenPoint localPoint) {
         SidebarButton touchedButton = getButtonPress(localPoint);
-        if (touchedButton == buttonBeingTouched)
-            System.out.println("Touched button: " + touchedButton);
+        if (buttonBeingTouched != null && touchedButton == buttonBeingTouched)
+            System.out.println("[" + getName() + "] Touched button: " + touchedButton);
         touchInProgress = false;
     }
 

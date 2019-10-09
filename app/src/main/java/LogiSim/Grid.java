@@ -81,7 +81,7 @@ class Grid extends AbstractScreenPartition {
     public void processTouchUp(ScreenPoint localPoint) {
         GridPoint gridPoint = convertToGridPoint(localPoint);
         if (tileBeingTouched != null && tileBeingTouched.equals(gridPoint)) {
-            System.out.println("Touched button: " + gridPoint);
+            System.out.println("[" + getName() + "] Touched tile: " + gridPoint);
             AbstractTile tileTouched = getTileTouched(localPoint);
             if (tileTouched != null) {
                 tileTouched.debugText.setActive(!tileTouched.debugText.getActive());
