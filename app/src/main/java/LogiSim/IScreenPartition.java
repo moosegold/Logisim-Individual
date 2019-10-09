@@ -4,7 +4,11 @@ import android.graphics.Bitmap;
 
 public interface IScreenPartition {
 
-    void processTouch(ScreenPoint localPoint);
+    void processTouchDown(ScreenPoint localPoint);
+
+    void processTouchUp(ScreenPoint localPoint);
+
+    void processTouchDrag(ScreenPoint localPoint);
 
     void draw();
 

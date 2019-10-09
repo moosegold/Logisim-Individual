@@ -1,6 +1,5 @@
 package LogiSim;
 
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
@@ -14,8 +13,15 @@ public class ComponentSidebar extends AbstractScreenPartition {
 
     private Deque<SidebarButton> buttons = new LinkedList<>();
 
-    private SidebarButton lastComponentButton;
-    private SidebarButton lastSaveButton;
+    private SidebarButton lastComponentButtonAdded;
+    private SidebarButton lastSaveButtonAdded;
+
+    /**
+     * Set to the button a touch began on.
+     * Becomes null when the drag ends.
+     */
+    private SidebarButton componentButtonBeingTouched;
+    private boolean touchInProgress;
 
     ComponentSidebar(ScreenPoint origin, Size size, ScreenManager screenManager) {
         super(origin, size, screenManager);
@@ -46,15 +52,15 @@ public class ComponentSidebar extends AbstractScreenPartition {
     private void addComponentButton(String action, int Rresource) {
         // Add button below last
         int yPos = insetPx;
-        if (lastComponentButton != null) {
-            yPos += lastComponentButton.point.y + buttons.getLast().size.height;
+        if (lastComponentButtonAdded != null) {
+            yPos += lastComponentButtonAdded.point.y + buttons.getLast().size.height;
         }
         int xPos = insetPx;
         // Buttons are squares.
         int length = getButtonLength();
         System.out.println("Adding " + action + " button at: " + new ScreenPoint(xPos, yPos));
-        lastComponentButton = new ComponentSidebarButton(new ScreenPoint(xPos, yPos), length, action, Rresource, this);
-        buttons.addLast(lastComponentButton);
+        lastComponentButtonAdded = new ComponentSidebarButton(new ScreenPoint(xPos, yPos), length, action, Rresource, this);
+        buttons.addLast(lastComponentButtonAdded);
     }
 
     /**
@@ -65,21 +71,21 @@ public class ComponentSidebar extends AbstractScreenPartition {
         int height = width / 2;
         int xPos = insetPx;
         int yPos;
-        if (lastSaveButton == null) {
+        if (lastSaveButtonAdded == null) {
             yPos = getSize().height - insetPx - height;
         } else {
-            yPos = lastSaveButton.point.y - insetPx - height;
+            yPos = lastSaveButtonAdded.point.y - insetPx - height;
         }
         System.out.println("Adding " + label + " save button at: " + new ScreenPoint(xPos, yPos));
-        lastSaveButton = new SaveSidebarButton(new ScreenPoint(xPos, yPos), new Size(width, height), label, "SAVE", this);
-        buttons.addLast(lastSaveButton);
+        lastSaveButtonAdded = new SaveSidebarButton(new ScreenPoint(xPos, yPos), new Size(width, height), label, "SAVE", this);
+        buttons.addLast(lastSaveButtonAdded);
     }
 
     private void drawSaveLabel() {
         String text = "Save";
         Paint paint = Paints.LABEL_TEXT;
         int xPos = getSize().width / 2 - TextDrawUtil.getTextWidthPx(text, paint) / 2;
-        int yPos = lastSaveButton.point.y - insetPx;
+        int yPos = lastSaveButtonAdded.point.y - insetPx;
         canvas.drawText(text, xPos, yPos, paint);
     }
 
@@ -99,9 +105,22 @@ public class ComponentSidebar extends AbstractScreenPartition {
         drawSaveLabel();
     }
 
-    public void processTouch(ScreenPoint localPoint) {
+    public void processTouchUp(ScreenPoint localPoint) {
         SidebarButton touchedButton = getButtonPress(localPoint);
-        System.out.println("Touched button: " + touchedButton);
+        if (touchedButton == componentButtonBeingTouched)
+            System.out.println("Touched button: " + touchedButton);
+    }
+
+    public void processTouchDown(ScreenPoint localPoint) {
+        SidebarButton touchedButton = getButtonPress(localPoint);
+        if (touchedButton instanceof ComponentSidebarButton && !touchInProgress) {
+            this.componentButtonBeingTouched = touchedButton;
+        }
+        touchInProgress = true;
+    }
+
+    public void processTouchDrag(ScreenPoint localPoint) {
+
     }
 
     private SidebarButton getButtonPress(ScreenPoint localPoint) {

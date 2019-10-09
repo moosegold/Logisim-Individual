@@ -73,11 +73,17 @@ public class LogiSim extends Activity {
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        // Dispatch the touch to the screen manager when the finger is lifted.
-        if((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP) {
-            screenManager.handleTouch(new ScreenPoint((int) event.getX(), (int) event.getY()));
+        int action = event.getAction() & MotionEvent.ACTION_MASK;
+        ScreenPoint point = new ScreenPoint((int) event.getX(), (int) event.getY());
+        if (action == MotionEvent.ACTION_DOWN) {
+            screenManager.handleTouchDown(point);
+        } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
+            if (action == MotionEvent.ACTION_CANCEL)
+                System.out.println("The motion event was ACTION_CANCEL");
+            screenManager.handleTouchUp(point);
+        } else if (action == MotionEvent.ACTION_MOVE) {
+            screenManager.handleTouchDrag(point);
         }
-
         return true;
     }
 

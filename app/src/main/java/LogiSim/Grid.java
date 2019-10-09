@@ -74,14 +74,38 @@ class Grid extends AbstractScreenPartition {
         return gridPoint.y * (gridSize.width + 1) + gridPoint.x;
     }
 
-    @Override
-    public void processTouch(ScreenPoint localPoint) {
+//    @Override
+//    public void processTouch(ScreenPoint localPoint) {
+//        GridPoint gridPoint = convertToGridPoint(localPoint);
+//        AbstractTile tile = getTile(gridPoint);
+//        lastTouched = tile;
+//        if (tile != null) {
+//            tile.debugText.setActive(!tile.debugText.getActive());
+//        }
+//    }
+
+    public void processTouchUp(ScreenPoint localPoint) {
+        SidebarButton touchedButton = getButtonPress(localPoint);
+        if (touchedButton == componentButtonBeingTouched)
+            System.out.println("Touched button: " + touchedButton);
+    }
+
+    public void processTouchDown(ScreenPoint localPoint) {
+        SidebarButton touchedButton = getButtonPress(localPoint);
+        if (touchedButton instanceof ComponentSidebarButton && !touchInProgress) {
+            this.componentButtonBeingTouched = touchedButton;
+        }
+        touchInProgress = true;
+    }
+
+    public void processTouchDrag(ScreenPoint localPoint) {
+
+    }
+
+    private AbstractTile getTileTouched() {
         GridPoint gridPoint = convertToGridPoint(localPoint);
         AbstractTile tile = getTile(gridPoint);
         lastTouched = tile;
-        if (tile != null) {
-            tile.debugText.setActive(!tile.debugText.getActive());
-        }
     }
 
     @Override

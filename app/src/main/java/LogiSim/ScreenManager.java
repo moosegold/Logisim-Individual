@@ -46,24 +46,36 @@ public class ScreenManager {
         partitions.add(partition);
     }
 
-    public void handleTouch(ScreenPoint screenPoint) {
-        this.lastTouch = screenPoint.copy();
-        boolean foundPartition = false;
-        for (IScreenPartition partition : partitions) {
-            if (touchIsInside(partition, screenPoint)) {
-                foundPartition = true;
-                this.lastPartition = partition.getName();
-                screenPoint.offset(-partition.getOrigin().x, -partition.getOrigin().y);
-                this.lastLocalPoint = screenPoint.copy();
-                partition.processTouch(screenPoint);
-            }
-        }
-        if (!foundPartition) {
-            this.lastPartition = null;
-            this.lastLocalPoint = null;
-        }
+    public void handleTouch(ScreenPoint screenPoint, int action) {
+//        this.lastTouch = screenPoint.copy();
+//        boolean foundPartition = false;
+//        for (IScreenPartition partition : partitions) {
+//            if (touchIsInside(partition, screenPoint)) {
+//                foundPartition = true;
+//                this.lastPartition = partition.getName();
+//                screenPoint.offset(-partition.getOrigin().x, -partition.getOrigin().y);
+//                this.lastLocalPoint = screenPoint.copy();
+//                partition.processTouch(screenPoint);
+//            }
+//        }
+//        if (!foundPartition) {
+//            this.lastPartition = null;
+//            this.lastLocalPoint = null;
+//        }
+//
+//        this.draw();
+    }
 
-        this.draw();
+    public void handleTouchDown(ScreenPoint localPoint) {
+
+    }
+
+    public void handleTouchUp(ScreenPoint localPoint) {
+
+    }
+
+    public void handleTouchDrag(ScreenPoint localPoint) {
+
     }
 
     public void draw() {
