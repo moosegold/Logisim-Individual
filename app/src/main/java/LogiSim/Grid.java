@@ -25,6 +25,9 @@ class Grid extends AbstractScreenPartition {
 
     private AbstractTile lastTouched;
 
+    private AbstractTile tileBeingTouched;
+    private boolean touchInProgress;
+
     Grid(int width, int height, int tileLength, ScreenManager screenManager, ScreenPoint origin, Size size) {
         super(origin, size, screenManager);
         this.gridSize = new Size(width, height);
@@ -85,15 +88,16 @@ class Grid extends AbstractScreenPartition {
 //    }
 
     public void processTouchUp(ScreenPoint localPoint) {
-        SidebarButton touchedButton = getButtonPress(localPoint);
-        if (touchedButton == componentButtonBeingTouched)
-            System.out.println("Touched button: " + touchedButton);
+        AbstractTile touchedTile = getTileTouched(localPoint);
+        if (touchedTile == tileBeingTouched)
+            System.out.println("Touched button: " + touchedTile);
+        touchInProgress = false;
     }
 
     public void processTouchDown(ScreenPoint localPoint) {
-        SidebarButton touchedButton = getButtonPress(localPoint);
-        if (touchedButton instanceof ComponentSidebarButton && !touchInProgress) {
-            this.componentButtonBeingTouched = touchedButton;
+        AbstractTile tile = getTileTouched(localPoint);
+        if (!touchInProgress) {
+            tileBeingTouched = tile;
         }
         touchInProgress = true;
     }
@@ -102,10 +106,11 @@ class Grid extends AbstractScreenPartition {
 
     }
 
-    private AbstractTile getTileTouched() {
+    private AbstractTile getTileTouched(ScreenPoint localPoint) {
         GridPoint gridPoint = convertToGridPoint(localPoint);
         AbstractTile tile = getTile(gridPoint);
         lastTouched = tile;
+        return tile;
     }
 
     @Override

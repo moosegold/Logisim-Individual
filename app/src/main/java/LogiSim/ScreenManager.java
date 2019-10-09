@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.widget.ImageView;
 
 import java.util.LinkedList;
@@ -46,7 +47,18 @@ public class ScreenManager {
         partitions.add(partition);
     }
 
+
     public void handleTouch(ScreenPoint screenPoint, int action) {
+        IScreenPartition partition =
+        if (action == MotionEvent.ACTION_DOWN) {
+            handleTouchDown(screenPoint);
+        } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
+            if (action == MotionEvent.ACTION_CANCEL)
+                System.out.println("The motion event was ACTION_CANCEL");
+            handleTouchUp(screenPoint);
+        } else if (action == MotionEvent.ACTION_MOVE) {
+            handleTouchDrag(screenPoint);
+        }
 //        this.lastTouch = screenPoint.copy();
 //        boolean foundPartition = false;
 //        for (IScreenPartition partition : partitions) {
@@ -76,6 +88,10 @@ public class ScreenManager {
 
     public void handleTouchDrag(ScreenPoint localPoint) {
 
+    }
+
+    private IScreenPartition getPartition() {
+        
     }
 
     public void draw() {

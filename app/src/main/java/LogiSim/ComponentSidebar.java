@@ -109,6 +109,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
         SidebarButton touchedButton = getButtonPress(localPoint);
         if (touchedButton == componentButtonBeingTouched)
             System.out.println("Touched button: " + touchedButton);
+        touchInProgress = false;
     }
 
     public void processTouchDown(ScreenPoint localPoint) {
