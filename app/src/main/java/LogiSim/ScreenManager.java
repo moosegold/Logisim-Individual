@@ -58,10 +58,8 @@ public class ScreenManager {
             if (partition != null) {
                 ScreenPoint localPoint = getLocalPoint(partition, screenPoint);
                 if (action == MotionEvent.ACTION_DOWN) {
-                    //handleTouchDown(screenPoint);
                     partition.processTouchDown(localPoint);
                 } else if (action == MotionEvent.ACTION_MOVE) {
-                    //handleTouchDrag(screenPoint);
                     partition.processTouchDrag(localPoint);
                 }
             }
@@ -95,10 +93,6 @@ public class ScreenManager {
             debugText.addText(partition.getName() + " size: " + partition.getSize());
             mainCanvas.drawBitmap(partition.getPartitionBitmap(), origin.x, origin.y, new Paint());
         }
-        debugText.addText("");
-//        debugText.addText("Global Touch: " + lastTouch);
-//        debugText.addText("Partition: " + lastPartition);
-//        debugText.addText("Local Touch: " + lastLocalPoint);
         debugText.draw(mainCanvas);
         this.imageView.setImageBitmap(this.mainImage);
     }
