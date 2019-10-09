@@ -27,6 +27,9 @@ public class ScreenManager {
     private String lastPartition = null;
     private ScreenPoint lastLocalPoint = null;
 
+    private Bitmap draggedObject;
+    private ScreenPoint dragPoint;
+
     ScreenManager(Display display, ImageView imageView, Context appContext) {
         this.partitions = new LinkedList<>();
         this.display = display;
@@ -46,13 +49,14 @@ public class ScreenManager {
     public void addPartition(IScreenPartition partition) {
         partitions.add(partition);
     }
-
-
+    
     public void handleTouch(ScreenPoint screenPoint, int action) {
         if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
             // Fire the release touch event on all partitions so they can reset their state.
             for (IScreenPartition partition : partitions)
                 partition.processTouchUp(getLocalPoint(partition, screenPoint));
+            this.draggedObject = null;
+            this.dragPoint = null;
         } else {
             IScreenPartition partition = getTouchedPartition(screenPoint);
             if (partition != null) {
@@ -60,12 +64,31 @@ public class ScreenManager {
                 if (action == MotionEvent.ACTION_DOWN) {
                     partition.processTouchDown(localPoint);
                 } else if (action == MotionEvent.ACTION_MOVE) {
+                    this.dragPoint = screenPoint;
                     partition.processTouchDrag(localPoint);
                 }
             }
         }
 
         this.draw();
+    }
+
+    private void drawDraggedObject() {
+        Bitmap image = this.draggedObject;
+        if (image != null) {
+            Rect orgRect = new Rect(0, 0, image.getWidth(), image.getWidth());
+            Rect transformRect = new Rect(
+                    dragPoint.x - image.getWidth() / 2,
+                    dragPoint.y - image.getHeight() / 2,
+                    dragPoint.x + image.getWidth() / 2,
+                    dragPoint.y + image.getHeight() / 2);
+            System.out.println("Drawing drag at: (" + transformRect.left + ", " + transformRect.top + ")");
+            mainCanvas.drawBitmap(this.draggedObject, orgRect, transformRect, null);
+        }
+    }
+
+    public void setDraggedObject(Bitmap image) {
+        this.draggedObject = image;
     }
 
     private IScreenPartition getTouchedPartition(ScreenPoint screenPoint) {
@@ -93,6 +116,7 @@ public class ScreenManager {
             debugText.addText(partition.getName() + " size: " + partition.getSize());
             mainCanvas.drawBitmap(partition.getPartitionBitmap(), origin.x, origin.y, new Paint());
         }
+        drawDraggedObject();
         debugText.draw(mainCanvas);
         this.imageView.setImageBitmap(this.mainImage);
     }

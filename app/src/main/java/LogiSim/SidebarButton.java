@@ -68,6 +68,10 @@ public class SidebarButton {
         return image;
     }
 
+    public Bitmap getDragImage() {
+        return null;
+    }
+
     @NonNull
     @Override
     public String toString() {

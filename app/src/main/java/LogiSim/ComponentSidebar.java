@@ -121,7 +121,8 @@ public class ComponentSidebar extends AbstractScreenPartition {
     }
 
     public void processTouchDrag(ScreenPoint localPoint) {
-
+        if (touchInProgress)
+            screenManager.setDraggedObject(buttonBeingTouched.getDragImage());
     }
 
     private SidebarButton getButtonPress(ScreenPoint localPoint) {

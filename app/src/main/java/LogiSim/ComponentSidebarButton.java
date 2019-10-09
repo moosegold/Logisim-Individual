@@ -23,6 +23,11 @@ public class ComponentSidebarButton extends SidebarButton {
         return BitmapFactory.decodeResource(partition.screenManager.appContext.getResources(), Rresouce);
     }
 
+    @Override
+    public Bitmap getDragImage() {
+        return getComponentImage();
+    }
+
     private void drawComponentImage() {
         Rect orgImgRect = new Rect(0, 0, getComponentImage().getWidth(), getComponentImage().getWidth());
         Rect transformImgRect = new Rect(0, 0, size.width, size.height);
