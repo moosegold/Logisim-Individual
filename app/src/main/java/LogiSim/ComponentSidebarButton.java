@@ -4,16 +4,24 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 
+import java.lang.reflect.Constructor;
+
 public class ComponentSidebarButton extends SidebarButton {
 
     final int Rresouce;
 
-    final Class<? extends AbstractComponent> representation;
+    Constructor componentConstructor;
 
     public ComponentSidebarButton(ScreenPoint point, int length, String action, int Rresource, AbstractScreenPartition partition, Class<? extends AbstractComponent> representation) {
         super(point, new Size(length, length), action, partition);
         this.Rresouce = Rresource;
-        this.representation = representation;
+        //this.representation = representation;
+        try {
+            componentConstructor = representation.getDeclaredConstructor(AbstractTile.class);
+        } catch (Exception ex) {
+            System.out.println("Unable to create new component: " + ex.getLocalizedMessage());
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -29,6 +37,18 @@ public class ComponentSidebarButton extends SidebarButton {
     @Override
     public Bitmap getDragImage() {
         return getComponentImage();
+    }
+
+    public void createNewComponent(GridPoint gridPoint, Grid grid) {
+        AbstractTile existingTile = grid.getTile(gridPoint);
+        try {
+            if (existingTile != null) {
+                grid.setTile(gridPoint, (AbstractTile) componentConstructor.newInstance(existingTile));
+            }
+        } catch (Exception ex) {
+            System.out.println("Caught exception creating component: " + ex.getLocalizedMessage());
+            ex.printStackTrace();
+        }
     }
 
     private void drawComponentImage() {

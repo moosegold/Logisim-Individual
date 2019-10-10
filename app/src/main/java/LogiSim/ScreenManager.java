@@ -29,6 +29,7 @@ public class ScreenManager {
 
     private Bitmap draggedObject;
     private ScreenPoint dragPoint;
+    ComponentSidebarButton dragSourceButton;
 
     ScreenManager(Display display, ImageView imageView, Context appContext) {
         this.partitions = new LinkedList<>();
@@ -49,25 +50,29 @@ public class ScreenManager {
     public void addPartition(IScreenPartition partition) {
         partitions.add(partition);
     }
-    
+
     public void handleTouch(ScreenPoint screenPoint, int action) {
+        IScreenPartition partition = getTouchedPartition(screenPoint);
+        if (partition != null) {
+            ScreenPoint localPoint = getLocalPoint(partition, screenPoint);
+            if (action == MotionEvent.ACTION_UP) {
+                // Fire the release touch event on the partition released on before
+                // firing on other partitions.
+                partition.processTouchUp(localPoint);
+            } else if (action == MotionEvent.ACTION_DOWN) {
+                partition.processTouchDown(localPoint);
+            } else if (action == MotionEvent.ACTION_MOVE) {
+                this.dragPoint = screenPoint;
+                partition.processTouchDrag(localPoint);
+            }
+        }
+
         if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
             // Fire the release touch event on all partitions so they can reset their state.
-            for (IScreenPartition partition : partitions)
-                partition.processTouchUp(getLocalPoint(partition, screenPoint));
+            for (IScreenPartition part : partitions)
+                part.processTouchUp(getLocalPoint(part, screenPoint));
             this.draggedObject = null;
             this.dragPoint = null;
-        } else {
-            IScreenPartition partition = getTouchedPartition(screenPoint);
-            if (partition != null) {
-                ScreenPoint localPoint = getLocalPoint(partition, screenPoint);
-                if (action == MotionEvent.ACTION_DOWN) {
-                    partition.processTouchDown(localPoint);
-                } else if (action == MotionEvent.ACTION_MOVE) {
-                    this.dragPoint = screenPoint;
-                    partition.processTouchDrag(localPoint);
-                }
-            }
         }
 
         this.draw();

@@ -107,6 +107,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
 
     public void processTouchUp(ScreenPoint localPoint) {
         SidebarButton touchedButton = getButtonPress(localPoint);
+        screenManager.dragSourceButton = null;
         if (buttonBeingTouched != null && touchedButton == buttonBeingTouched)
             System.out.println("[" + getName() + "] Touched button: " + touchedButton);
         touchInProgress = false;
@@ -121,8 +122,11 @@ public class ComponentSidebar extends AbstractScreenPartition {
     }
 
     public void processTouchDrag(ScreenPoint localPoint) {
-        if (touchInProgress)
+        if (touchInProgress) {
             screenManager.setDraggedObject(buttonBeingTouched.getDragImage());
+            if (buttonBeingTouched instanceof ComponentSidebarButton)
+                screenManager.dragSourceButton = (ComponentSidebarButton) buttonBeingTouched;
+        }
     }
 
     private SidebarButton getButtonPress(ScreenPoint localPoint) {
