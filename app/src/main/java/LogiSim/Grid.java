@@ -80,13 +80,13 @@ class Grid extends AbstractScreenPartition {
 
     public void processTouchUp(ScreenPoint localPoint) {
         GridPoint gridPoint = convertToGridPoint(localPoint);
-//        if (tileBeingTouched != null && tileBeingTouched.equals(gridPoint)) {
-//            System.out.println("[" + getName() + "] Touched tile: " + gridPoint);
-//            AbstractTile tileTouched = getTileTouched(localPoint);
-//            if (tileTouched != null) {
-//                tileTouched.debugText.setActive(!tileTouched.debugText.getActive());
-//            }
-//        }
+        if (tileBeingTouched != null && tileBeingTouched.equals(gridPoint)) {
+            System.out.println("[" + getName() + "] Touched tile: " + gridPoint);
+            AbstractTile tileTouched = getTileTouched(localPoint);
+            if (tileTouched != null) {
+                tileTouched.handleTouch();
+            }
+        }
         if (screenManager.dragSourceButton != null)
             screenManager.dragSourceButton.createNewComponent(gridPoint, this);
         tileBeingTouched = null;

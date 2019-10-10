@@ -18,8 +18,6 @@ public abstract class AbstractComponent extends AbstractTile implements ILogicCo
 
     public abstract int getRresource();
 
-    public void handleTouch() {};
-
     public final Bitmap getComponentImage() {
         return BitmapFactory.decodeResource(grid.screenManager.appContext.getResources(), getRresource());
     }

@@ -32,6 +32,8 @@ abstract class AbstractTile {
         this(tile.getPoint(), tile.grid);
     }
 
+    public void handleTouch() {};
+
     GridPoint getPoint() {
         return new GridPoint(gridPoint.x, gridPoint.y);
     }
