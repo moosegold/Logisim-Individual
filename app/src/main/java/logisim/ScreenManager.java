@@ -36,6 +36,8 @@ public class ScreenManager {
     private ScreenPoint dragPoint;
     public ComponentSidebarButton dragSourceButton;
 
+    private String nameOfDraggedComponent = "";
+
     public ScreenManager(Display display, ImageView imageView, Context appContext) {
         this.partitions = new LinkedList<>();
         this.display = display;
@@ -78,6 +80,7 @@ public class ScreenManager {
                 part.processTouchUp(getLocalPoint(part, screenPoint));
             this.draggedObject = null;
             this.dragPoint = null;
+            setNameOfDraggedComponent("");
         }
 
         this.draw();
@@ -99,6 +102,17 @@ public class ScreenManager {
 
     public void setDraggedObject(Bitmap image) {
         this.draggedObject = image;
+    }
+
+    public void setNameOfDraggedComponent(String text) {
+        if (text == null)
+            nameOfDraggedComponent = "";
+        else
+            nameOfDraggedComponent = text;
+    }
+
+    public String getNameOfDraggedComponent() {
+        return nameOfDraggedComponent;
     }
 
     private IScreenPartition getTouchedPartition(ScreenPoint screenPoint) {

@@ -2,6 +2,7 @@ package logisim.sidebar;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
 
 import androidx.annotation.NonNull;
@@ -15,10 +16,11 @@ import logisim.util.DebugTextDrawer;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
+import logisim.util.TextDrawUtil;
 
-public class SidebarButton {
+public abstract class SidebarButton {
 
-    private final String action;
+    public final String label;
 
     protected final AbstractScreenPartition partition;
     private Bitmap image;
@@ -29,10 +31,10 @@ public class SidebarButton {
 
     protected final DebugTextDrawer debugText;
 
-    public SidebarButton(ScreenPoint point, Size size, String action, AbstractScreenPartition partition) {
+    public SidebarButton(ScreenPoint point, Size size, String label, AbstractScreenPartition partition) {
         this.point = point;
         this.size = size;
-        this.action = action;
+        this.label = label;
         createCanvas();
         this.partition = partition;
         this.debugText = new DebugTextDrawer(false);
@@ -48,10 +50,13 @@ public class SidebarButton {
         debugText.addText("Button Loc: " + point);
         debugText.addText("Button Size: " + size);
 
+        drawLabel();
         drawBounds();
 
         debugText.draw(canvas);
     }
+
+    public abstract void drawLabel();
 
     private void drawBounds() {
         Rect bounds = new Rect(0, 0, size.width - 1, size.height - 1);
@@ -77,10 +82,7 @@ public class SidebarButton {
     @NonNull
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + getToStringData();
+        return this.getClass().getSimpleName() + "(" + label + ")";
     }
 
-    protected List<String> getToStringData() {
-        return new LinkedList<>(Collections.singletonList(action));
-    }
 }

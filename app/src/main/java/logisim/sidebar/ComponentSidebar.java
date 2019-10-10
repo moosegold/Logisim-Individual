@@ -50,9 +50,9 @@ public class ComponentSidebar extends AbstractScreenPartition {
     }
 
     private void addButtons() {
-        addComponentButton("AND", R.drawable.and_gate, ANDGate.class);
-        addComponentButton("OR", R.drawable.or_gate, ORGate.class);
-        addComponentButton("NOT", R.drawable.not_gate, NOTGate.class);
+        addComponentButton("AND Gate", R.drawable.and_gate, ANDGate.class);
+        addComponentButton("OR Gate", R.drawable.or_gate, ORGate.class);
+        addComponentButton("NOT Gate", R.drawable.not_gate, NOTGate.class);
         addComponentButton("SWITCH", R.drawable.switch_off, ComponentSwitch.class);
         addComponentButton("LED", R.drawable.led_on, ComponentLED.class);
 
@@ -64,7 +64,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
     /**
      * Adds a new button below the last button added starting from the top of the sidebar.
      */
-    private void addComponentButton(String action, int Rresource, Class<? extends Component> representation) {
+    private void addComponentButton(String componentName, int Rresource, Class<? extends Component> representation) {
         // Add button below last
         int yPos = insetPx;
         if (lastComponentButtonAdded != null) {
@@ -73,8 +73,8 @@ public class ComponentSidebar extends AbstractScreenPartition {
         int xPos = insetPx;
         // Buttons are squares.
         int length = getButtonLength();
-        System.out.println("Adding " + action + " button at: " + new ScreenPoint(xPos, yPos));
-        lastComponentButtonAdded = new ComponentSidebarButton(new ScreenPoint(xPos, yPos), length, action, Rresource, this, representation);
+        System.out.println("Adding " + componentName + " button at: " + new ScreenPoint(xPos, yPos));
+        lastComponentButtonAdded = new ComponentSidebarButton(new ScreenPoint(xPos, yPos), length, componentName, Rresource, this, representation);
         buttons.addLast(lastComponentButtonAdded);
     }
 
@@ -92,7 +92,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
             yPos = lastSaveButtonAdded.point.y - insetPx - height;
         }
         System.out.println("Adding " + label + " save button at: " + new ScreenPoint(xPos, yPos));
-        lastSaveButtonAdded = new SaveSidebarButton(new ScreenPoint(xPos, yPos), new Size(width, height), label, "SAVE", this);
+        lastSaveButtonAdded = new SaveSidebarButton(new ScreenPoint(xPos, yPos), new Size(width, height), label, this);
         buttons.addLast(lastSaveButtonAdded);
     }
 
@@ -139,8 +139,10 @@ public class ComponentSidebar extends AbstractScreenPartition {
     public void processTouchDrag(ScreenPoint localPoint) {
         if (touchInProgress) {
             screenManager.setDraggedObject(buttonBeingTouched.getDragImage());
-            if (buttonBeingTouched instanceof ComponentSidebarButton)
+            if (buttonBeingTouched instanceof ComponentSidebarButton) {
                 screenManager.dragSourceButton = (ComponentSidebarButton) buttonBeingTouched;
+                screenManager.setNameOfDraggedComponent(buttonBeingTouched.label);
+            }
         }
     }
 

@@ -20,7 +20,7 @@ public class EmptyTile extends Tile {
     public void draw() {
         super.draw();
         fillTile();
-        drawBounds();
+        //drawBounds();
     }
 
     private void drawBounds() {

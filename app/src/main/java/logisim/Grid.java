@@ -1,6 +1,7 @@
 package logisim;
 
 
+import android.graphics.Paint;
 import android.graphics.Rect;
 
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import logisim.util.GridPoint;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
+import logisim.util.TextDrawUtil;
 
 /**
  * Maintains the grid and components.
@@ -133,6 +135,13 @@ public class Grid extends AbstractScreenPartition {
             ScreenPoint drawPoint = convertToScreenPoint(tile.getPoint());
             canvas.drawBitmap(tile.getImage(), drawPoint.x, drawPoint.y, null);
         }
+        drawNameOfDraggedComponent();
+    }
+
+    private void drawNameOfDraggedComponent() {
+        Paint paint = Paints.DRAGGED_COMPONENT_TEXT;
+        String name = screenManager.getNameOfDraggedComponent();
+        canvas.drawText(name, getSize().width / 2 - TextDrawUtil.getTextWidthPx(name, paint), screenManager.getDisplaySize().height - TextDrawUtil.getTextHeightPx(paint) - 10, paint);
     }
 
     @Override

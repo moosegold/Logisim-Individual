@@ -2,6 +2,7 @@ package logisim.sidebar;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Paint;
 import android.graphics.Rect;
 
 import java.lang.reflect.Constructor;
@@ -9,10 +10,12 @@ import java.lang.reflect.Constructor;
 import logisim.AbstractScreenPartition;
 import logisim.Grid;
 import logisim.util.GridPoint;
+import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
 import logisim.tiles.Tile;
 import logisim.tiles.components.Component;
+import logisim.util.TextDrawUtil;
 
 public class ComponentSidebarButton extends SidebarButton {
 
@@ -20,10 +23,9 @@ public class ComponentSidebarButton extends SidebarButton {
 
     private Constructor componentConstructor;
 
-    public ComponentSidebarButton(ScreenPoint point, int length, String action, int Rresource, AbstractScreenPartition partition, Class<? extends Component> representation) {
-        super(point, new Size(length, length), action, partition);
+    public ComponentSidebarButton(ScreenPoint point, int length, String componentName, int Rresource, AbstractScreenPartition partition, Class<? extends Component> representation) {
+        super(point, new Size(length, length), componentName, partition);
         this.Rresouce = Rresource;
-        //this.representation = representation;
         try {
             componentConstructor = representation.getDeclaredConstructor(Tile.class);
         } catch (Exception ex) {
@@ -45,6 +47,15 @@ public class ComponentSidebarButton extends SidebarButton {
     @Override
     public Bitmap getDragImage() {
         return getComponentImage();
+    }
+
+    @Override
+    public void drawLabel() {
+        Paint paint = Paints.LABEL_TEXT;
+        int xPos = getLocalCenter().x - TextDrawUtil.getTextWidthPx(label, paint) / 2;
+        int yPos = point.y + size.height - TextDrawUtil.getTextHeightPx(paint) - size.height / 8;
+        debugText.addText("labelPos: " + new ScreenPoint(xPos, yPos));
+        canvas.drawText(label, xPos, yPos, paint);
     }
 
     public void createNewComponent(GridPoint gridPoint, Grid grid) {

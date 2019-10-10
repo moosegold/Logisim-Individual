@@ -10,6 +10,7 @@ public class Paints {
     // TEXT PAINT
     //----------------------------------------------------------------------------------------------
 
+    public static final int LARGE_TEXT = 24;
     public static final int STANDARD_TEXT_SIZE = 18;
     public static final int DEBUG_TEXT_SIZE = 14;
 
@@ -34,6 +35,10 @@ public class Paints {
             .setColor(Color.BLUE)
             .setTextSize(STANDARD_TEXT_SIZE)
             .setBold(true).makePaint();
+
+    public static final Paint DRAGGED_COMPONENT_TEXT = PaintBuilder.start()
+            .setColor(Color.BLACK)
+            .setTextSize(LARGE_TEXT).makePaint();
 
 
     //----------------------------------------------------------------------------------------------
