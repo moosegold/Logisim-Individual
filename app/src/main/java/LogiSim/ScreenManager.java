@@ -78,10 +78,10 @@ public class ScreenManager {
         if (image != null) {
             Rect orgRect = new Rect(0, 0, image.getWidth(), image.getWidth());
             Rect transformRect = new Rect(
-                    dragPoint.x - image.getWidth() / 2,
-                    dragPoint.y - image.getHeight() / 2,
-                    dragPoint.x + image.getWidth() / 2,
-                    dragPoint.y + image.getHeight() / 2);
+                    dragPoint.x - image.getWidth() / 4,
+                    dragPoint.y - image.getWidth() / 4,
+                    dragPoint.x + image.getWidth() / 4,
+                    dragPoint.y + image.getWidth() / 4);
             System.out.println("Drawing drag at: (" + transformRect.left + ", " + transformRect.top + ")");
             mainCanvas.drawBitmap(this.draggedObject, orgRect, transformRect, null);
         }
