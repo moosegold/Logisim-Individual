@@ -1,9 +1,10 @@
 package LogiSim;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 
-public abstract class AbstractComponent extends AbstractTile {
+public abstract class AbstractComponent extends AbstractTile implements ILogicComponent {
 
     AbstractComponent(AbstractTile tile) {
         super(tile);
@@ -15,7 +16,13 @@ public abstract class AbstractComponent extends AbstractTile {
      */
     public abstract void processConnection(ILogicComponent source);
 
-    public abstract Bitmap getComponentImage();
+    public abstract int getRresource();
+
+    public void handleTouch() {};
+
+    public final Bitmap getComponentImage() {
+        return BitmapFactory.decodeResource(grid.screenManager.appContext.getResources(), getRresource());
+    }
 
     @Override
     void draw() {

@@ -1,8 +1,5 @@
 package LogiSim;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
 class NOTGate extends UnaryComponent {
 
     NOTGate(AbstractTile tile) {
@@ -15,8 +12,7 @@ class NOTGate extends UnaryComponent {
     }
 
     @Override
-    public Bitmap getComponentImage() {
-        return BitmapFactory.decodeResource(grid.screenManager.appContext.getResources(), R.drawable.not_gate);
+    public int getRresource() {
+        return R.drawable.not_gate;
     }
-
 }

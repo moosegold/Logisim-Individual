@@ -35,11 +35,11 @@ public class ComponentSidebar extends AbstractScreenPartition {
     }
 
     private void addButtons() {
-        addComponentButton("AND", R.drawable.and_gate);
-        addComponentButton("OR", R.drawable.or_gate);
-        addComponentButton("NOT", R.drawable.not_gate);
-        addComponentButton("SWITCH", R.drawable.switch_off);
-        addComponentButton("LED", R.drawable.led_on);
+        addComponentButton("AND", R.drawable.and_gate, ANDGate.class);
+        addComponentButton("OR", R.drawable.or_gate, ORGate.class);
+        addComponentButton("NOT", R.drawable.not_gate, NOTGate.class);
+        addComponentButton("SWITCH", R.drawable.switch_off, ComponentSwitch.class);
+        addComponentButton("LED", R.drawable.led_on, ComponentLED.class);
 
         addSaveButton("C");
         addSaveButton("B");
@@ -49,7 +49,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
     /**
      * Adds a new button below the last button added starting from the top of the sidebar.
      */
-    private void addComponentButton(String action, int Rresource) {
+    private void addComponentButton(String action, int Rresource, Class<? extends AbstractComponent> representation) {
         // Add button below last
         int yPos = insetPx;
         if (lastComponentButtonAdded != null) {
@@ -59,7 +59,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
         // Buttons are squares.
         int length = getButtonLength();
         System.out.println("Adding " + action + " button at: " + new ScreenPoint(xPos, yPos));
-        lastComponentButtonAdded = new ComponentSidebarButton(new ScreenPoint(xPos, yPos), length, action, Rresource, this);
+        lastComponentButtonAdded = new ComponentSidebarButton(new ScreenPoint(xPos, yPos), length, action, Rresource, this, representation);
         buttons.addLast(lastComponentButtonAdded);
     }
 

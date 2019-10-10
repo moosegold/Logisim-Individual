@@ -8,9 +8,12 @@ public class ComponentSidebarButton extends SidebarButton {
 
     final int Rresouce;
 
-    public ComponentSidebarButton(ScreenPoint point, int length, String action, int Rresource, AbstractScreenPartition partition) {
+    final Class<? extends AbstractComponent> representation;
+
+    public ComponentSidebarButton(ScreenPoint point, int length, String action, int Rresource, AbstractScreenPartition partition, Class<? extends AbstractComponent> representation) {
         super(point, new Size(length, length), action, partition);
         this.Rresouce = Rresource;
+        this.representation = representation;
     }
 
     @Override

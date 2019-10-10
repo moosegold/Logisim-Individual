@@ -1,9 +1,6 @@
 package LogiSim;
 
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
 public class ORGate extends CommutativeComponent {
 
     ORGate(AbstractTile tile) {
@@ -15,7 +12,8 @@ public class ORGate extends CommutativeComponent {
     }
 
     @Override
-    public Bitmap getComponentImage() {
-        return BitmapFactory.decodeResource(grid.screenManager.appContext.getResources(), R.drawable.or_gate);
+    public int getRresource() {
+        return R.drawable.or_gate;
     }
+
 }
