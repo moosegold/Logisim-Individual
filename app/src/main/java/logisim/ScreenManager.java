@@ -80,7 +80,6 @@ public class ScreenManager {
                 if (part != touchedPartiton)
                     part.processTouchUp(getLocalPoint(part, screenPoint));
             this.draggedObject = null;
-            setStatusBarText("");
         }
 
         this.draw();

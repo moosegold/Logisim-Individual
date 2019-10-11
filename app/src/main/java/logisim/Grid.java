@@ -112,6 +112,7 @@ public class Grid extends AbstractScreenPartition {
         if (screenManager.dragSourceButton != null) {
             if (!tileIsComponent(gridPoint))
                 screenManager.dragSourceButton.createNewComponent(gridPoint, this);
+            screenManager.setStatusBarText("");
         }
         if (dragSource != null) {
             Tile dest = getTile(gridPoint);
@@ -123,6 +124,7 @@ public class Grid extends AbstractScreenPartition {
                 moveTile(dragSource, dest);
             }
             dragSource = null;
+            screenManager.setStatusBarText("");
         }
         tileBeingTouched = null;
         touchInProgress = false;

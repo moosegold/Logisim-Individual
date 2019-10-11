@@ -123,6 +123,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
         buttons.addLast(new ActionSidebarButton(new ScreenPoint(xPos, yPos), new Size(width, height), "Save", this,
                 () -> {
             saveMode = !saveMode;
+            screenManager.setStatusBarText("Select save slot");
             System.out.println("SaveMode: " + saveMode);
                 }));
     }
@@ -152,13 +153,16 @@ public class ComponentSidebar extends AbstractScreenPartition {
     }
 
     public void processTouchUp(ScreenPoint localPoint) {
+        screenManager.setStatusBarText("");
         SidebarButton touchedButton = getButtonPress(localPoint);
         screenManager.dragSourceButton = null;
-        if (buttonBeingTouched != null && touchedButton == buttonBeingTouched)
+        if (buttonBeingTouched != null && touchedButton == buttonBeingTouched) {
             buttonBeingTouched.handleTap();
+        }
         touchInProgress = false;
-        if (touchedButton != null && !touchedButton.label.equals("Save"))
+        if (touchedButton != null && !touchedButton.label.equals("Save")) {
             saveMode = false;
+        }
     }
 
     public void processTouchDown(ScreenPoint localPoint) {
@@ -170,7 +174,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
     }
 
     public void processTouchDrag(ScreenPoint localPoint) {
-        if (touchInProgress) {
+        if (touchInProgress && buttonBeingTouched != null) {
             buttonBeingTouched.handleDragStart();
         }
     }
