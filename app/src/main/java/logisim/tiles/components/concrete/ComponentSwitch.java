@@ -30,13 +30,13 @@ public class ComponentSwitch extends Component {
     }
 
     @Override
-    public int getRresource() {
-        return state ? R.drawable.switch_on : R.drawable.switch_off;
+    public boolean eval() {
+        return state;
     }
 
     @Override
-    public boolean eval() {
-        return state;
+    public int getRresource() {
+        return state ? R.drawable.switch_on : R.drawable.switch_off;
     }
 
 }

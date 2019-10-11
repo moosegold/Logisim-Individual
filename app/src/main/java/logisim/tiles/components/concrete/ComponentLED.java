@@ -22,12 +22,12 @@ public class ComponentLED extends Component {
     }
 
     @Override
-    public int getRresource() {
-        return this.eval() ? R.drawable.led_on : R.drawable.led_off;
+    public boolean eval() {
+        return false;
     }
 
     @Override
-    public boolean eval() {
-        return false;
+    public int getRresource() {
+        return this.eval() ? R.drawable.led_on : R.drawable.led_off;
     }
 }

@@ -19,7 +19,7 @@ public abstract class Tile {
     protected final DebugTextDrawer debugText;
 
     protected final Grid grid;
-    protected final GridPoint gridPoint;
+    protected GridPoint gridPoint;
 
     private Bitmap image;
     protected Canvas canvas;
@@ -40,7 +40,11 @@ public abstract class Tile {
     public void handleTouch() {};
 
     public GridPoint getPoint() {
-        return new GridPoint(gridPoint.x, gridPoint.y);
+        return gridPoint.copy();
+    }
+
+    public void setPoint(GridPoint gridPoint) {
+        this.gridPoint = gridPoint;
     }
 
     public void draw() {

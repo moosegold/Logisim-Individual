@@ -47,6 +47,7 @@ public class ComponentSidebarButton extends SidebarButton {
 
     @Override
     public void handleDragStart() {
+        partition.screenManager.dragSourceButton = this;
         partition.screenManager.setDraggedObject(this.getComponentImage());
         partition.screenManager.setStatusBarText(this.label);
     }

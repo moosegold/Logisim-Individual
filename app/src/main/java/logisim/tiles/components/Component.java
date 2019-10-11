@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 
+import logisim.util.GridPoint;
 import logisim.util.ScreenPoint;
 import logisim.tiles.Tile;
 

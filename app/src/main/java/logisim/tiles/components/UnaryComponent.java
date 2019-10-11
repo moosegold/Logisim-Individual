@@ -3,6 +3,7 @@ package logisim.tiles.components;
 import androidx.annotation.Nullable;
 
 import logisim.tiles.Tile;
+import logisim.util.GridPoint;
 
 public abstract class UnaryComponent extends Component implements ILogicComponent {
 

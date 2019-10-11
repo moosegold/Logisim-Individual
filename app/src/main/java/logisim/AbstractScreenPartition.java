@@ -2,6 +2,7 @@ package logisim;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
@@ -22,6 +23,12 @@ public abstract class AbstractScreenPartition implements IScreenPartition {
         image = Bitmap.createBitmap(size.width, size.height, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(image);
         this.screenManager = screenManager;
+    }
+
+    @Override
+    public final boolean touchInBounds(ScreenPoint localPoint) {
+        Rect bounds = new Rect(0, 0, size.width, size.height);
+        return bounds.contains(localPoint.x, localPoint.y);
     }
 
     @Override

@@ -13,6 +13,8 @@ public interface IScreenPartition {
 
     void processTouchDrag(ScreenPoint localPoint);
 
+    boolean touchInBounds(ScreenPoint localPoint);
+
     void draw();
 
     Bitmap getPartitionBitmap();

@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
@@ -110,8 +109,21 @@ public class Grid extends AbstractScreenPartition {
                 tileTouched.handleTouch();
             }
         }
-        if (screenManager.dragSourceButton != null)
-            screenManager.dragSourceButton.createNewComponent(gridPoint, this);
+        if (screenManager.dragSourceButton != null) {
+            if (!tileIsComponent(gridPoint))
+                screenManager.dragSourceButton.createNewComponent(gridPoint, this);
+        }
+        if (dragSource != null) {
+            Tile dest = getTile(gridPoint);
+            if (!touchInBounds(localPoint)) {
+                // Reset the drag source if the component is dragged of the grid.
+                // This is either the sidebar, or the right and bottom edges of the screen.
+                clearTile(dragSource);
+            } else if (dest != null && !tileIsComponent(gridPoint)) {
+                moveTile(dragSource, dest);
+            }
+            dragSource = null;
+        }
         tileBeingTouched = null;
         touchInProgress = false;
         pressHoldTimer.cancel();
@@ -143,6 +155,7 @@ public class Grid extends AbstractScreenPartition {
     private void beginDrag() {
         if (getTile(tileBeingTouched) instanceof Component) {
             Component touchedComponent = (Component) getTile(tileBeingTouched);
+            dragSource = touchedComponent;
             screenManager.setDraggedObject(touchedComponent.getComponentImage());
             screenManager.setStatusBarText(touchedComponent.getComponentName());
             screenManager.draw();
@@ -159,6 +172,21 @@ public class Grid extends AbstractScreenPartition {
         return tile;
     }
 
+    private boolean tileIsComponent(GridPoint gridPoint) {
+        Tile tile = getTile(gridPoint);
+        return tile instanceof Component;
+    }
+
+    private void moveTile(Tile src, Tile dest) {
+        clearTile(src);
+        src.setPoint(dest.getPoint());
+        setTile(src.getPoint(), src);
+    }
+
+    private void clearTile(Tile tile) {
+        setTile(tile.getPoint(), new EmptyTile(tile));
+    }
+
     @Override
     public void draw() {
         fillBackground();
@@ -172,11 +200,11 @@ public class Grid extends AbstractScreenPartition {
             ScreenPoint drawPoint = convertToScreenPoint(tile.getPoint());
             canvas.drawBitmap(tile.getImage(), drawPoint.x, drawPoint.y, null);
         }
-        drawNameOfDraggedComponent();
+        drawStatusBar();
     }
 
-    private void drawNameOfDraggedComponent() {
-        Paint paint = Paints.DRAGGED_COMPONENT_TEXT;
+    private void drawStatusBar() {
+        Paint paint = Paints.STATUS_BAR_TEXT;
         String name = screenManager.getStatusBarText();
         canvas.drawText(name, getSize().width / 2 - TextDrawUtil.getTextWidthPx(name, paint), screenManager.getDisplaySize().height - TextDrawUtil.getTextHeightPx(name, paint) - 10, paint);
     }

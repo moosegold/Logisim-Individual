@@ -36,7 +36,7 @@ public class Paints {
             .setTextSize(STANDARD_TEXT_SIZE)
             .setBold(true).makePaint();
 
-    public static final Paint DRAGGED_COMPONENT_TEXT = PaintBuilder.start()
+    public static final Paint STATUS_BAR_TEXT = PaintBuilder.start()
             .setColor(Color.BLACK)
             .setTextSize(LARGE_TEXT).makePaint();
 
