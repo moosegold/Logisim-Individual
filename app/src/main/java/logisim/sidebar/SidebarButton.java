@@ -56,6 +56,10 @@ public abstract class SidebarButton {
         debugText.draw(canvas);
     }
 
+    public abstract void handleDragStart();
+
+    public abstract void handleTap();
+
     public abstract void drawLabel();
 
     private void drawBounds() {
@@ -73,10 +77,6 @@ public abstract class SidebarButton {
 
     public Bitmap getImage() {
         return image;
-    }
-
-    public Bitmap getDragImage() {
-        return null;
     }
 
     @NonNull

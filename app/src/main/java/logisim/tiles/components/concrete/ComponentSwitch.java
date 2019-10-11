@@ -14,6 +14,11 @@ public class ComponentSwitch extends Component {
     }
 
     @Override
+    public String getComponentName() {
+        return "Switch";
+    }
+
+    @Override
     public void processConnection(ILogicComponent source) {
 
     }

@@ -21,6 +21,8 @@ public abstract class Component extends Tile implements ILogicComponent {
 
     public abstract int getRresource();
 
+    public abstract String getComponentName();
+
     public final Bitmap getComponentImage() {
         return BitmapFactory.decodeResource(grid.screenManager.appContext.getResources(), getRresource());
     }

@@ -23,14 +23,15 @@ public class ComponentSidebarButton extends SidebarButton {
 
     private Constructor componentConstructor;
 
-    public ComponentSidebarButton(ScreenPoint point, int length, String componentName, int Rresource, AbstractScreenPartition partition, Class<? extends Component> representation) {
+    public ComponentSidebarButton(ScreenPoint point, int length, String componentName, int Rresource, AbstractScreenPartition partition, Class<? extends Component> representedComponent) {
         super(point, new Size(length, length), componentName, partition);
         this.Rresouce = Rresource;
         try {
-            componentConstructor = representation.getDeclaredConstructor(Tile.class);
+            componentConstructor = representedComponent.getDeclaredConstructor(Tile.class);
         } catch (Exception ex) {
-            System.out.println("Unable to create new component: " + ex.getLocalizedMessage());
-            ex.printStackTrace();
+            System.out.println("Unable to get constructor for component: " + ex.getLocalizedMessage());
+            System.out.println("The app will now close, as it will not work properly.");
+            System.exit(1);
         }
     }
 
@@ -45,15 +46,21 @@ public class ComponentSidebarButton extends SidebarButton {
     }
 
     @Override
-    public Bitmap getDragImage() {
-        return getComponentImage();
+    public void handleDragStart() {
+        partition.screenManager.setDraggedObject(this.getComponentImage());
+        partition.screenManager.setStatusBarText(this.label);
+    }
+
+    @Override
+    public void handleTap() {
+        // Do Nothing
     }
 
     @Override
     public void drawLabel() {
         Paint paint = Paints.LABEL_TEXT;
         int xPos = getLocalCenter().x - TextDrawUtil.getTextWidthPx(label, paint) / 2;
-        int yPos = point.y + size.height - TextDrawUtil.getTextHeightPx(paint) - size.height / 8;
+        int yPos = size.height - TextDrawUtil.getTextHeightPx(label, paint);
         debugText.addText("labelPos: " + new ScreenPoint(xPos, yPos));
         canvas.drawText(label, xPos, yPos, paint);
     }

@@ -10,10 +10,13 @@ import logisim.util.ScreenPoint;
 import logisim.util.Size;
 import logisim.util.TextDrawUtil;
 
-public class SaveSidebarButton extends SidebarButton {
+public class ActionSidebarButton extends SidebarButton {
 
-    public SaveSidebarButton(ScreenPoint point, Size size, String label, AbstractScreenPartition partition) {
+    private final ITapProcedure action;
+
+    public ActionSidebarButton(ScreenPoint point, Size size, String label, AbstractScreenPartition partition, ITapProcedure action) {
         super(point, size, label, partition);
+        this.action = action;
     }
 
     @Override
@@ -22,12 +25,26 @@ public class SaveSidebarButton extends SidebarButton {
     }
 
     @Override
+    public void handleDragStart() {
+        // Do Nothing
+    }
+
+    @Override
+    public void handleTap() {
+        action.onTap();
+    }
+
+    @Override
     public void drawLabel() {
         Paint paint = Paints.SAVE_BUTTON_TEXT;
         int xPos = getLocalCenter().x - TextDrawUtil.getTextWidthPx(label, paint) / 2;
-        int yPos = getLocalCenter().y + TextDrawUtil.getTextHeightPx(paint) / 2;
+        int yPos = getLocalCenter().y + TextDrawUtil.getTextHeightPx(label, paint) / 2;
         debugText.addText("labelPos: " + new ScreenPoint(xPos, yPos));
         canvas.drawText(label, xPos, yPos, paint);
+    }
+
+    interface ITapProcedure {
+        public void onTap();
     }
 
 }

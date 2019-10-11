@@ -1,21 +1,20 @@
 package logisim.util;
 
 import android.graphics.Paint;
+import android.graphics.Rect;
 
 public class TextDrawUtil {
 
-    public static int getTextWidthPx(String text, Paint paint) {
-        float[] widths = new float[text.length()];
-        paint.getTextWidths(text, widths);
-        float width = 0.0f;
-        for (float cwidth : widths) {
-            width += cwidth;
-        }
-        return (int) width;
+    public static int getTextWidthPx(String text, Paint paint) { ;
+        Rect rect = new Rect();
+        paint.getTextBounds(text, 0, text.length(), rect);
+        return rect.width();
     }
 
-    public static int getTextHeightPx(Paint paint) {
-        return (int) paint.getTextSize();
+    public static int getTextHeightPx(String text, Paint paint) {
+        Rect rect = new Rect();
+        paint.getTextBounds(text, 0, text.length(), rect);
+        return rect.height();
     }
 
 }

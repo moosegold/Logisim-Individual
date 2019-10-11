@@ -17,7 +17,7 @@ public class LogiSim extends Activity {
 
     private static final int GRID_WIDTH_TILES = 16;
 
-    public static final boolean DEBUG_TEXT_ENABLED = true;
+    public static final boolean DEBUG_TEXT_ENABLED = false;
 
     private ScreenManager screenManager;
 
@@ -36,8 +36,8 @@ public class LogiSim extends Activity {
 
         calculateSidebarWidth();
 
-        addSidebarPartition();
-        setupGrid(GRID_WIDTH_TILES);
+        Grid grid = setupGrid(GRID_WIDTH_TILES);
+        addSidebarPartition(grid);
         screenManager.draw();
 
         setContentView(imageView);
@@ -48,7 +48,7 @@ public class LogiSim extends Activity {
         sidebar_width = (int) (screenManager.getDisplaySize().width * SIDEBAR_WIDTH_RATIO);
     }
 
-    private void setupGrid(int widthTiles) {
+    private Grid setupGrid(int widthTiles) {
         Size displaySize = screenManager.getDisplaySize();
 
         int gridWidth = displaySize.width - sidebar_width;
@@ -63,12 +63,13 @@ public class LogiSim extends Activity {
 
         Grid grid = new Grid(widthTiles, heightTiles, tileLengthPx, screenManager, origin, size);
         screenManager.addPartition(grid);
+        return grid;
     }
 
-    private void addSidebarPartition() {
+    private void addSidebarPartition(Grid grid) {
         ScreenPoint origin = new ScreenPoint(0, 0);
         Size size = new Size(sidebar_width, screenManager.getDisplaySize().height);
-        screenManager.addPartition(new ComponentSidebar(origin, size, screenManager));
+        screenManager.addPartition(new ComponentSidebar(origin, size, screenManager, grid));
     }
 
     /**

@@ -11,6 +11,11 @@ public class ORGate extends CommutativeComponent {
         super(tile);
     }
 
+    @Override
+    public String getComponentName() {
+        return "OR Gate";
+    }
+
     public boolean eval() {
         return this.getInput(0) || this.getInput(1);
     }

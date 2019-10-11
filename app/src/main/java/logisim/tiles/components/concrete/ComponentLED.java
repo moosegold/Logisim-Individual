@@ -12,6 +12,11 @@ public class ComponentLED extends Component {
     }
 
     @Override
+    public String getComponentName() {
+        return "LED";
+    }
+
+    @Override
     public void processConnection(ILogicComponent source) {
 
     }

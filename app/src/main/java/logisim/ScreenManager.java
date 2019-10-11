@@ -36,7 +36,7 @@ public class ScreenManager {
     private ScreenPoint dragPoint;
     public ComponentSidebarButton dragSourceButton;
 
-    private String nameOfDraggedComponent = "";
+    private String statusBarText = "";
 
     public ScreenManager(Display display, ImageView imageView, Context appContext) {
         this.partitions = new LinkedList<>();
@@ -59,28 +59,28 @@ public class ScreenManager {
     }
 
     public void handleTouch(ScreenPoint screenPoint, int action) {
-        IScreenPartition partition = getTouchedPartition(screenPoint);
-        if (partition != null) {
-            ScreenPoint localPoint = getLocalPoint(partition, screenPoint);
+        this.dragPoint = screenPoint;
+        IScreenPartition touchedPartiton = getTouchedPartition(screenPoint);
+        if (touchedPartiton != null) {
+            ScreenPoint localPoint = getLocalPoint(touchedPartiton, screenPoint);
             if (action == MotionEvent.ACTION_UP) {
                 // Fire the release touch event on the partition released on before
                 // firing on other partitions.
-                partition.processTouchUp(localPoint);
+                touchedPartiton.processTouchUp(localPoint);
             } else if (action == MotionEvent.ACTION_DOWN) {
-                partition.processTouchDown(localPoint);
+                touchedPartiton.processTouchDown(localPoint);
             } else if (action == MotionEvent.ACTION_MOVE) {
-                this.dragPoint = screenPoint;
-                partition.processTouchDrag(localPoint);
+                touchedPartiton.processTouchDrag(localPoint);
             }
         }
 
         if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
             // Fire the release touch event on all partitions so they can reset their state.
             for (IScreenPartition part : partitions)
-                part.processTouchUp(getLocalPoint(part, screenPoint));
+                if (part != touchedPartiton)
+                    part.processTouchUp(getLocalPoint(part, screenPoint));
             this.draggedObject = null;
-            this.dragPoint = null;
-            setNameOfDraggedComponent("");
+            setStatusBarText("");
         }
 
         this.draw();
@@ -95,7 +95,6 @@ public class ScreenManager {
                     dragPoint.y - image.getWidth() / 4,
                     dragPoint.x + image.getWidth() / 4,
                     dragPoint.y + image.getWidth() / 4);
-            System.out.println("Drawing drag at: (" + transformRect.left + ", " + transformRect.top + ")");
             mainCanvas.drawBitmap(this.draggedObject, orgRect, transformRect, null);
         }
     }
@@ -104,15 +103,15 @@ public class ScreenManager {
         this.draggedObject = image;
     }
 
-    public void setNameOfDraggedComponent(String text) {
+    public void setStatusBarText(String text) {
         if (text == null)
-            nameOfDraggedComponent = "";
+            statusBarText = "";
         else
-            nameOfDraggedComponent = text;
+            statusBarText = text;
     }
 
-    public String getNameOfDraggedComponent() {
-        return nameOfDraggedComponent;
+    public String getStatusBarText() {
+        return statusBarText;
     }
 
     private IScreenPartition getTouchedPartition(ScreenPoint screenPoint) {

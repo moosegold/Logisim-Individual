@@ -11,6 +11,11 @@ public class NOTGate extends UnaryComponent {
     }
 
     @Override
+    public String getComponentName() {
+        return "NOT Gate";
+    }
+
+    @Override
     public boolean eval() {
         return !this.getInput();
     }

@@ -6,9 +6,16 @@ import android.graphics.Rect;
 
 import androidx.annotation.Nullable;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import logisim.tiles.components.Component;
 import logisim.tiles.components.concrete.ANDGate;
 import logisim.tiles.components.concrete.NOTGate;
 import logisim.tiles.components.concrete.ORGate;
@@ -33,6 +40,10 @@ public class Grid extends AbstractScreenPartition {
 
     private List<Tile> tiles;
 
+    private Timer pressHoldTimer = new Timer();
+
+    private Component dragSource;
+
     /**
      * The tile touched when a touch or drag began.
      */
@@ -54,6 +65,7 @@ public class Grid extends AbstractScreenPartition {
     }
 
     public void resetGrid() {
+        tiles.clear();
         fillGrid();
     }
 
@@ -102,17 +114,42 @@ public class Grid extends AbstractScreenPartition {
             screenManager.dragSourceButton.createNewComponent(gridPoint, this);
         tileBeingTouched = null;
         touchInProgress = false;
+        pressHoldTimer.cancel();
     }
 
     public void processTouchDown(ScreenPoint localPoint) {
         GridPoint gridTouch = convertToGridPoint(localPoint);
         if (!touchInProgress) {
             tileBeingTouched = gridTouch;
+            pressHoldTimer = new Timer();
+            pressHoldTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    beginDrag();
+                }
+            }, 500);
         }
         touchInProgress = true;
     }
 
     public void processTouchDrag(ScreenPoint localPoint) {
+        GridPoint gridTouch = convertToGridPoint(localPoint);
+        if (tileBeingTouched != null && !tileBeingTouched.equals(gridTouch)) {
+            pressHoldTimer.cancel();
+            beginWireCreation();
+        }
+    }
+
+    private void beginDrag() {
+        if (getTile(tileBeingTouched) instanceof Component) {
+            Component touchedComponent = (Component) getTile(tileBeingTouched);
+            screenManager.setDraggedObject(touchedComponent.getComponentImage());
+            screenManager.setStatusBarText(touchedComponent.getComponentName());
+            screenManager.draw();
+        }
+    }
+
+    private void beginWireCreation() {
 
     }
 
@@ -140,8 +177,42 @@ public class Grid extends AbstractScreenPartition {
 
     private void drawNameOfDraggedComponent() {
         Paint paint = Paints.DRAGGED_COMPONENT_TEXT;
-        String name = screenManager.getNameOfDraggedComponent();
-        canvas.drawText(name, getSize().width / 2 - TextDrawUtil.getTextWidthPx(name, paint), screenManager.getDisplaySize().height - TextDrawUtil.getTextHeightPx(paint) - 10, paint);
+        String name = screenManager.getStatusBarText();
+        canvas.drawText(name, getSize().width / 2 - TextDrawUtil.getTextWidthPx(name, paint), screenManager.getDisplaySize().height - TextDrawUtil.getTextHeightPx(name, paint) - 10, paint);
+    }
+
+    public boolean loadGrid(String slot) {
+        try {
+            File inputFile = getSaveFile(slot);
+            if (inputFile.exists()) {
+                FileInputStream inStream = new FileInputStream(inputFile);
+                // READ GRID
+                inStream.close();
+                return true;
+            }
+            return false;
+        } catch (Exception ex) {
+            System.out.println("Caught exception loading layout for slot " + slot + ": " + ex.getLocalizedMessage());
+            resetGrid();
+            return false;
+        }
+    }
+
+    public boolean saveGrid(String slot) {
+        try {
+            File outputFile = getSaveFile(slot);
+            FileOutputStream outStream = new FileOutputStream(outputFile);
+            // WRITE GRID
+            outStream.close();
+            return true;
+        } catch (Exception ex) {
+            System.out.println("Caught exception saving layout to slot " + slot + ": " + ex.getLocalizedMessage());
+            return false;
+        }
+    }
+
+    private File getSaveFile(String slot) {
+        return new File(screenManager.appContext.getFilesDir(), slot + ".logisim");
     }
 
     @Override
