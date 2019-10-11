@@ -21,6 +21,7 @@ import logisim.tiles.components.concrete.ORGate;
 import logisim.tiles.Tile;
 import logisim.tiles.EmptyTile;
 import logisim.util.GridPoint;
+import logisim.util.PaintBuilder;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
@@ -42,6 +43,7 @@ public class Grid extends AbstractScreenPartition {
     private Timer pressHoldTimer = new Timer();
 
     private Component dragSource;
+    private GridPoint dragPoint;
 
     /**
      * The tile touched when a touch or drag began.
@@ -148,6 +150,7 @@ public class Grid extends AbstractScreenPartition {
 
     public void processTouchDrag(ScreenPoint localPoint) {
         GridPoint gridTouch = convertToGridPoint(localPoint);
+        dragPoint = gridTouch;
         if (tileBeingTouched != null && !tileBeingTouched.equals(gridTouch)) {
             pressHoldTimer.cancel();
             beginWireCreation();
@@ -202,7 +205,34 @@ public class Grid extends AbstractScreenPartition {
             ScreenPoint drawPoint = convertToScreenPoint(tile.getPoint());
             canvas.drawBitmap(tile.getImage(), drawPoint.x, drawPoint.y, null);
         }
+        if (touchInProgress && dragPoint != null && getTile(dragPoint) != null) {
+            drawTileOutline(getTile(dragPoint), tileIsComponent(dragPoint) ? Paints.TILE_OUTLINE_DENY_PLACE : Paints.TILE_OUTLINE_ALLOW_PLACE);
+            if (dragSource != null) {
+                drawTileOutline(dragSource, Paints.TILE_OUTLINE_SOURCE);
+            }
+        }
         drawStatusBar();
+    }
+
+    private void drawTileOutline(Tile tile, Paint paint) {
+        if (tile != null) {
+            ScreenPoint pos = convertToScreenPoint(tile.getPoint());
+            Size size = new Size(tile.getRect().width(), tile.getRect().height());
+            int lineWidth = tile.getRect().width() / 8;
+            int lineHeight = tile.getRect().height() / 8;
+            // Top left corner
+            canvas.drawLine(pos.x, pos.y, pos.x + lineWidth, pos.y, paint);
+            canvas.drawLine(pos.x, pos.y, pos.x, pos.y + lineHeight, paint);
+            // Top right corner
+            canvas.drawLine(pos.x + size.width, pos.y, pos.x + size.width - lineWidth, pos.y, paint);
+            canvas.drawLine(pos.x + size.width, pos.y, pos.x + size.width, pos.y + lineHeight, paint);
+            // Bottom left corner
+            canvas.drawLine(pos.x, pos.y + size.height, pos.x + lineWidth, pos.y + size.height, paint);
+            canvas.drawLine(pos.x, pos.y + size.height, pos.x, pos.y + size.height - lineHeight, paint);
+            // Bottom right corner
+            canvas.drawLine(pos.x + size.width, pos.y + size.height, pos.x + size.width - lineWidth, pos.y + size.height, paint);
+            canvas.drawLine(pos.x + size.width, pos.y + size.height, pos.x + size.width, pos.y + size.height - lineHeight, paint);
+        }
     }
 
     private void drawStatusBar() {

@@ -72,10 +72,25 @@ public class Paints {
             .setStyle(Paint.Style.STROKE).makePaint();
 
     /**
-     * Color of the borders of tiles forming the grid lines.
+     * Color of the borders of tiles forming the grid lines when drawBounds is called.
      */
-    public static final Paint TILE_BORDER_COLOR = PaintBuilder.start()
+    public static final Paint TILE_BORDER_COLOR_DEBUG = PaintBuilder.start()
             .setColor(Color.BLACK)
             .setStyle(Paint.Style.STROKE).makePaint();
+
+    /**
+     * The outline color for tiles if a dragged component can be placed in that grid square.
+     */
+    public static final Paint TILE_OUTLINE_ALLOW_PLACE = PaintBuilder.start()
+            .setColor(Color.BLUE).makePaint();
+
+    /**
+     * The outline color for tiles if a dragged component <b>cannot</b> be placed in that grid square.
+     */
+    public static final Paint TILE_OUTLINE_DENY_PLACE = PaintBuilder.start()
+            .setColor(Color.RED).makePaint();
+
+    public static final Paint TILE_OUTLINE_SOURCE = PaintBuilder.start()
+            .setColor(Color.GREEN).makePaint();
 
 }
