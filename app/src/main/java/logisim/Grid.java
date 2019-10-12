@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import logisim.state.GridTouchState;
 import logisim.tiles.components.Component;
 import logisim.tiles.components.concrete.ANDGate;
 import logisim.tiles.components.concrete.NOTGate;
@@ -21,7 +22,6 @@ import logisim.tiles.components.concrete.ORGate;
 import logisim.tiles.Tile;
 import logisim.tiles.EmptyTile;
 import logisim.util.GridPoint;
-import logisim.util.PaintBuilder;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
@@ -42,8 +42,10 @@ public class Grid extends AbstractScreenPartition {
 
     private Timer pressHoldTimer = new Timer();
 
-    private Component dragSource;
-    private GridPoint dragPoint;
+//    private Component dragSource;
+//    private GridPoint dragPoint;
+
+    GridTouchState touchState = new GridTouchState();
 
     /**
      * The tile touched when a touch or drag began.
