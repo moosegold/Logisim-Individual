@@ -53,6 +53,12 @@ public abstract class Tile {
         debugText.draw(canvas);
     }
 
+    public final boolean isDraggable() {
+        return this instanceof IDraggable;
+    }
+
+    public abstract boolean isReplaceable();
+
     private void createCanvas() {
         image = Bitmap.createBitmap(grid.tileLength, grid.tileLength, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(image);

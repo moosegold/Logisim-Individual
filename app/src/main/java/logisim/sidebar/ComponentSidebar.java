@@ -110,7 +110,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
                         boolean result = grid.loadGrid(label);
                         feedback = result ? "Loaded layout " + label : "Failed to load layout " + label;
                     }
-                    screenManager.setStatusBarText(feedback);
+//                    screenManager.setStatusBarText(feedback);
                     System.out.println(feedback);
                 });
         buttons.addLast(lastSaveButtonAdded);
@@ -124,7 +124,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
         buttons.addLast(new ActionSidebarButton(new LocalPoint(xPos, yPos), new Size(width, height), "Save", this,
                 () -> {
             saveMode = !saveMode;
-            screenManager.setStatusBarText("Select save slot");
+//            screenManager.setStatusBarText("Select save slot");
             System.out.println("SaveMode: " + saveMode);
                 }));
     }
@@ -154,31 +154,43 @@ public class ComponentSidebar extends AbstractScreenPartition {
     }
 
     public void processTouchUp(LocalPoint localPoint) {
-        screenManager.setStatusBarText("");
-        SidebarButton touchedButton = getButtonPress(localPoint);
-        screenManager.dragSourceButton = null;
-        if (buttonBeingTouched != null && touchedButton == buttonBeingTouched) {
-            buttonBeingTouched.handleTap();
-        }
-        touchInProgress = false;
-        if (touchedButton != null && !touchedButton.label.equals("Save")) {
-            saveMode = false;
-        }
+
     }
 
     public void processTouchDown(LocalPoint localPoint) {
-        SidebarButton touchedButton = getButtonPress(localPoint);
-        if (!touchInProgress) {
-            this.buttonBeingTouched = touchedButton;
-        }
-        touchInProgress = true;
+
     }
 
     public void processTouchDrag(LocalPoint localPoint) {
-        if (touchInProgress && buttonBeingTouched != null) {
-            buttonBeingTouched.handleDragStart();
-        }
+
     }
+
+//    public void processTouchUp(LocalPoint localPoint) {
+//        screenManager.setStatusBarText("");
+//        SidebarButton touchedButton = getButtonPress(localPoint);
+//        screenManager.dragSourceButton = null;
+//        if (buttonBeingTouched != null && touchedButton == buttonBeingTouched) {
+//            buttonBeingTouched.handleTap();
+//        }
+//        touchInProgress = false;
+//        if (touchedButton != null && !touchedButton.label.equals("Save")) {
+//            saveMode = false;
+//        }
+//    }
+//
+//    public void processTouchDown(LocalPoint localPoint) {
+//        SidebarButton touchedButton = getButtonPress(localPoint);
+//        if (!touchInProgress) {
+//            this.buttonBeingTouched = touchedButton;
+//        }
+//        touchInProgress = true;
+//    }
+//
+//    public void processTouchDrag(LocalPoint localPoint) {
+//        if (touchInProgress && buttonBeingTouched != null) {
+//            buttonBeingTouched.handleDragStart();
+//        }
+//    }
 
     private SidebarButton getButtonPress(LocalPoint localPoint) {
         for (SidebarButton button : buttons) {

@@ -11,7 +11,7 @@ public class NOTGate extends UnaryComponent {
     }
 
     @Override
-    public String getComponentName() {
+    public String getName() {
         return "NOT Gate";
     }
 

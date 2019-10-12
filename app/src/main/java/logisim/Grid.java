@@ -12,7 +12,7 @@ import java.io.FileOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
-import logisim.state.GridComponentTouchState;
+import logisim.state.states.GridComponentTouchState;
 import logisim.state.StateManager;
 import logisim.tiles.components.Component;
 import logisim.tiles.components.concrete.ANDGate;
@@ -94,10 +94,6 @@ public class Grid extends AbstractScreenPartition {
         return tiles.get(getTileIndex(point));
     }
 
-    public ScreenPoint convertToScreenPoint(GridPoint gridPoint) {
-        return new ScreenPoint(gridPoint.x * this.tileLength, gridPoint.y * this.tileLength);
-    }
-
     private int getTileIndex(GridPoint gridPoint) {
         return gridPoint.y * (gridSize.width + 1) + gridPoint.x;
     }
@@ -108,8 +104,8 @@ public class Grid extends AbstractScreenPartition {
 
     public void processTouchDown(LocalPoint localPoint) {
         Tile touchedTile = getTileTouched(localPoint);
-        if (touchedTile instanceof Component)
-            stateManager.setStateIfNecessary(new GridComponentTouchState(this, touchedTile));
+        if (touchedTile != null && touchedTile.isDraggable())
+            stateManager.setStateIfNecessary(new GridComponentTouchState(this, touchedTile, convertToScreenPoint(localPoint)));
     }
 
     public void processTouchDrag(LocalPoint localPoint) {
@@ -132,7 +128,7 @@ public class Grid extends AbstractScreenPartition {
 //        }
 //        if (dragSource != null) {
 //            Tile dest = getTile(gridPoint);
-//            if (!touchInBounds(localPoint)) {
+//            if (!containsTouch(localPoint)) {
 //                // Reset the drag source if the component is dragged of the grid.
 //                // This is either the sidebar, or the right and bottom edges of the screen.
 //                clearTile(dragSource);
@@ -176,7 +172,7 @@ public class Grid extends AbstractScreenPartition {
 //            Component touchedComponent = (Component) getTile(tileBeingTouched);
 //            dragSource = touchedComponent;
 //            screenManager.setDraggedObject(touchedComponent.getComponentImage());
-//            screenManager.setStatusBarText(touchedComponent.getComponentName());
+//            screenManager.setStatusBarText(touchedComponent.getName());
 //            screenManager.draw();
 //        }
 //    }
@@ -196,7 +192,7 @@ public class Grid extends AbstractScreenPartition {
         return tile instanceof Component;
     }
 
-    private void moveTile(Tile src, Tile dest) {
+    public void moveTile(Tile src, Tile dest) {
         clearTile(src);
         src.setPoint(dest.getPoint());
         setTile(src.getPoint(), src);
@@ -225,33 +221,33 @@ public class Grid extends AbstractScreenPartition {
 //                drawTileOutline(dragSource, Paints.TILE_OUTLINE_SOURCE);
 //            }
 //        }
-//        drawStatusBar();
+        drawStatusBar();
     }
 
-    private void drawTileOutline(Tile tile, Paint paint) {
-        if (tile != null) {
-            ScreenPoint pos = convertToScreenPoint(tile.getPoint());
-            Size size = new Size(tile.getRect().width(), tile.getRect().height());
-            int lineWidth = tile.getRect().width() / 8;
-            int lineHeight = tile.getRect().height() / 8;
-            // Top left corner
-            canvas.drawLine(pos.x, pos.y, pos.x + lineWidth, pos.y, paint);
-            canvas.drawLine(pos.x, pos.y, pos.x, pos.y + lineHeight, paint);
-            // Top right corner
-            canvas.drawLine(pos.x + size.width, pos.y, pos.x + size.width - lineWidth, pos.y, paint);
-            canvas.drawLine(pos.x + size.width, pos.y, pos.x + size.width, pos.y + lineHeight, paint);
-            // Bottom left corner
-            canvas.drawLine(pos.x, pos.y + size.height, pos.x + lineWidth, pos.y + size.height, paint);
-            canvas.drawLine(pos.x, pos.y + size.height, pos.x, pos.y + size.height - lineHeight, paint);
-            // Bottom right corner
-            canvas.drawLine(pos.x + size.width, pos.y + size.height, pos.x + size.width - lineWidth, pos.y + size.height, paint);
-            canvas.drawLine(pos.x + size.width, pos.y + size.height, pos.x + size.width, pos.y + size.height - lineHeight, paint);
-        }
-    }
+//    public void drawTileOutline(Tile tile, Paint paint) {
+//        if (tile != null) {
+//            ScreenPoint pos = convertToScreenPoint(tile.getPoint());
+//            Size size = new Size(tile.getRect().width(), tile.getRect().height());
+//            int lineWidth = tile.getRect().width() / 8;
+//            int lineHeight = tile.getRect().height() / 8;
+//            // Top left corner
+//            canvas.drawLine(pos.x, pos.y, pos.x + lineWidth, pos.y, paint);
+//            canvas.drawLine(pos.x, pos.y, pos.x, pos.y + lineHeight, paint);
+//            // Top right corner
+//            canvas.drawLine(pos.x + size.width, pos.y, pos.x + size.width - lineWidth, pos.y, paint);
+//            canvas.drawLine(pos.x + size.width, pos.y, pos.x + size.width, pos.y + lineHeight, paint);
+//            // Bottom left corner
+//            canvas.drawLine(pos.x, pos.y + size.height, pos.x + lineWidth, pos.y + size.height, paint);
+//            canvas.drawLine(pos.x, pos.y + size.height, pos.x, pos.y + size.height - lineHeight, paint);
+//            // Bottom right corner
+//            canvas.drawLine(pos.x + size.width, pos.y + size.height, pos.x + size.width - lineWidth, pos.y + size.height, paint);
+//            canvas.drawLine(pos.x + size.width, pos.y + size.height, pos.x + size.width, pos.y + size.height - lineHeight, paint);
+//        }
+//    }
 
     private void drawStatusBar() {
         Paint paint = Paints.STATUS_BAR_TEXT;
-        String name = screenManager.getStatusBarText();
+        String name = stateManager.getStatusBarText();
         canvas.drawText(name, getSize().width / 2 - TextDrawUtil.getTextWidthPx(name, paint), screenManager.getDisplaySize().height - TextDrawUtil.getTextHeightPx(name, paint) - 10, paint);
     }
 
@@ -302,6 +298,14 @@ public class Grid extends AbstractScreenPartition {
         int gridPointX = localPoint.x / tileLength;
         int gridPointY = localPoint.y / tileLength;
         return new GridPoint(gridPointX, gridPointY);
+    }
+
+    public GridPoint convertToGridPoint(ScreenPoint screenPoint) {
+        return convertToGridPoint(convertToLocalPoint(screenPoint));
+    }
+
+    public ScreenPoint convertToScreenPoint(GridPoint gridPoint) {
+        return new ScreenPoint(gridPoint.x * this.tileLength, gridPoint.y * this.tileLength);
     }
 
 }

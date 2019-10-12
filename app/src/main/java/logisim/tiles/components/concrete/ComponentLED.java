@@ -12,7 +12,7 @@ public class ComponentLED extends Component {
     }
 
     @Override
-    public String getComponentName() {
+    public String getName() {
         return "LED";
     }
 

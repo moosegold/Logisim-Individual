@@ -23,6 +23,11 @@ public class EmptyTile extends Tile {
         //drawBounds();
     }
 
+    @Override
+    public boolean isReplaceable() {
+        return true;
+    }
+
     public void drawBounds() {
         canvas.drawRect(new Rect(0, 0, grid.tileLength - 1, grid.tileLength - 1), Paints.TILE_BORDER_COLOR_DEBUG);
     }

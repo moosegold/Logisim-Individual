@@ -3,7 +3,6 @@ package logisim;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.Display;
@@ -42,8 +41,6 @@ public class ScreenManager {
     private ScreenPoint dragPoint;
     public ComponentSidebarButton dragSourceButton;
 
-    private String statusBarText = "";
-
     public ScreenManager(Display display, ImageView imageView, Context appContext) {
         this.partitions = new LinkedList<>();
         this.display = display;
@@ -71,7 +68,7 @@ public class ScreenManager {
         stateManager.update(screenPoint, touchAction);
         IScreenPartition touchedPartiton = getTouchedPartition(screenPoint);
         if (touchedPartiton != null) {
-            LocalPoint localPoint = touchedPartiton.localizePoint(screenPoint);
+            LocalPoint localPoint = touchedPartiton.convertToLocalPoint(screenPoint);
             if (action == MotionEvent.ACTION_UP) {
                 // Fire the release touch event on the partition released on before
                 // firing on other partitions.
@@ -87,39 +84,28 @@ public class ScreenManager {
             // Fire the release touch event on all partitions so they can reset their state.
             for (IScreenPartition part : partitions)
                 if (part != touchedPartiton)
-                    part.processTouchUp(part.localizePoint(screenPoint));
+                    part.processTouchUp(part.convertToLocalPoint(screenPoint));
             this.draggedObject = null;
         }
 
         this.draw();
     }
 
-    private void drawDraggedObject() {
-        Bitmap image = this.draggedObject;
-        if (image != null) {
-            Rect orgRect = new Rect(0, 0, image.getWidth(), image.getHeight());
-            Rect transformRect = new Rect(
-                    dragPoint.x - image.getWidth() / 3,
-                    dragPoint.y - image.getHeight() / 3,
-                    dragPoint.x + image.getWidth() / 3,
-                    dragPoint.y + image.getHeight() / 3);
-            mainCanvas.drawBitmap(this.draggedObject, orgRect, transformRect, Paints.IMAGE_TRANSLUCENT);
-        }
-    }
+//    private void drawDraggedObject() {
+//        Bitmap image = this.draggedObject;
+//        if (image != null) {
+//            Rect orgRect = new Rect(0, 0, image.getWidth(), image.getHeight());
+//            Rect transformRect = new Rect(
+//                    dragPoint.x - image.getWidth() / 3,
+//                    dragPoint.y - image.getHeight() / 3,
+//                    dragPoint.x + image.getWidth() / 3,
+//                    dragPoint.y + image.getHeight() / 3);
+//            mainCanvas.drawBitmap(this.draggedObject, orgRect, transformRect, Paints.IMAGE_TRANSLUCENT);
+//        }
+//    }
 
     public void setDraggedObject(Bitmap image) {
         this.draggedObject = image;
-    }
-
-    public void setStatusBarText(String text) {
-        if (text == null)
-            statusBarText = "";
-        else
-            statusBarText = text;
-    }
-
-    public String getStatusBarText() {
-        return statusBarText;
     }
 
     private IScreenPartition getTouchedPartition(ScreenPoint screenPoint) {
@@ -141,7 +127,7 @@ public class ScreenManager {
             debugText.addText(partition.getName() + " size: " + partition.getSize());
             mainCanvas.drawBitmap(partition.getPartitionBitmap(), origin.x, origin.y, Paints.IMAGE_OPAQUE);
         }
-        drawDraggedObject();
+//        drawDraggedObject();
         stateManager.draw();
         debugText.draw(mainCanvas);
         this.imageView.setImageBitmap(this.mainImage);

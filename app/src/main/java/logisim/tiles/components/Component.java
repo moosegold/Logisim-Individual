@@ -4,12 +4,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 
+import logisim.tiles.IDraggable;
 import logisim.util.GridPoint;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.tiles.Tile;
 
-public abstract class Component extends Tile implements ILogicComponent {
+public abstract class Component extends Tile implements ILogicComponent, IDraggable {
 
     public Component(Tile tile) {
         super(tile);
@@ -23,10 +24,12 @@ public abstract class Component extends Tile implements ILogicComponent {
 
     public abstract int getRresource();
 
-    public abstract String getComponentName();
-
     public final Bitmap getComponentImage() {
         return BitmapFactory.decodeResource(grid.screenManager.appContext.getResources(), getRresource());
+    }
+
+    public boolean isReplaceable() {
+        return false;
     }
 
     @Override

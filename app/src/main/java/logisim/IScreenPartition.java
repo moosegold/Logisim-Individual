@@ -14,9 +14,9 @@ public interface IScreenPartition {
 
     void processTouchDrag(LocalPoint localPoint);
 
-    boolean touchInBounds(LocalPoint localPoint);
+    boolean containsTouch(ScreenPoint screenPoint);
 
-    LocalPoint localizePoint(ScreenPoint globalPoint);
+    LocalPoint convertToLocalPoint(ScreenPoint globalPoint);
 
     void draw();
 

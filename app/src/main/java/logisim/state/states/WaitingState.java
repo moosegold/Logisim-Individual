@@ -1,7 +1,10 @@
-package logisim.state;
+package logisim.state.states;
 
 import android.graphics.Canvas;
 
+import logisim.ScreenManager;
+import logisim.state.IStateHolder;
+import logisim.state.StateManager;
 import logisim.util.ScreenPoint;
 import logisim.util.TouchAction;
 
@@ -18,6 +21,11 @@ public class WaitingState implements IStateHolder {
     }
 
     @Override
+    public void initState() {
+
+    }
+
+    @Override
     public void finalizeState() {
 
     }
@@ -28,7 +36,7 @@ public class WaitingState implements IStateHolder {
     }
 
     @Override
-    public void setStateManager(StateManager stateManager) {
+    public void setManagers(StateManager stateManager, ScreenManager screenManager) {
         
     }
 }

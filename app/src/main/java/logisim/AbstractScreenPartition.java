@@ -27,14 +27,21 @@ public abstract class AbstractScreenPartition implements IScreenPartition {
     }
 
     @Override
-    public final boolean touchInBounds(LocalPoint localPoint) {
+    public final boolean containsTouch(ScreenPoint screenPoint) {
         Rect bounds = new Rect(0, 0, size.width, size.height);
+        LocalPoint localPoint = convertToLocalPoint(screenPoint);
         return bounds.contains(localPoint.x, localPoint.y);
     }
 
-    public final LocalPoint localizePoint(ScreenPoint globalPoint) {
+    public final LocalPoint convertToLocalPoint(ScreenPoint globalPoint) {
         LocalPoint newPoint = new LocalPoint(globalPoint.x, globalPoint.y);
         newPoint.offset(-origin.x, -origin.y);
+        return newPoint;
+    }
+
+    public final ScreenPoint convertToScreenPoint(LocalPoint localPoint) {
+        ScreenPoint newPoint = new ScreenPoint(localPoint.x, localPoint.y);
+        newPoint.offset(origin.x, origin.y);
         return newPoint;
     }
 

@@ -1,14 +1,12 @@
-package logisim.state;
+package logisim.state.states;
 
 import android.graphics.Canvas;
-import android.view.MotionEvent;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import logisim.Grid;
 import logisim.tiles.Tile;
-import logisim.tiles.components.Component;
 import logisim.util.GridPoint;
 import logisim.util.LocalPoint;
 import logisim.util.ScreenPoint;
@@ -17,28 +15,26 @@ import logisim.util.TouchAction;
 /**
  * Starts a sequence of states for when the user interacts with a component on the grid.
  */
-public class GridComponentTouchState implements IStateHolder {
+public class GridComponentTouchState extends AbstractStateHolder {
 
     private final static int DRAG_START_DELAY_MS = 500;
 
-    private StateManager stateManager;
-    private boolean isValid;
-
     private Tile startGridPoint;
+    private ScreenPoint touchPoint;
     private Timer pressHoldTimer = new Timer();
 
     private Grid grid;
 
-    public GridComponentTouchState(Grid grid, Tile tile) {
+    public GridComponentTouchState(Grid grid, Tile tile, ScreenPoint screenPoint) {
         this.grid = grid;
         this.startGridPoint = tile;
-        isValid = startGridPoint instanceof Component;
+        touchPoint = screenPoint;
         pressHoldTimer.schedule(new DragCountdownTimerTask(this), DRAG_START_DELAY_MS);
     }
 
     @Override
     public void update(ScreenPoint screenPoint, TouchAction action) {
-        LocalPoint localPoint = grid.localizePoint(screenPoint);
+        LocalPoint localPoint = grid.convertToLocalPoint(screenPoint);
         GridPoint touchedGridPoint = grid.convertToGridPoint(localPoint);
 
         // The user is no longer touching the screen, invalidating this state.
@@ -56,17 +52,19 @@ public class GridComponentTouchState implements IStateHolder {
     private void setToWireMode() {
         // setState to a WireDrawState
         this.isValid = false;
-        System.out.println("Changed to wire mode!");
     }
 
     private void setToDragMode() {
-        // setState to GridMoveState
-        this.isValid = false;
-        System.out.println("Changed to drag mode!");
+        stateManager.setState(new TileMoveDragState(startGridPoint, grid, touchPoint));
     }
 
     @Override
     public void drawState(Canvas mainCanvas) {
+
+    }
+
+    @Override
+    public void initState() {
 
     }
 
@@ -78,11 +76,6 @@ public class GridComponentTouchState implements IStateHolder {
     @Override
     public boolean isValid() {
         return isValid;
-    }
-
-    @Override
-    public void setStateManager(StateManager stateManager) {
-        this.stateManager = stateManager;
     }
 
 

@@ -12,7 +12,7 @@ public class ORGate extends CommutativeComponent {
     }
 
     @Override
-    public String getComponentName() {
+    public String getName() {
         return "OR Gate";
     }
 

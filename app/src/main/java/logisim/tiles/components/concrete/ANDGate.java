@@ -12,7 +12,7 @@ public class ANDGate extends CommutativeComponent {
     }
 
     @Override
-    public String getComponentName() {
+    public String getName() {
         return "AND Gate";
     }
 

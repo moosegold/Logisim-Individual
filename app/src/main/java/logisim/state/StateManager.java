@@ -2,17 +2,23 @@ package logisim.state;
 
 import android.graphics.Canvas;
 
+import logisim.ScreenManager;
+import logisim.state.states.WaitingState;
 import logisim.util.ScreenPoint;
 import logisim.util.TouchAction;
 
 public class StateManager {
 
-    private Canvas canvas;
+    final ScreenManager screenManager;
+    final Canvas canvas;
 
     private IStateHolder currentState = new WaitingState();
 
-    public StateManager(Canvas canvas) {
-        this.canvas = canvas;
+    private String statusBarText = "";
+
+    public StateManager(ScreenManager screenManager) {
+        this.screenManager = screenManager;
+        this.canvas = this.screenManager.getCanvas();
     }
 
     public void update(ScreenPoint screenPoint, TouchAction action) {
@@ -46,8 +52,20 @@ public class StateManager {
      */
     public void setState(IStateHolder newState) {
         currentState.finalizeState();
-        newState.setStateManager(this);
+        newState.setManagers(this, screenManager);
         currentState = newState;
+        newState.initState();
+    }
+
+    public void setStatusBarText(String text) {
+        if (text == null)
+            statusBarText = "";
+        else
+            statusBarText = text;
+    }
+
+    public String getStatusBarText() {
+        return statusBarText;
     }
 
 }

@@ -2,6 +2,7 @@ package logisim.state;
 
 import android.graphics.Canvas;
 
+import logisim.ScreenManager;
 import logisim.util.ScreenPoint;
 import logisim.util.TouchAction;
 
@@ -18,6 +19,8 @@ public interface IStateHolder {
      */
     void drawState(Canvas mainCanvas);
 
+    void initState();
+
     /**
      * Perform cleanup tasks when switching states.
      */
@@ -28,6 +31,6 @@ public interface IStateHolder {
      */
     boolean isValid();
 
-    void setStateManager(StateManager stateManager);
+    void setManagers(StateManager stateManager, ScreenManager screenManager);
 
 }

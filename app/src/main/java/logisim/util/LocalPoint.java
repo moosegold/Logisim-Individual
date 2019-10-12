@@ -6,4 +6,8 @@ public class LocalPoint extends SpecializedPoint {
         super(x, y);
     }
 
+    public LocalPoint copy() {
+        return new LocalPoint(x, y);
+    }
+
 }
