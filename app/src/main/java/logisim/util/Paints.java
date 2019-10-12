@@ -78,19 +78,34 @@ public class Paints {
             .setColor(Color.BLACK)
             .setStyle(Paint.Style.STROKE).makePaint();
 
+    public static final int TILE_OUTLINE_WIDTH = 3;
+
     /**
      * The outline color for tiles if a dragged component can be placed in that grid square.
      */
     public static final Paint TILE_OUTLINE_ALLOW_PLACE = PaintBuilder.start()
-            .setColor(Color.BLUE).makePaint();
+            .setColor(Color.BLUE)
+            .setStrokeWidth(TILE_OUTLINE_WIDTH).makePaint();
 
     /**
      * The outline color for tiles if a dragged component <b>cannot</b> be placed in that grid square.
      */
     public static final Paint TILE_OUTLINE_DENY_PLACE = PaintBuilder.start()
-            .setColor(Color.RED).makePaint();
+            .setColor(Color.RED)
+            .setStrokeWidth(TILE_OUTLINE_WIDTH).makePaint();
 
     public static final Paint TILE_OUTLINE_SOURCE = PaintBuilder.start()
-            .setColor(Color.GREEN).makePaint();
+            .setColor(Color.GREEN)
+            .setStrokeWidth(TILE_OUTLINE_WIDTH).makePaint();
+
+    //----------------------------------------------------------------------------------------------
+    // BITMAP DRAWING - for calls to drawBitmap
+    //----------------------------------------------------------------------------------------------
+
+
+    public static final Paint IMAGE_OPAQUE = new Paint();
+
+    public static final Paint IMAGE_TRANSLUCENT = PaintBuilder.start()
+            .setAlpha(150).makePaint();
 
 }

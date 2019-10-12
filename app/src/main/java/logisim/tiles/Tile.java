@@ -24,12 +24,9 @@ public abstract class Tile {
     private Bitmap image;
     protected Canvas canvas;
 
-    final Paint defaultBackgroundColor = new Paint();
-
     Tile(GridPoint gridPoint, Grid grid) {
         this.gridPoint = gridPoint;
         this.grid = grid;
-        this.defaultBackgroundColor.setColor(Color.WHITE);
         this.debugText = new DebugTextDrawer(false);
     }
 

@@ -14,6 +14,7 @@ import java.util.LinkedList;
 
 import logisim.sidebar.ComponentSidebarButton;
 import logisim.util.DebugTextDrawer;
+import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
 import logisim.util.Util;
@@ -88,13 +89,13 @@ public class ScreenManager {
     private void drawDraggedObject() {
         Bitmap image = this.draggedObject;
         if (image != null) {
-            Rect orgRect = new Rect(0, 0, image.getWidth(), image.getWidth());
+            Rect orgRect = new Rect(0, 0, image.getWidth(), image.getHeight());
             Rect transformRect = new Rect(
-                    dragPoint.x - image.getWidth() / 4,
-                    dragPoint.y - image.getWidth() / 4,
-                    dragPoint.x + image.getWidth() / 4,
-                    dragPoint.y + image.getWidth() / 4);
-            mainCanvas.drawBitmap(this.draggedObject, orgRect, transformRect, null);
+                    dragPoint.x - image.getWidth() / 3,
+                    dragPoint.y - image.getHeight() / 3,
+                    dragPoint.x + image.getWidth() / 3,
+                    dragPoint.y + image.getHeight() / 3);
+            mainCanvas.drawBitmap(this.draggedObject, orgRect, transformRect, Paints.IMAGE_TRANSLUCENT);
         }
     }
 
@@ -136,7 +137,7 @@ public class ScreenManager {
             debugText.addText("");
             debugText.addText(partition.getName() + " origin: " + partition.getOrigin());
             debugText.addText(partition.getName() + " size: " + partition.getSize());
-            mainCanvas.drawBitmap(partition.getPartitionBitmap(), origin.x, origin.y, new Paint());
+            mainCanvas.drawBitmap(partition.getPartitionBitmap(), origin.x, origin.y, Paints.IMAGE_OPAQUE);
         }
         drawDraggedObject();
         debugText.draw(mainCanvas);

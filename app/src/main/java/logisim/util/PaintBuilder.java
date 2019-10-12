@@ -43,4 +43,9 @@ public class PaintBuilder {
         return this;
     }
 
+    public PaintBuilder setStrokeWidth(int px) {
+        paint.setStrokeWidth(px);
+        return this;
+    }
+
 }

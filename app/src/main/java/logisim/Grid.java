@@ -203,7 +203,7 @@ public class Grid extends AbstractScreenPartition {
             tile.draw();
             tile.drawDebugText();
             ScreenPoint drawPoint = convertToScreenPoint(tile.getPoint());
-            canvas.drawBitmap(tile.getImage(), drawPoint.x, drawPoint.y, null);
+            canvas.drawBitmap(tile.getImage(), drawPoint.x, drawPoint.y, Paints.IMAGE_OPAQUE);
         }
         if (touchInProgress && dragPoint != null && getTile(dragPoint) != null) {
             drawTileOutline(getTile(dragPoint), tileIsComponent(dragPoint) ? Paints.TILE_OUTLINE_DENY_PLACE : Paints.TILE_OUTLINE_ALLOW_PLACE);

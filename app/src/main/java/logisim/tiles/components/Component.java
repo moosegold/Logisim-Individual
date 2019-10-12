@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 
 import logisim.util.GridPoint;
+import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.tiles.Tile;
 
@@ -43,6 +44,6 @@ public abstract class Component extends Tile implements ILogicComponent {
         transformRect.offsetTo(0, grid.tileLength / 4);
         debugText.addText("ipos:" + new ScreenPoint(transformRect.left, transformRect.top));
         debugText.addText("isize:" + new ScreenPoint(transformRect.width(), transformRect.height()));
-        canvas.drawBitmap(componentImage, orgRect, transformRect, null);
+        canvas.drawBitmap(componentImage, orgRect, transformRect, Paints.IMAGE_OPAQUE);
     }
 }

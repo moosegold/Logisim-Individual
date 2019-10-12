@@ -20,15 +20,15 @@ public class EmptyTile extends Tile {
     public void draw() {
         super.draw();
         fillTile();
-        drawBounds();
+        //drawBounds();
     }
 
     public void drawBounds() {
-        canvas.drawRect(new Rect(0, 0, grid.tileLength - 1, grid.tileLength - 1), Paints.TILE_OUTLINE_SOURCE);
+        canvas.drawRect(new Rect(0, 0, grid.tileLength - 1, grid.tileLength - 1), Paints.TILE_BORDER_COLOR_DEBUG);
     }
 
     private void fillTile() {
-        canvas.drawRect(getRect(), defaultBackgroundColor);
+        canvas.drawRect(getRect(), Paints.GRID_BACKGROUND_COLOR);
     }
 
 }

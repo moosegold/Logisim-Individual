@@ -84,7 +84,7 @@ public class ComponentSidebarButton extends SidebarButton {
         transformImgRect.offsetTo(0, size.height / 4);
         debugText.addText("Img size: " + new Size(transformImgRect.width(), transformImgRect.height()));
         debugText.addText("Img at: " + new ScreenPoint(transformImgRect.left, transformImgRect.top));
-        canvas.drawBitmap(getComponentImage(), orgImgRect, transformImgRect, null);
+        canvas.drawBitmap(getComponentImage(), orgImgRect, transformImgRect, Paints.IMAGE_OPAQUE);
     }
 
 }
