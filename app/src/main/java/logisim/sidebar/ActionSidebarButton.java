@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import java.util.List;
 
 import logisim.AbstractScreenPartition;
+import logisim.util.LocalPoint;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
@@ -14,7 +15,7 @@ public class ActionSidebarButton extends SidebarButton {
 
     private final ITapProcedure action;
 
-    public ActionSidebarButton(ScreenPoint point, Size size, String label, AbstractScreenPartition partition, ITapProcedure action) {
+    public ActionSidebarButton(LocalPoint point, Size size, String label, AbstractScreenPartition partition, ITapProcedure action) {
         super(point, size, label, partition);
         this.action = action;
     }

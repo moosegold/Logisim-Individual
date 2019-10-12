@@ -25,4 +25,9 @@ public class WaitingState implements IStateHolder {
     public boolean isValid() {
         return false;
     }
+
+    @Override
+    public void setStateManager(StateManager stateManager) {
+        
+    }
 }

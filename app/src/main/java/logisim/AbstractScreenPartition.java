@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import logisim.util.LocalPoint;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
 
@@ -26,9 +27,15 @@ public abstract class AbstractScreenPartition implements IScreenPartition {
     }
 
     @Override
-    public final boolean touchInBounds(ScreenPoint localPoint) {
+    public final boolean touchInBounds(LocalPoint localPoint) {
         Rect bounds = new Rect(0, 0, size.width, size.height);
         return bounds.contains(localPoint.x, localPoint.y);
+    }
+
+    public final LocalPoint localizePoint(ScreenPoint globalPoint) {
+        LocalPoint newPoint = new LocalPoint(globalPoint.x, globalPoint.y);
+        newPoint.offset(-origin.x, -origin.y);
+        return newPoint;
     }
 
     @Override

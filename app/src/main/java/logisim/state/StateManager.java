@@ -30,9 +30,18 @@ public class StateManager {
      */
     public void setStateIfNecessary(IStateHolder newState) {
         if (!currentState.isValid()) {
-            currentState.finalizeState();
-            currentState = newState;
+            setStateIfNecessary(newState);
         }
+    }
+
+    /**
+     * Sets the state without checking if the current state is valid or not.
+     * Used for states that have multiple steps, like touching a grid tile -> drag.
+     */
+    public void setState(IStateHolder newState) {
+        currentState.finalizeState();
+        newState.setStateManager(this);
+        currentState = newState;
     }
 
 }

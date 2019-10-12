@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 import android.widget.ImageView;
 
 import logisim.sidebar.ComponentSidebar;
+import logisim.state.StateManager;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
 
@@ -20,6 +21,7 @@ public class LogiSim extends Activity {
     public static final boolean DEBUG_TEXT_ENABLED = false;
 
     private ScreenManager screenManager;
+    private StateManager stateManager;
 
     /**
      * Base android setup.
@@ -33,6 +35,7 @@ public class LogiSim extends Activity {
     public void setupScreenManager() {
         ImageView imageView = new ImageView(this);
         this.screenManager = new ScreenManager(getWindowManager().getDefaultDisplay(), imageView, this.getApplicationContext());
+        this.stateManager = new StateManager(screenManager.getCanvas());
 
         calculateSidebarWidth();
 
@@ -61,7 +64,7 @@ public class LogiSim extends Activity {
         // How many tiles will fit vertically given the width of the tile. Tiles are squares.
         int heightTiles = size.height / tileLengthPx - 1;
 
-        Grid grid = new Grid(widthTiles, heightTiles, tileLengthPx, screenManager, origin, size);
+        Grid grid = new Grid(widthTiles, heightTiles, tileLengthPx, stateManager, screenManager, origin, size);
         screenManager.addPartition(grid);
         return grid;
     }

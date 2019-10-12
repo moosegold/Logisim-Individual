@@ -10,6 +10,7 @@ import java.lang.reflect.Constructor;
 import logisim.AbstractScreenPartition;
 import logisim.Grid;
 import logisim.util.GridPoint;
+import logisim.util.LocalPoint;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
@@ -23,7 +24,7 @@ public class ComponentSidebarButton extends SidebarButton {
 
     private Constructor componentConstructor;
 
-    public ComponentSidebarButton(ScreenPoint point, int length, String componentName, int Rresource, AbstractScreenPartition partition, Class<? extends Component> representedComponent) {
+    public ComponentSidebarButton(LocalPoint point, int length, String componentName, int Rresource, AbstractScreenPartition partition, Class<? extends Component> representedComponent) {
         super(point, new Size(length, length), componentName, partition);
         this.Rresouce = Rresource;
         try {

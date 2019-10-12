@@ -13,6 +13,7 @@ import java.util.List;
 
 import logisim.AbstractScreenPartition;
 import logisim.util.DebugTextDrawer;
+import logisim.util.LocalPoint;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
@@ -26,12 +27,12 @@ public abstract class SidebarButton {
     private Bitmap image;
     protected Canvas canvas;
 
-    public final ScreenPoint point;
+    public final LocalPoint point;
     public final Size size;
 
     protected final DebugTextDrawer debugText;
 
-    public SidebarButton(ScreenPoint point, Size size, String label, AbstractScreenPartition partition) {
+    public SidebarButton(LocalPoint point, Size size, String label, AbstractScreenPartition partition) {
         this.point = point;
         this.size = size;
         this.label = label;
@@ -67,12 +68,12 @@ public abstract class SidebarButton {
         canvas.drawRect(bounds, Paints.BUTTON_BORDER_COLOR);
     }
 
-    public ScreenPoint getCenterForPartition() {
-        return new ScreenPoint(point.x + size.width / 2, point.y + size.height / 2);
+    public LocalPoint getCenterForPartition() {
+        return new LocalPoint(point.x + size.width / 2, point.y + size.height / 2);
     }
 
-    public ScreenPoint getLocalCenter() {
-        return new ScreenPoint(size.width / 2, size.height / 2);
+    public LocalPoint getLocalCenter() {
+        return new LocalPoint(size.width / 2, size.height / 2);
     }
 
     public Bitmap getImage() {

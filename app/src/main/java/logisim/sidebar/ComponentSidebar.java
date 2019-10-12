@@ -8,6 +8,7 @@ import java.util.LinkedList;
 
 import logisim.AbstractScreenPartition;
 import logisim.Grid;
+import logisim.util.LocalPoint;
 import logisim.util.Paints;
 import logisim.R;
 import logisim.ScreenManager;
@@ -99,7 +100,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
         } else {
             yPos = lastSaveButtonAdded.point.y - insetPx - height;
         }
-        lastSaveButtonAdded = new ActionSidebarButton(new ScreenPoint(xPos, yPos), new Size(width, height), label, this,
+        lastSaveButtonAdded = new ActionSidebarButton(new LocalPoint(xPos, yPos), new Size(width, height), label, this,
                 () -> {
                     String feedback = "";
                     if (saveMode) {
@@ -120,7 +121,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
         int xPos = getButtonLength() / 2 + insetPx * 2;
         int yPos = lastSaveButtonAdded.point.y;
         int height = screenManager.getDisplaySize().height - yPos - insetPx;
-        buttons.addLast(new ActionSidebarButton(new ScreenPoint(xPos, yPos), new Size(width, height), "Save", this,
+        buttons.addLast(new ActionSidebarButton(new LocalPoint(xPos, yPos), new Size(width, height), "Save", this,
                 () -> {
             saveMode = !saveMode;
             screenManager.setStatusBarText("Select save slot");
@@ -152,7 +153,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
         drawLoadLabel();
     }
 
-    public void processTouchUp(ScreenPoint localPoint) {
+    public void processTouchUp(LocalPoint localPoint) {
         screenManager.setStatusBarText("");
         SidebarButton touchedButton = getButtonPress(localPoint);
         screenManager.dragSourceButton = null;
@@ -165,7 +166,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
         }
     }
 
-    public void processTouchDown(ScreenPoint localPoint) {
+    public void processTouchDown(LocalPoint localPoint) {
         SidebarButton touchedButton = getButtonPress(localPoint);
         if (!touchInProgress) {
             this.buttonBeingTouched = touchedButton;
@@ -173,13 +174,13 @@ public class ComponentSidebar extends AbstractScreenPartition {
         touchInProgress = true;
     }
 
-    public void processTouchDrag(ScreenPoint localPoint) {
+    public void processTouchDrag(LocalPoint localPoint) {
         if (touchInProgress && buttonBeingTouched != null) {
             buttonBeingTouched.handleDragStart();
         }
     }
 
-    private SidebarButton getButtonPress(ScreenPoint localPoint) {
+    private SidebarButton getButtonPress(LocalPoint localPoint) {
         for (SidebarButton button : buttons) {
             Rect buttonBounds = Util.getRect(button.point, button.size);
 

@@ -1,5 +1,8 @@
 package logisim.tiles.components;
 
+import logisim.util.LocalPoint;
+import logisim.util.ScreenPoint;
+
 public interface ILogicComponent {
 
     /**

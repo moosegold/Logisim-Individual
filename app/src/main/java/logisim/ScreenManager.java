@@ -14,6 +14,7 @@ import java.util.LinkedList;
 
 import logisim.sidebar.ComponentSidebarButton;
 import logisim.util.DebugTextDrawer;
+import logisim.util.LocalPoint;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
@@ -44,7 +45,7 @@ public class ScreenManager {
         this.display = display;
         this.appContext = appContext;
         this.imageView = imageView;
-        debugText = new DebugTextDrawer(new ScreenPoint(1, getDisplaySize().height - 4), true);
+        debugText = new DebugTextDrawer(new LocalPoint(1, getDisplaySize().height - 4), true);
         debugText.drawDownwards = false;
         createCanvas();
     }
@@ -63,7 +64,7 @@ public class ScreenManager {
         this.dragPoint = screenPoint;
         IScreenPartition touchedPartiton = getTouchedPartition(screenPoint);
         if (touchedPartiton != null) {
-            ScreenPoint localPoint = getLocalPoint(touchedPartiton, screenPoint);
+            LocalPoint localPoint = touchedPartiton.localizePoint(screenPoint);
             if (action == MotionEvent.ACTION_UP) {
                 // Fire the release touch event on the partition released on before
                 // firing on other partitions.
@@ -79,7 +80,7 @@ public class ScreenManager {
             // Fire the release touch event on all partitions so they can reset their state.
             for (IScreenPartition part : partitions)
                 if (part != touchedPartiton)
-                    part.processTouchUp(getLocalPoint(part, screenPoint));
+                    part.processTouchUp(part.localizePoint(screenPoint));
             this.draggedObject = null;
         }
 
@@ -123,12 +124,6 @@ public class ScreenManager {
         return null;
     }
 
-    private ScreenPoint getLocalPoint(IScreenPartition partition, ScreenPoint screenPoint) {
-        ScreenPoint newPoint = screenPoint.copy();
-        newPoint.offset(-partition.getOrigin().x, -partition.getOrigin().y);
-        return newPoint;
-    }
-
     public void draw() {
         debugText.addText("Display Size: " + getDisplaySize());
         for (IScreenPartition partition : partitions) {
@@ -150,6 +145,10 @@ public class ScreenManager {
                 Bitmap.Config.ARGB_8888);
 
         this.mainCanvas = new Canvas(this.mainImage);
+    }
+
+    public Canvas getCanvas() {
+        return mainCanvas;
     }
 
     private boolean touchIsInside(IScreenPartition partition, ScreenPoint screenPoint) {

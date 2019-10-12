@@ -12,19 +12,19 @@ public class DebugTextDrawer {
 
     private static final int VERTICAL_SPACING = 1;
 
-    private ScreenPoint startPos;
+    private LocalPoint startPos;
     private boolean active;
 
     public boolean drawDownwards = true;
     private List<String> textToDraw = new LinkedList<>();
 
-    public DebugTextDrawer(ScreenPoint pos, boolean active) {
+    public DebugTextDrawer(LocalPoint pos, boolean active) {
         this.startPos = pos;
         this.active = active;
     }
 
     public DebugTextDrawer(boolean active) {
-        this(new ScreenPoint(1, 1), active);
+        this(new LocalPoint(1, 1), active);
     }
 
     public void addText(String string) {

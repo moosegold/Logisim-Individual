@@ -15,6 +15,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import logisim.state.GridTouchState;
+import logisim.state.StateManager;
 import logisim.tiles.components.Component;
 import logisim.tiles.components.concrete.ANDGate;
 import logisim.tiles.components.concrete.NOTGate;
@@ -37,15 +38,12 @@ public class Grid extends AbstractScreenPartition {
     public final int tileLength;
 
     public ScreenManager screenManager;
+    public StateManager stateManager;
 
     private List<Tile> tiles;
 
-    private Timer pressHoldTimer = new Timer();
-
 //    private Component dragSource;
 //    private GridPoint dragPoint;
-
-    GridTouchState touchState = new GridTouchState();
 
     /**
      * The tile touched when a touch or drag began.
@@ -53,7 +51,7 @@ public class Grid extends AbstractScreenPartition {
     private GridPoint tileBeingTouched;
     private boolean touchInProgress;
 
-    public Grid(int width, int height, int tileLength, ScreenManager screenManager, ScreenPoint origin, Size size) {
+    public Grid(int width, int height, int tileLength, StateManager stateManager, ScreenManager screenManager, ScreenPoint origin, Size size) {
         super(origin, size, screenManager);
         this.gridSize = new Size(width, height);
         this.tileLength = tileLength;
@@ -105,73 +103,87 @@ public class Grid extends AbstractScreenPartition {
     }
 
     public void processTouchUp(ScreenPoint localPoint) {
-        GridPoint gridPoint = convertToGridPoint(localPoint);
-        if (tileBeingTouched != null && tileBeingTouched.equals(gridPoint)) {
-            System.out.println("[" + getName() + "] Touched tile: " + gridPoint);
-            Tile tileTouched = getTileTouched(localPoint);
-            if (tileTouched != null) {
-                tileTouched.handleTouch();
-            }
-        }
-        if (screenManager.dragSourceButton != null) {
-            if (!tileIsComponent(gridPoint))
-                screenManager.dragSourceButton.createNewComponent(gridPoint, this);
-            screenManager.setStatusBarText("");
-        }
-        if (dragSource != null) {
-            Tile dest = getTile(gridPoint);
-            if (!touchInBounds(localPoint)) {
-                // Reset the drag source if the component is dragged of the grid.
-                // This is either the sidebar, or the right and bottom edges of the screen.
-                clearTile(dragSource);
-            } else if (dest != null && !tileIsComponent(gridPoint)) {
-                moveTile(dragSource, dest);
-            }
-            dragSource = null;
-            screenManager.setStatusBarText("");
-        }
-        tileBeingTouched = null;
-        touchInProgress = false;
-        pressHoldTimer.cancel();
+
     }
 
     public void processTouchDown(ScreenPoint localPoint) {
-        GridPoint gridTouch = convertToGridPoint(localPoint);
-        if (!touchInProgress) {
-            tileBeingTouched = gridTouch;
-            pressHoldTimer = new Timer();
-            pressHoldTimer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    beginDrag();
-                }
-            }, 500);
-        }
-        touchInProgress = true;
+        Tile touchedTile = getTileTouched(localPoint);
+        if (touchedTile instanceof Component)
+            stateManager.setStateIfNecessary(new GridTouchState(this, touchedTile));
     }
 
     public void processTouchDrag(ScreenPoint localPoint) {
-        GridPoint gridTouch = convertToGridPoint(localPoint);
-        dragPoint = gridTouch;
-        if (tileBeingTouched != null && !tileBeingTouched.equals(gridTouch)) {
-            pressHoldTimer.cancel();
-            beginWireCreation();
-        }
-    }
-
-    private void beginDrag() {
-        if (getTile(tileBeingTouched) instanceof Component) {
-            Component touchedComponent = (Component) getTile(tileBeingTouched);
-            dragSource = touchedComponent;
-            screenManager.setDraggedObject(touchedComponent.getComponentImage());
-            screenManager.setStatusBarText(touchedComponent.getComponentName());
-            screenManager.draw();
-        }
-    }
-
-    private void beginWireCreation() {
 
     }
+
+//    public void processTouchUp(ScreenPoint localPoint) {
+//        GridPoint gridPoint = convertToGridPoint(localPoint);
+//        if (tileBeingTouched != null && tileBeingTouched.equals(gridPoint)) {
+//            System.out.println("[" + getName() + "] Touched tile: " + gridPoint);
+//            Tile tileTouched = getTileTouched(localPoint);
+//            if (tileTouched != null) {
+//                tileTouched.handleTouch();
+//            }
+//        }
+//        if (screenManager.dragSourceButton != null) {
+//            if (!tileIsComponent(gridPoint))
+//                screenManager.dragSourceButton.createNewComponent(gridPoint, this);
+//            screenManager.setStatusBarText("");
+//        }
+//        if (dragSource != null) {
+//            Tile dest = getTile(gridPoint);
+//            if (!touchInBounds(localPoint)) {
+//                // Reset the drag source if the component is dragged of the grid.
+//                // This is either the sidebar, or the right and bottom edges of the screen.
+//                clearTile(dragSource);
+//            } else if (dest != null && !tileIsComponent(gridPoint)) {
+//                moveTile(dragSource, dest);
+//            }
+//            dragSource = null;
+//            screenManager.setStatusBarText("");
+//        }
+//        tileBeingTouched = null;
+//        touchInProgress = false;
+//        pressHoldTimer.cancel();
+//    }
+//
+//    public void processTouchDown(ScreenPoint localPoint) {
+//        GridPoint gridTouch = convertToGridPoint(localPoint);
+//        if (!touchInProgress) {
+//            tileBeingTouched = gridTouch;
+//            pressHoldTimer = new Timer();
+//            pressHoldTimer.schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+//                    beginDrag();
+//                }
+//            }, 500);
+//        }
+//        touchInProgress = true;
+//    }
+//
+//    public void processTouchDrag(ScreenPoint localPoint) {
+//        GridPoint gridTouch = convertToGridPoint(localPoint);
+//        dragPoint = gridTouch;
+//        if (tileBeingTouched != null && !tileBeingTouched.equals(gridTouch)) {
+//            pressHoldTimer.cancel();
+//            beginWireCreation();
+//        }
+//    }
+
+//    private void beginDrag() {
+//        if (getTile(tileBeingTouched) instanceof Component) {
+//            Component touchedComponent = (Component) getTile(tileBeingTouched);
+//            dragSource = touchedComponent;
+//            screenManager.setDraggedObject(touchedComponent.getComponentImage());
+//            screenManager.setStatusBarText(touchedComponent.getComponentName());
+//            screenManager.draw();
+//        }
+//    }
+
+//    private void beginWireCreation() {
+//
+//    }
 
     private Tile getTileTouched(ScreenPoint localPoint) {
         GridPoint gridPoint = convertToGridPoint(localPoint);
@@ -207,13 +219,13 @@ public class Grid extends AbstractScreenPartition {
             ScreenPoint drawPoint = convertToScreenPoint(tile.getPoint());
             canvas.drawBitmap(tile.getImage(), drawPoint.x, drawPoint.y, Paints.IMAGE_OPAQUE);
         }
-        if (touchInProgress && dragPoint != null && getTile(dragPoint) != null) {
-            drawTileOutline(getTile(dragPoint), tileIsComponent(dragPoint) ? Paints.TILE_OUTLINE_DENY_PLACE : Paints.TILE_OUTLINE_ALLOW_PLACE);
-            if (dragSource != null) {
-                drawTileOutline(dragSource, Paints.TILE_OUTLINE_SOURCE);
-            }
-        }
-        drawStatusBar();
+//        if (touchInProgress && dragPoint != null && getTile(dragPoint) != null) {
+//            drawTileOutline(getTile(dragPoint), tileIsComponent(dragPoint) ? Paints.TILE_OUTLINE_DENY_PLACE : Paints.TILE_OUTLINE_ALLOW_PLACE);
+//            if (dragSource != null) {
+//                drawTileOutline(dragSource, Paints.TILE_OUTLINE_SOURCE);
+//            }
+//        }
+//        drawStatusBar();
     }
 
     private void drawTileOutline(Tile tile, Paint paint) {

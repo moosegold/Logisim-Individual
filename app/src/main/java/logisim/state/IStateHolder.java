@@ -9,7 +9,7 @@ public interface IStateHolder {
     /**
      * Receives touch events that update the state, or may create a new one.
      */
-    void update(ScreenPoint globalPoint);
+    void update(ScreenPoint screenPoint);
 
     /**
      * Allows the state to render things relevant to it. For dragging, this renders
@@ -26,5 +26,7 @@ public interface IStateHolder {
      * Can this state be replaced at this point?
      */
     boolean isValid();
+
+    void setStateManager(StateManager stateManager);
 
 }
