@@ -23,6 +23,7 @@ import logisim.tiles.components.concrete.ORGate;
 import logisim.tiles.Tile;
 import logisim.tiles.EmptyTile;
 import logisim.util.GridPoint;
+import logisim.util.LocalPoint;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
@@ -102,17 +103,17 @@ public class Grid extends AbstractScreenPartition {
         return gridPoint.y * (gridSize.width + 1) + gridPoint.x;
     }
 
-    public void processTouchUp(ScreenPoint localPoint) {
+    public void processTouchUp(LocalPoint localPoint) {
 
     }
 
-    public void processTouchDown(ScreenPoint localPoint) {
+    public void processTouchDown(LocalPoint localPoint) {
         Tile touchedTile = getTileTouched(localPoint);
         if (touchedTile instanceof Component)
             stateManager.setStateIfNecessary(new GridTouchState(this, touchedTile));
     }
 
-    public void processTouchDrag(ScreenPoint localPoint) {
+    public void processTouchDrag(LocalPoint localPoint) {
 
     }
 
@@ -185,7 +186,7 @@ public class Grid extends AbstractScreenPartition {
 //
 //    }
 
-    private Tile getTileTouched(ScreenPoint localPoint) {
+    private Tile getTileTouched(LocalPoint localPoint) {
         GridPoint gridPoint = convertToGridPoint(localPoint);
         Tile tile = getTile(gridPoint);
         return tile;
@@ -298,7 +299,7 @@ public class Grid extends AbstractScreenPartition {
         this.canvas.drawRect(new Rect(0, 0, getSize().width, getSize().height), Paints.GRID_BACKGROUND_COLOR);
     }
 
-    private GridPoint convertToGridPoint(ScreenPoint localPoint) {
+    private GridPoint convertToGridPoint(LocalPoint localPoint) {
         int gridPointX = localPoint.x / tileLength;
         int gridPointY = localPoint.y / tileLength;
         return new GridPoint(gridPointX, gridPointY);
