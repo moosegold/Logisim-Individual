@@ -36,6 +36,7 @@ public class LogiSim extends Activity {
         ImageView imageView = new ImageView(this);
         this.screenManager = new ScreenManager(getWindowManager().getDefaultDisplay(), imageView, this.getApplicationContext());
         this.stateManager = new StateManager(screenManager.getCanvas());
+        screenManager.setStateManager(this.stateManager);
 
         calculateSidebarWidth();
 

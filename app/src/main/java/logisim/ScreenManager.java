@@ -13,11 +13,13 @@ import android.widget.ImageView;
 import java.util.LinkedList;
 
 import logisim.sidebar.ComponentSidebarButton;
+import logisim.state.StateManager;
 import logisim.util.DebugTextDrawer;
 import logisim.util.LocalPoint;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
+import logisim.util.TouchAction;
 import logisim.util.Util;
 
 public class ScreenManager {
@@ -28,6 +30,8 @@ public class ScreenManager {
     private Bitmap mainImage;
     private ImageView imageView;
     protected DebugTextDrawer debugText;
+
+    private StateManager stateManager;
 
     public final Context appContext;
 
@@ -61,7 +65,10 @@ public class ScreenManager {
     }
 
     public void handleTouch(ScreenPoint screenPoint, int action) {
-        this.dragPoint = screenPoint;
+        TouchAction touchAction = TouchAction.get(action);
+        if (touchAction == null)
+            return;
+        stateManager.update(screenPoint, touchAction);
         IScreenPartition touchedPartiton = getTouchedPartition(screenPoint);
         if (touchedPartiton != null) {
             LocalPoint localPoint = touchedPartiton.localizePoint(screenPoint);
@@ -135,6 +142,7 @@ public class ScreenManager {
             mainCanvas.drawBitmap(partition.getPartitionBitmap(), origin.x, origin.y, Paints.IMAGE_OPAQUE);
         }
         drawDraggedObject();
+        stateManager.draw();
         debugText.draw(mainCanvas);
         this.imageView.setImageBitmap(this.mainImage);
     }
@@ -157,4 +165,7 @@ public class ScreenManager {
         return partitionBounds.contains(screenPoint.x, screenPoint.y);
     }
 
+    public void setStateManager(StateManager stateManager) {
+        this.stateManager = stateManager;
+    }
 }

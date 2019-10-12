@@ -3,11 +3,12 @@ package logisim.state;
 import android.graphics.Canvas;
 
 import logisim.util.ScreenPoint;
+import logisim.util.TouchAction;
 
 public class WaitingState implements IStateHolder {
 
     @Override
-    public void update(ScreenPoint screenPoint) {
+    public void update(ScreenPoint screenPoint, TouchAction action) {
 
     }
 

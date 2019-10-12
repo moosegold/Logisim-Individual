@@ -3,6 +3,7 @@ package logisim.state;
 import android.graphics.Canvas;
 
 import logisim.util.ScreenPoint;
+import logisim.util.TouchAction;
 
 public class StateManager {
 
@@ -14,8 +15,13 @@ public class StateManager {
         this.canvas = canvas;
     }
 
-    public void update(ScreenPoint screenPoint) {
-        currentState.update(screenPoint);
+    public void update(ScreenPoint screenPoint, TouchAction action) {
+        if (currentState.isValid())
+            currentState.update(screenPoint, action);
+        if (!currentState.isValid()) {
+            currentState.finalizeState();
+            setState(new WaitingState());
+        }
     }
 
     public void draw() {
@@ -30,7 +36,7 @@ public class StateManager {
      */
     public void setStateIfNecessary(IStateHolder newState) {
         if (!currentState.isValid()) {
-            setStateIfNecessary(newState);
+            setState(newState);
         }
     }
 

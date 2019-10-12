@@ -11,10 +11,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import logisim.state.GridTouchState;
+import logisim.state.GridComponentTouchState;
 import logisim.state.StateManager;
 import logisim.tiles.components.Component;
 import logisim.tiles.components.concrete.ANDGate;
@@ -56,6 +54,7 @@ public class Grid extends AbstractScreenPartition {
         super(origin, size, screenManager);
         this.gridSize = new Size(width, height);
         this.tileLength = tileLength;
+        this.stateManager = stateManager;
         this.screenManager = screenManager;
         this.tiles = new LinkedList<>();
         resetGrid();
@@ -110,7 +109,7 @@ public class Grid extends AbstractScreenPartition {
     public void processTouchDown(LocalPoint localPoint) {
         Tile touchedTile = getTileTouched(localPoint);
         if (touchedTile instanceof Component)
-            stateManager.setStateIfNecessary(new GridTouchState(this, touchedTile));
+            stateManager.setStateIfNecessary(new GridComponentTouchState(this, touchedTile));
     }
 
     public void processTouchDrag(LocalPoint localPoint) {
@@ -299,7 +298,7 @@ public class Grid extends AbstractScreenPartition {
         this.canvas.drawRect(new Rect(0, 0, getSize().width, getSize().height), Paints.GRID_BACKGROUND_COLOR);
     }
 
-    private GridPoint convertToGridPoint(LocalPoint localPoint) {
+    public GridPoint convertToGridPoint(LocalPoint localPoint) {
         int gridPointX = localPoint.x / tileLength;
         int gridPointY = localPoint.y / tileLength;
         return new GridPoint(gridPointX, gridPointY);

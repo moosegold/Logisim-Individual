@@ -82,7 +82,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
         int xPos = insetPx;
         // Buttons are squares.
         int length = getButtonLength();
-        lastComponentButtonAdded = new ComponentSidebarButton(new ScreenPoint(xPos, yPos), length, componentName, Rresource, this, representation);
+        lastComponentButtonAdded = new ComponentSidebarButton(new LocalPoint(xPos, yPos), length, componentName, Rresource, this, representation);
         buttons.addLast(lastComponentButtonAdded);
     }
 

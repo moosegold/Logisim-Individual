@@ -3,13 +3,14 @@ package logisim.state;
 import android.graphics.Canvas;
 
 import logisim.util.ScreenPoint;
+import logisim.util.TouchAction;
 
 public interface IStateHolder {
 
     /**
      * Receives touch events that update the state, or may create a new one.
      */
-    void update(ScreenPoint screenPoint);
+    void update(ScreenPoint screenPoint, TouchAction action);
 
     /**
      * Allows the state to render things relevant to it. For dragging, this renders
