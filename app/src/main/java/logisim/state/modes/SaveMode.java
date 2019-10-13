@@ -14,9 +14,8 @@ public class SaveMode extends AbstractMode {
 
     public SaveMode(StateManager stateManager) {
         super(stateManager);
+        stateManager.setStatusBarText("Select A Save Slot");
     }
-
-
 
     @Override
     public void processTap(Object touchedObject) {
@@ -41,7 +40,7 @@ public class SaveMode extends AbstractMode {
 
     @Override
     public void finalizeMode() {
-
+        stateManager.setStatusBarText("");
     }
 
 }

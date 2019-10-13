@@ -21,6 +21,7 @@ public class MoveMode extends AbstractMode {
         super(stateManager);
         this.start = start;
         this.grid = grid;
+        stateManager.setStatusBarText(start.getName());
     }
 
     @Override
@@ -65,6 +66,6 @@ public class MoveMode extends AbstractMode {
 
     @Override
     public void finalizeMode() {
-
+        stateManager.setStatusBarText("");
     }
 }

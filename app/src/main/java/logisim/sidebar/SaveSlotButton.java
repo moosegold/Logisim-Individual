@@ -40,7 +40,7 @@ public class SaveSlotButton extends SidebarButton {
             boolean result = sidebar.grid.loadGrid(label);
             feedback = result ? "Loaded layout " + label : "Failed to load layout " + label;
         }
-        sidebar.stateManager.setState(new ShowMessageState(feedback));
+        sidebar.stateManager.setStatusBarText(feedback);
         sidebar.stateManager.resetMode();
     }
 }

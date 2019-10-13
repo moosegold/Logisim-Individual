@@ -22,7 +22,7 @@ public class StateManager {
     public final DebugTextDrawer debugText;
 
 //    private IStateHolder currentState = new WaitingState();
-    private IMode mode = new NormalMode();
+    private IMode mode = new NormalMode(this);
 
     private boolean touchInProgress;
     private boolean dragInProgress;
@@ -56,12 +56,13 @@ public class StateManager {
         } else if (action == TouchAction.DOWN) {
             if (!touchInProgress) {
                 touchedObjectStart = screenManager.getTouchedObject(screenPoint);
-                touchedObjectStart.onTouch();
+                if (touchedObjectStart != null)
+                    touchedObjectStart.onTouch();
             }
             touchInProgress = true;
         } else if (action == TouchAction.MOVE) {
             mode.updateDrag(screenPoint);
-            if (!dragInProgress)
+            if (!dragInProgress && touchedObjectStart != null)
                 draggedObject = touchedObjectStart.onDrag();
             dragInProgress = true;
         }
@@ -123,7 +124,7 @@ public class StateManager {
         touchedObjectStart = null;
         draggedObject = null;
         dragPoint = null;
-        setMode(new NormalMode());
+        setMode(new NormalMode(this));
     }
 
     public void setMode(IMode mode) {

@@ -21,11 +21,11 @@ public class AddMode extends AbstractMode {
         super(stateManager);
         this.button = button;
         this.grid = grid;
+        stateManager.setStatusBarText(button.label);
     }
 
     @Override
     public void updateDrag(ScreenPoint screenPoint) {
-
     }
 
     @Override
@@ -62,6 +62,6 @@ public class AddMode extends AbstractMode {
 
     @Override
     public void finalizeMode() {
-
+        stateManager.setStatusBarText("");
     }
 }
