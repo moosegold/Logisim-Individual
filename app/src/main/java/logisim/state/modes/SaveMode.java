@@ -16,14 +16,14 @@ public class SaveMode extends AbstractMode {
     }
 
     @Override
-    public void process(IStateHolder state) {
-        require(state instanceof SidebarButtonTouchState || state instanceof WaitingState);
+    public void processTouch(Object touchedObject) {
+        if (!(touchedObject instanceof SaveSlotButton))
+            stateManager.resetMode();
+    }
 
-        if (state instanceof SidebarButtonTouchState) {
-            SidebarButtonTouchState touchState = (SidebarButtonTouchState) state;
-            require(touchState.getButton() instanceof SaveSlotButton ||
-                    touchState.getButton() instanceof SaveButton);
-        }
+    @Override
+    public void processDrag(Object source, Object dest) {
+        stateManager.resetMode();
     }
 
     @Override

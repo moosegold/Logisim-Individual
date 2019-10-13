@@ -9,7 +9,12 @@ import logisim.state.IStateHolder;
 public class NormalMode implements IMode {
 
     @Override
-    public void process(IStateHolder state) {
+    public void processTouch(Object touchedObject) {
+
+    }
+
+    @Override
+    public void processDrag(Object source, Object dest) {
 
     }
 

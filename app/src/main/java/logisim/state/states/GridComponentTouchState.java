@@ -29,7 +29,7 @@ public class GridComponentTouchState extends AbstractStateHolder {
         this.grid = grid;
         this.startGridPoint = tile;
         touchPoint = screenPoint;
-        pressHoldTimer.schedule(new DragCountdownTimerTask(this), DRAG_START_DELAY_MS);
+//        pressHoldTimer.schedule(new DragCountdownTimerTask(this), DRAG_START_DELAY_MS);
     }
 
     @Override

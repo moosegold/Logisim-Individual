@@ -107,6 +107,11 @@ public class Grid extends AbstractScreenPartition {
 
     }
 
+    @Override
+    public Object getTouchedObject(LocalPoint localPoint) {
+        return getTile(convertToGridPoint(localPoint));
+    }
+
 //    public void processTouchUp(ScreenPoint localPoint) {
 //        GridPoint gridPoint = convertToGridPoint(localPoint);
 //        if (tileBeingTouched != null && tileBeingTouched.equals(gridPoint)) {

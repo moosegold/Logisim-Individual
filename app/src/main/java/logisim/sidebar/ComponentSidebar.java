@@ -177,6 +177,11 @@ public class ComponentSidebar extends AbstractScreenPartition {
 
     }
 
+    @Override
+    public Object getTouchedObject(LocalPoint localPoint) {
+        return getButtonPress(localPoint);
+    }
+
 //    public void processTouchUp(LocalPoint localPoint) {
 //        screenManager.setStatusBarText("");
 //        SidebarButton touchedButton = getButtonPress(localPoint);

@@ -109,6 +109,15 @@ public class ScreenManager {
         this.draggedObject = image;
     }
 
+    public Object getTouchedObject(ScreenPoint screenPoint) {
+        IScreenPartition partition = getTouchedPartition(screenPoint);
+        if (partition != null) {
+            return partition.getTouchedObject(partition.convertToLocalPoint(screenPoint));
+        } else {
+            return null;
+        }
+    }
+
     private IScreenPartition getTouchedPartition(ScreenPoint screenPoint) {
         for (IScreenPartition partition : partitions) {
             if (touchIsInside(partition, screenPoint)) {

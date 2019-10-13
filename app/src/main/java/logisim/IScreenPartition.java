@@ -16,6 +16,8 @@ public interface IScreenPartition {
 
     boolean containsTouch(ScreenPoint screenPoint);
 
+    Object getTouchedObject(LocalPoint localPoint);
+
     LocalPoint convertToLocalPoint(ScreenPoint globalPoint);
 
     void draw();
