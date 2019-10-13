@@ -48,7 +48,7 @@ public class StateManager {
      * The current state is the first thing to be updated after a touch so a state
      * can become invalidated and updated on the same press.
      */
-    public void setStateIfNecessary(IStateHolder newState) {
+    public void trySetState(IStateHolder newState) {
         if (!currentState.isValid()) {
             setState(newState);
         }
@@ -63,6 +63,10 @@ public class StateManager {
         newState.setManagers(this, screenManager);
         currentState = newState;
         newState.initState();
+    }
+
+    public IStateHolder getCurrentState() {
+        return currentState;
     }
 
     public void setStatusBarText(String text) {

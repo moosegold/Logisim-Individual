@@ -9,6 +9,8 @@ import java.util.LinkedList;
 import logisim.AbstractScreenPartition;
 import logisim.Grid;
 import logisim.state.StateManager;
+import logisim.state.states.SaveModeState;
+import logisim.state.states.ShowMessageState;
 import logisim.state.states.SidebarButtonTouchState;
 import logisim.util.LocalPoint;
 import logisim.util.Paints;
@@ -42,7 +44,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
     private SidebarButton buttonBeingTouched;
     private boolean touchInProgress;
 
-    private boolean saveMode = false;
+    public boolean saveMode = false;
 
     private final Grid grid;
 
@@ -113,7 +115,8 @@ public class ComponentSidebar extends AbstractScreenPartition {
                         feedback = result ? "Loaded layout " + label : "Failed to load layout " + label;
                     }
 //                    screenManager.setStatusBarText(feedback);
-                    System.out.println(feedback);
+//                    System.out.println(feedback);
+                    stateManager.setState(new ShowMessageState(feedback));
                 });
         buttons.addLast(lastSaveButtonAdded);
     }
@@ -161,7 +164,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
 
     public void processTouchDown(LocalPoint localPoint) {
         SidebarButton button = getButtonPress(localPoint);
-        stateManager.setStateIfNecessary(new SidebarButtonTouchState(this, button, convertToScreenPoint(localPoint)));
+        stateManager.trySetState(new SidebarButtonTouchState(this, button, convertToScreenPoint(localPoint)));
     }
 
     public void processTouchDrag(LocalPoint localPoint) {

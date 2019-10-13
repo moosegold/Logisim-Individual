@@ -100,7 +100,7 @@ public class Grid extends AbstractScreenPartition {
     public void processTouchDown(LocalPoint localPoint) {
         Tile touchedTile = getTileTouched(localPoint);
         if (touchedTile != null && touchedTile.isDraggable())
-            stateManager.setStateIfNecessary(new GridComponentTouchState(this, touchedTile, convertToScreenPoint(localPoint)));
+            stateManager.trySetState(new GridComponentTouchState(this, touchedTile, convertToScreenPoint(localPoint)));
     }
 
     public void processTouchDrag(LocalPoint localPoint) {
