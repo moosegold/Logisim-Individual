@@ -24,7 +24,7 @@ public class ComponentSwitch extends Component {
     }
 
     @Override
-    public void handleTouch() {
+    public void onTap() {
         super.handleTouch();
         this.state = !this.state;
     }
