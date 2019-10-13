@@ -21,7 +21,6 @@ public class StateManager {
     public final ScreenManager screenManager;
     public final DebugTextDrawer debugText;
 
-//    private IStateHolder currentState = new WaitingState();
     private IMode mode = new NormalMode();
 
     private boolean touchInProgress;
@@ -67,19 +66,10 @@ public class StateManager {
             dragInProgress = true;
         }
 
-//        currentState.updateDrag(screenPoint, action);
-//        if (!currentState.isValid() && !(currentState instanceof WaitingState)) {
-//            currentState.finalizeState();
-//            setState(new WaitingState());
-//        }
     }
 
     public void draw() {
         debugText.addText("Mode: " + mode.getClass().getSimpleName());
-//        debugText.addText("State: " + currentState.getClass().getSimpleName());
-//        if (currentState.isValid()) {
-//            currentState.drawState(canvas);
-//        }
         mode.draw();
         debugText.draw(canvas);
     }
@@ -95,29 +85,6 @@ public class StateManager {
                     dragPoint.y + image.getHeight() / 3);
             canvas.drawBitmap(image, orgRect, transformRect, Paints.IMAGE_TRANSLUCENT);
         }
-    }
-
-    /**
-     * Only sets the state to newState if the current state is invalid.
-     * The current state is the first thing to be updated after a touch so a state
-     * can become invalidated and updated on the same press.
-     */
-    public void trySetState(IStateHolder newState) {
-//        if (!currentState.isValid()) {
-//            setState(newState);
-//        }
-    }
-
-    /**
-     * Sets the state without checking if the current state is valid or not.
-     * Used for states that have multiple steps, like touching a grid tile -> drag.
-     */
-    public void setState(IStateHolder newState) {
-//        currentState.finalizeState();
-//        newState.setManagers(this, screenManager);
-//        currentState = newState;
-//        newState.initState();
-//        mode.processTap(newState);
     }
 
     public void resetMode() {
@@ -148,10 +115,6 @@ public class StateManager {
     public ScreenPoint getDragPoint() {
         return dragPoint;
     }
-
-    //    public IStateHolder getCurrentState() {
-//        return currentState;
-//    }
 
     public void setStatusBarText(String text) {
         if (text == null)

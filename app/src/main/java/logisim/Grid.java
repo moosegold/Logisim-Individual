@@ -14,7 +14,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-import logisim.state.states.GridComponentTouchState;
 import logisim.state.StateManager;
 import logisim.tiles.components.Component;
 import logisim.tiles.Tile;
@@ -93,14 +92,13 @@ public class Grid extends AbstractScreenPartition {
         return gridPoint.y * (gridSize.width + 1) + gridPoint.x;
     }
 
-    public void processTouchUp(LocalPoint localPoint) {
-
+    @Override
+    public void processTouchDown(LocalPoint localPoint) {
+        
     }
 
-    public void processTouchDown(LocalPoint localPoint) {
-        Tile touchedTile = getTileTouched(localPoint);
-        if (touchedTile != null && touchedTile.isDraggable())
-            stateManager.trySetState(new GridComponentTouchState(this, touchedTile, convertToScreenPoint(localPoint)));
+    public void processTouchUp(LocalPoint localPoint) {
+
     }
 
     public void processTouchDrag(LocalPoint localPoint) {

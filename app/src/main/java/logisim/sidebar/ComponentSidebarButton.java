@@ -9,7 +9,6 @@ import java.lang.reflect.Constructor;
 
 import logisim.Grid;
 import logisim.state.modes.AddMode;
-import logisim.state.states.ComponentAddDragState;
 import logisim.tiles.IDraggable;
 import logisim.util.GridPoint;
 import logisim.util.LocalPoint;
@@ -47,6 +46,11 @@ public class ComponentSidebarButton extends SidebarButton implements IDraggable 
         drawComponentImage();
     }
 
+    @Override
+    public void handleDragStart(ScreenPoint screenPoint) {
+
+    }
+
     public Bitmap getComponentImage() {
         return BitmapFactory.decodeResource(sidebar.screenManager.appContext.getResources(), Rresouce);
     }
@@ -54,14 +58,6 @@ public class ComponentSidebarButton extends SidebarButton implements IDraggable 
     @Override
     public String getName() {
         return this.label;
-    }
-
-    @Override
-    public void handleDragStart(ScreenPoint screenPoint) {
-        sidebar.stateManager.setState(new ComponentAddDragState(this, grid, screenPoint));
-//        sidebar.screenManager.dragSourceButton = this;
-//        sidebar.screenManager.setDraggedObject(this.getComponentImage());
-//        sidebar.screenManager.setStatusBarText(this.label);
     }
 
     @Override

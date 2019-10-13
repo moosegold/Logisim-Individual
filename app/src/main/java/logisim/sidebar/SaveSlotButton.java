@@ -3,7 +3,6 @@ package logisim.sidebar;
 import android.graphics.Paint;
 
 import logisim.state.modes.SaveMode;
-import logisim.state.states.ShowMessageState;
 import logisim.util.LocalPoint;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;

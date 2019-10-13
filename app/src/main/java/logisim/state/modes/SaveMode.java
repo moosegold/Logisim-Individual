@@ -5,9 +5,6 @@ import logisim.sidebar.SaveButton;
 import logisim.sidebar.SaveSlotButton;
 import logisim.state.IStateHolder;
 import logisim.state.StateManager;
-import logisim.state.states.GridComponentTouchState;
-import logisim.state.states.SidebarButtonTouchState;
-import logisim.state.states.WaitingState;
 import logisim.util.ScreenPoint;
 
 public class SaveMode extends AbstractMode {

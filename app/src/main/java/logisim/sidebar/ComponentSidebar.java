@@ -11,8 +11,6 @@ import logisim.Grid;
 import logisim.IInteractable;
 import logisim.state.StateManager;
 import logisim.state.modes.SaveMode;
-import logisim.state.states.ShowMessageState;
-import logisim.state.states.SidebarButtonTouchState;
 import logisim.util.LocalPoint;
 import logisim.util.Paints;
 import logisim.R;
@@ -169,9 +167,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
     }
 
     public void processTouchDown(LocalPoint localPoint) {
-        SidebarButton button = getButtonPress(localPoint);
-        if (button != null)
-            stateManager.trySetState(new SidebarButtonTouchState(this, button, convertToScreenPoint(localPoint)));
+
     }
 
     public void processTouchDrag(LocalPoint localPoint) {
