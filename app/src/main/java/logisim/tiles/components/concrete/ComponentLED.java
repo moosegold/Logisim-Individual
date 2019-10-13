@@ -83,7 +83,10 @@ public class ComponentLED extends Component {
     }
 
     public List<Tile> getInputs() {
-        return Collections.singletonList(input);
+        if (input != null)
+            return Collections.singletonList(input);
+        else
+            return Collections.emptyList();
     }
 
     @Override
