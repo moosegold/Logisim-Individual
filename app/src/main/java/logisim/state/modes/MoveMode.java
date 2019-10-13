@@ -38,6 +38,11 @@ public class MoveMode extends AbstractMode {
     }
 
     @Override
+    public void draw() {
+
+    }
+
+    @Override
     public void finalizeMode() {
 
     }

@@ -18,6 +18,8 @@ public interface IMode {
 
     void processDrag(Object dest);
 
+    void draw();
+
     /**
      * Clean up before switching mode.
      */

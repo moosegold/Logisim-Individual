@@ -44,6 +44,11 @@ public class ComponentInteractMode extends AbstractMode {
     }
 
     @Override
+    public void draw() {
+
+    }
+
+    @Override
     public void finalizeMode() {
         pressHoldTimer.cancel();
     }
