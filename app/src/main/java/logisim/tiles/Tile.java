@@ -65,6 +65,10 @@ public abstract class Tile implements IInteractable {
 
     public abstract boolean isReplaceable();
 
+    public boolean canAcceptWire() {
+        return true;
+    }
+
     private void createCanvas() {
         image = Bitmap.createBitmap(grid.tileLength, grid.tileLength, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(image);

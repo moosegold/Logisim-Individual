@@ -91,6 +91,11 @@ public abstract class CommutativeComponent extends Component {
     }
 
     @Override
+    public boolean canAcceptWire() {
+        return inputs.size() < MAX_INPUTS;
+    }
+
+    @Override
     public String getAdditionalStorageData() {
         String ret = " ";
         for (Component input : inputs) {
