@@ -41,12 +41,6 @@ public class Grid extends AbstractScreenPartition {
 
     private List<Tile> tiles;
 
-    /**
-     * The tile touched when a touch or drag began.
-     */
-    private GridPoint tileBeingTouched;
-    private boolean touchInProgress;
-
     public Grid(int width, int height, int tileLength, ScreenManager screenManager, StateManager stateManager, ScreenPoint origin, Size size) {
         super(origin, size, screenManager, stateManager);
         this.gridSize = new Size(width, height);
