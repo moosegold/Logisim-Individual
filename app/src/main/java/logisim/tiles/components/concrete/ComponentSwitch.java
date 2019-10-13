@@ -1,9 +1,10 @@
 package logisim.tiles.components.concrete;
 
+import android.graphics.Canvas;
+
 import logisim.R;
 import logisim.tiles.Tile;
 import logisim.tiles.components.Component;
-import logisim.tiles.components.ILogicComponent;
 import logisim.util.LocalPoint;
 
 public class ComponentSwitch extends Component {
@@ -20,7 +21,7 @@ public class ComponentSwitch extends Component {
     }
 
     @Override
-    public void processConnection(ILogicComponent source) {
+    public void processConnection(Component source) {
 
     }
 
@@ -32,6 +33,16 @@ public class ComponentSwitch extends Component {
     @Override
     public boolean eval() {
         return state;
+    }
+
+    @Override
+    public void drawWires(Canvas canvas) {
+
+    }
+
+    @Override
+    public String getStorageID() {
+        return "switch";
     }
 
     @Override

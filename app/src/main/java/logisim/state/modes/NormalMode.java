@@ -12,7 +12,7 @@ public class NormalMode implements IMode {
 
     @Override
     public void updateDrag(ScreenPoint screenPoint) {
-//        stateManager.setStatusBarText("");
+
     }
 
     @Override

@@ -3,7 +3,6 @@ package logisim.state.modes;
 import logisim.Grid;
 import logisim.state.StateManager;
 import logisim.tiles.components.Component;
-import logisim.tiles.components.ILogicComponent;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 
@@ -30,7 +29,7 @@ public class WireMode extends AbstractMode {
     public void processDrag(Object dest) {
         if (dest instanceof Component) {
             Component component = (Component) dest;
-            component.processConnection((ILogicComponent) stateManager.getDraggedObject());
+            component.processConnection((Component) stateManager.getDraggedObject());
         }
         stateManager.resetMode();
     }

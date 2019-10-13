@@ -1,12 +1,15 @@
 package logisim.tiles.components.concrete;
 
+import android.graphics.Canvas;
+
 import logisim.R;
 import logisim.tiles.Tile;
 import logisim.tiles.components.Component;
-import logisim.tiles.components.ILogicComponent;
 import logisim.util.LocalPoint;
 
 public class ComponentLED extends Component {
+
+    private Component input;
 
     public ComponentLED(Tile tile) {
         super(tile);
@@ -18,13 +21,41 @@ public class ComponentLED extends Component {
     }
 
     @Override
-    public void processConnection(ILogicComponent source) {
+    public void processConnection(Component source) {
+        if (this.input == null || this.input != source)
+            attachWire(source);
+        else
+            detachWire();
+    }
 
+    private void attachWire(Component source) {
+        input = source;
+    }
+
+    private void detachWire() {
+        input = null;
     }
 
     @Override
     public boolean eval() {
-        return false;
+        return getInput();
+    }
+
+    private boolean getInput() {
+        if (input != null && !input.onGrid())
+            detachWire();
+        return input != null && input.eval();
+    }
+
+    @Override
+    public void drawWires(Canvas canvas) {
+        debugText.addText("i: " + input);
+        drawWire(canvas, input, this);
+    }
+
+    @Override
+    public String getStorageID() {
+        return "led";
     }
 
     @Override
@@ -47,6 +78,6 @@ public class ComponentLED extends Component {
      * routed to.
      */
     public LocalPoint getInputPosFor(Component component) {
-        return grid.convertToLocalPoint(gridPoint);
+        return convertToGridSpace(new LocalPoint((int) ((35.0 / 150) * grid.tileLength), getRect().centerY()));
     }
 }

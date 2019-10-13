@@ -8,6 +8,7 @@ import android.graphics.Rect;
 
 import logisim.Grid;
 import logisim.tiles.Tile;
+import logisim.tiles.components.Component;
 
 public class Util {
 
@@ -47,6 +48,12 @@ public class Util {
                     dragPoint.y + image.getHeight() / 3);
             canvas.drawBitmap(image, orgRect, transformRect, Paints.IMAGE_TRANSLUCENT);
         }
+    }
+
+    public static void drawWire(Canvas canvas, Grid grid, Component start, Component dest) {
+        LocalPoint startPos = start.getOutputPos();
+        LocalPoint endPos = dest.getInputPosFor(start);
+        canvas.drawLine(startPos.x - 1, startPos.y - 1, endPos.x - 1, endPos.y - 1, Paints.WIRE);
     }
 
 }

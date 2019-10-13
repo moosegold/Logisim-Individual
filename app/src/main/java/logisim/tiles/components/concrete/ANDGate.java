@@ -21,6 +21,11 @@ public class ANDGate extends CommutativeComponent {
     }
 
     @Override
+    public String getStorageID() {
+        return "and";
+    }
+
+    @Override
     public int getRresource() {
         return R.drawable.and_gate;
     }

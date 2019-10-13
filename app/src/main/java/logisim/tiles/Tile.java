@@ -11,7 +11,6 @@ import logisim.util.DebugTextDrawer;
 import logisim.Grid;
 import logisim.util.GridPoint;
 import logisim.util.LocalPoint;
-import logisim.util.ScreenPoint;
 
 /**
  * Maintains the state of something on the grid, so that it can be rendered.
@@ -25,6 +24,8 @@ public abstract class Tile implements IInteractable {
 
     private Bitmap image;
     protected Canvas canvas;
+
+    private boolean onGrid = true;
 
     Tile(GridPoint gridPoint, Grid grid) {
         this.gridPoint = gridPoint;
@@ -71,6 +72,26 @@ public abstract class Tile implements IInteractable {
 
     public Bitmap getImage() {
         return image;
+    }
+
+    public boolean onGrid() {
+        return onGrid;
+    }
+
+    public void removeFromGrid() {
+        this.onGrid = false;
+    }
+
+    /**
+     * Used to differentiate components when reading from storage.
+     * returns null if the tile is not written to disk
+     */
+    public String getStorageID() {
+        return null;
+    }
+
+    public String additionalStorageData() {
+        return "";
     }
 
     @NonNull

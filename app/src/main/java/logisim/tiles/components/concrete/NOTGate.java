@@ -21,6 +21,11 @@ public class NOTGate extends UnaryComponent {
     }
 
     @Override
+    public String getStorageID() {
+        return "not";
+    }
+
+    @Override
     public int getRresource() {
         return R.drawable.not_gate;
     }

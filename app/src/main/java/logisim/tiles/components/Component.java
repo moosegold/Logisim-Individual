@@ -2,17 +2,20 @@ package logisim.tiles.components;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Rect;
+
+import androidx.annotation.NonNull;
 
 import logisim.IInteractable;
 import logisim.state.modes.ComponentInteractMode;
 import logisim.tiles.IDraggable;
 import logisim.util.LocalPoint;
 import logisim.util.Paints;
-import logisim.util.ScreenPoint;
 import logisim.tiles.Tile;
+import logisim.util.Util;
 
-public abstract class Component extends Tile implements ILogicComponent, IDraggable, IInteractable {
+public abstract class Component extends Tile implements IDraggable, IInteractable {
 
     public Component(Tile tile) {
         super(tile);
@@ -22,13 +25,17 @@ public abstract class Component extends Tile implements ILogicComponent, IDragga
      * A wire is being dragged to the component. It is up to the component to decide what
      * to do.
      */
-    public abstract void processConnection(ILogicComponent source);
+    public abstract void processConnection(Component source);
 
     public abstract int getRresource();
 
     public abstract boolean hasOutput();
 
     public abstract boolean hasInput();
+
+    public abstract void drawWires(Canvas canvas);
+
+    public abstract boolean eval();
 
     public final Bitmap getComponentImage() {
         return BitmapFactory.decodeResource(grid.screenManager.appContext.getResources(), getRresource());
@@ -41,8 +48,6 @@ public abstract class Component extends Tile implements ILogicComponent, IDragga
     @Override
     public void draw() {
         super.draw();
-        debugText.addText("pos: " + grid.convertToLocalPoint(gridPoint));
-        debugText.addText("size: " + grid.tileLength);
         drawComponentImage();
     }
 
@@ -51,9 +56,12 @@ public abstract class Component extends Tile implements ILogicComponent, IDragga
         Rect orgRect = new Rect(0, 0, componentImage.getWidth(), componentImage.getWidth());
         Rect transformRect = new Rect(0, 0, grid.tileLength, grid.tileLength);
         transformRect.offsetTo(0, grid.tileLength / 4);
-        debugText.addText("ipos:" + new ScreenPoint(transformRect.left, transformRect.top));
-        debugText.addText("isize:" + new ScreenPoint(transformRect.width(), transformRect.height()));
         canvas.drawBitmap(componentImage, orgRect, transformRect, Paints.IMAGE_OPAQUE);
+    }
+
+    protected void drawWire(Canvas canvas, Component source, Component dest) {
+        if (source != null && dest != null)
+            Util.drawWire(canvas, grid, source, dest);
     }
 
     @Override
@@ -84,8 +92,13 @@ public abstract class Component extends Tile implements ILogicComponent, IDragga
         return convertToGridSpace(new LocalPoint((int) ((128.0 / 150) * grid.tileLength), getRect().centerY()));
     }
 
-    private LocalPoint convertToGridSpace(LocalPoint localTilePoint) {
+    protected LocalPoint convertToGridSpace(LocalPoint localTilePoint) {
         return new LocalPoint(localTilePoint.x + grid.tileLength * gridPoint.x, localTilePoint.y + grid.tileLength * gridPoint.y);
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return getName() + getPoint();
+    }
 }

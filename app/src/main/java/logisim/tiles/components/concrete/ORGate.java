@@ -4,6 +4,7 @@ package logisim.tiles.components.concrete;
 import logisim.R;
 import logisim.tiles.Tile;
 import logisim.tiles.components.CommutativeComponent;
+import logisim.tiles.components.Component;
 
 public class ORGate extends CommutativeComponent {
 
@@ -21,8 +22,12 @@ public class ORGate extends CommutativeComponent {
     }
 
     @Override
+    public String getStorageID() {
+        return "or";
+    }
+
+    @Override
     public int getRresource() {
         return R.drawable.or_gate;
     }
-
 }

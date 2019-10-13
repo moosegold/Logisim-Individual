@@ -41,6 +41,7 @@ public class MoveMode extends AbstractMode {
             if (tile.isReplaceable())
                 grid.moveTile(start, tile);
         } else {
+            start.removeFromGrid();
             grid.setTile(start.getPoint(), new EmptyTile(start));
         }
         stateManager.resetMode();
