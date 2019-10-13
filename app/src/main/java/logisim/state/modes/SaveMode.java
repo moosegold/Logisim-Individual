@@ -8,6 +8,7 @@ import logisim.state.StateManager;
 import logisim.state.states.GridComponentTouchState;
 import logisim.state.states.SidebarButtonTouchState;
 import logisim.state.states.WaitingState;
+import logisim.util.ScreenPoint;
 
 public class SaveMode extends AbstractMode {
 
@@ -15,10 +16,17 @@ public class SaveMode extends AbstractMode {
         super(stateManager);
     }
 
+
+
     @Override
     public void processTouch(Object touchedObject) {
         if (!(touchedObject instanceof SaveSlotButton))
             stateManager.resetMode();
+    }
+
+    @Override
+    public void updateDrag(ScreenPoint screenPoint) {
+
     }
 
     @Override

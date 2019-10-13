@@ -4,6 +4,7 @@ import logisim.Grid;
 import logisim.state.StateManager;
 import logisim.tiles.Tile;
 import logisim.tiles.components.Component;
+import logisim.util.ScreenPoint;
 
 public class MoveMode extends AbstractMode {
 
@@ -14,6 +15,11 @@ public class MoveMode extends AbstractMode {
         super(stateManager);
         this.start = start;
         this.grid = grid;
+    }
+
+    @Override
+    public void updateDrag(ScreenPoint screenPoint) {
+
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 
 import logisim.IInteractable;
+import logisim.state.modes.ComponentInteractMode;
 import logisim.tiles.IDraggable;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;
@@ -48,6 +49,11 @@ public abstract class Component extends Tile implements ILogicComponent, IDragga
         debugText.addText("ipos:" + new ScreenPoint(transformRect.left, transformRect.top));
         debugText.addText("isize:" + new ScreenPoint(transformRect.width(), transformRect.height()));
         canvas.drawBitmap(componentImage, orgRect, transformRect, Paints.IMAGE_OPAQUE);
+    }
+
+    @Override
+    public void onTouch() {
+        grid.stateManager.setMode(new ComponentInteractMode(grid.stateManager, this, grid));
     }
 
     @Override

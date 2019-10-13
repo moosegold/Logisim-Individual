@@ -9,7 +9,7 @@ import logisim.util.TouchAction;
 public interface IStateHolder {
 
     /**
-     * Receives touch events that update the state, or may create a new one.
+     * Receives touch events that updateDrag the state, or may create a new one.
      */
     void update(ScreenPoint screenPoint, TouchAction action);
 

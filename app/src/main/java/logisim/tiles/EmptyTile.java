@@ -29,8 +29,13 @@ public class EmptyTile extends Tile {
     }
 
     @Override
+    public void onTouch() {
+        // Do Nothing
+    }
+
+    @Override
     public void onTap() {
-        // Do nothing
+        // Do Nothing
     }
 
     @Override

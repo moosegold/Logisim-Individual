@@ -1,13 +1,13 @@
 package logisim.state.modes;
 
-
-import logisim.state.IStateHolder;
+import logisim.state.StateManager;
 import logisim.util.ScreenPoint;
 
-/**
- * Default state of the app.
- */
-public class NormalMode implements IMode {
+public class WireMode extends AbstractMode {
+
+    public WireMode(StateManager stateManager) {
+        super(stateManager);
+    }
 
     @Override
     public void updateDrag(ScreenPoint screenPoint) {
@@ -28,5 +28,4 @@ public class NormalMode implements IMode {
     public void finalizeMode() {
 
     }
-
 }

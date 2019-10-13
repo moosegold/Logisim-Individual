@@ -9,6 +9,8 @@ import logisim.util.ScreenPoint;
  */
 public interface IMode {
 
+    void updateDrag(ScreenPoint screenPoint);
+
     /**
      * Update mode with the current state.
      */

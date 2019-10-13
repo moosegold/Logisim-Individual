@@ -65,6 +65,11 @@ public class ComponentSidebarButton extends SidebarButton implements IDraggable 
     }
 
     @Override
+    public void onTouch() {
+        // Do Nothing
+    }
+
+    @Override
     public void onTap() {
         // Do Nothing
     }

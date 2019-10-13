@@ -57,16 +57,18 @@ public class StateManager {
         } else if (action == TouchAction.DOWN) {
             if (!touchInProgress) {
                 touchedObjectStart = screenManager.getTouchedObject(screenPoint);
+                touchedObjectStart.onTouch();
             }
             touchInProgress = true;
         } else if (action == TouchAction.MOVE) {
+            mode.updateDrag(screenPoint);
             if (!dragInProgress)
                 draggedObject = touchedObjectStart.onDrag();
             dragInProgress = true;
             dragPoint = screenPoint;
         }
 
-//        currentState.update(screenPoint, action);
+//        currentState.updateDrag(screenPoint, action);
 //        if (!currentState.isValid() && !(currentState instanceof WaitingState)) {
 //            currentState.finalizeState();
 //            setState(new WaitingState());
@@ -125,6 +127,7 @@ public class StateManager {
     public void setMode(IMode mode) {
         this.mode.finalizeMode();
         this.mode = mode;
+        screenManager.draw();
     }
 
     public IMode getMode() {

@@ -6,6 +6,8 @@ public interface IInteractable {
 
     void onTap();
 
+    void onTouch();
+
     IDraggable onDrag();
 
 }

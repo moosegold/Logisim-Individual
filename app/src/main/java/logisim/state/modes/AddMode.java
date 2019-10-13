@@ -6,6 +6,7 @@ import logisim.sidebar.SidebarButton;
 import logisim.state.StateManager;
 import logisim.tiles.Tile;
 import logisim.tiles.components.Component;
+import logisim.util.ScreenPoint;
 
 public class AddMode extends AbstractMode {
 
@@ -16,6 +17,11 @@ public class AddMode extends AbstractMode {
         super(stateManager);
         this.button = button;
         this.grid = grid;
+    }
+
+    @Override
+    public void updateDrag(ScreenPoint screenPoint) {
+
     }
 
     @Override

@@ -65,6 +65,11 @@ public abstract class SidebarButton implements IInteractable {
     public void drawBackground() {}
 
     @Override
+    public void onTouch() {
+        // Do Nothing
+    }
+
+    @Override
     public IDraggable onDrag() {
         return null;
     }
