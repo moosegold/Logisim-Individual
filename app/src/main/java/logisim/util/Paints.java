@@ -29,10 +29,18 @@ public class Paints {
             .setTextSize(DEBUG_TEXT_SIZE).makePaint();
 
     /**
-     * For text drawn in the save buttons
+     * For text drawn in the save button when in load mode, and for save slot buttons
      */
     public static final Paint SAVE_BUTTON_TEXT = PaintBuilder.start()
             .setColor(Color.BLUE)
+            .setTextSize(STANDARD_TEXT_SIZE)
+            .setBold(true).makePaint();
+
+    /**
+     * Save button text color when in save mode
+     */
+    public static final Paint SAVE_MODE_SAVE_BUTTON_TEXT = PaintBuilder.start()
+            .setColor(Color.WHITE)
             .setTextSize(STANDARD_TEXT_SIZE)
             .setBold(true).makePaint();
 
@@ -58,6 +66,9 @@ public class Paints {
 
     public static final Paint SIDEBAR_BACKGROUND_COLOR = PaintBuilder.start()
             .setColor(Color.GRAY).makePaint();
+
+    public static final Paint SAVE_MODE_SAVE_BUTTON_BACKGROUND_COLOR = PaintBuilder.start()
+            .setColor(Color.BLUE).makePaint();
 
 
     //----------------------------------------------------------------------------------------------
