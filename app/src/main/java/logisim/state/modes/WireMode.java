@@ -39,6 +39,10 @@ public class WireMode extends AbstractMode {
         stateManager.resetMode();
     }
 
+    // There is currently a bug here. It is possible to create a loop through a series
+    // of difficult to reproduce steps, but I don't have time to come up with a fix.
+    // This will keep the app out of that state for most situations.
+    // If a loop occurs, the app will crash as soon as a LED is connected and evaluated.
     private boolean isLoopSafe(Tile source, Tile dest) {
         for (Tile input : source.getInputs()) {
             if (input.equals(dest))
