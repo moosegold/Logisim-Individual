@@ -14,7 +14,7 @@ public interface IMode {
     /**
      * Update mode with the current state.
      */
-    void processTouch(Object touchedObject);
+    void processTap(Object touchedObject);
 
     void processDrag(Object dest);
 

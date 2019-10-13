@@ -34,7 +34,7 @@ public class ComponentInteractMode extends AbstractMode {
     }
 
     @Override
-    public void processTouch(Object touchedObject) {
+    public void processTap(Object touchedObject) {
         stateManager.resetMode();
     }
 

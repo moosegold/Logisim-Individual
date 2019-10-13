@@ -15,7 +15,7 @@ public class NormalMode implements IMode {
     }
 
     @Override
-    public void processTouch(Object touchedObject) {
+    public void processTap(Object touchedObject) {
 
     }
 

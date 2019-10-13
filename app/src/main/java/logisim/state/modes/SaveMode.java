@@ -19,7 +19,7 @@ public class SaveMode extends AbstractMode {
 
 
     @Override
-    public void processTouch(Object touchedObject) {
+    public void processTap(Object touchedObject) {
         if (!(touchedObject instanceof SaveSlotButton))
             stateManager.resetMode();
     }

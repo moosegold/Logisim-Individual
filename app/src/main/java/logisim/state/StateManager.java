@@ -6,8 +6,6 @@ import android.graphics.Rect;
 
 import logisim.IInteractable;
 import logisim.ScreenManager;
-import logisim.sidebar.SaveButton;
-import logisim.sidebar.SidebarButton;
 import logisim.state.modes.IMode;
 import logisim.state.modes.NormalMode;
 import logisim.tiles.IDraggable;
@@ -19,7 +17,7 @@ import logisim.util.TouchAction;
 
 public class StateManager {
 
-    private final Canvas canvas;
+    public final Canvas canvas;
     public final ScreenManager screenManager;
     public final DebugTextDrawer debugText;
 
@@ -43,6 +41,7 @@ public class StateManager {
 
     public void update(ScreenPoint screenPoint, TouchAction action) {
 
+        dragPoint = screenPoint;
         if (action == TouchAction.UP) {
             touchInProgress = false;
             dragInProgress = false;
@@ -50,7 +49,7 @@ public class StateManager {
             if (touchedObject != null && touchedObjectStart == touchedObject) {
                 IMode tempMode = mode;
                 touchedObject.onTap();
-                tempMode.processTouch(touchedObjectStart);
+                tempMode.processTap(touchedObjectStart);
             } else {
                 mode.processDrag(touchedObject);
             }
@@ -65,7 +64,6 @@ public class StateManager {
             if (!dragInProgress)
                 draggedObject = touchedObjectStart.onDrag();
             dragInProgress = true;
-            dragPoint = screenPoint;
         }
 
 //        currentState.updateDrag(screenPoint, action);
@@ -81,6 +79,7 @@ public class StateManager {
 //        if (currentState.isValid()) {
 //            currentState.drawState(canvas);
 //        }
+        mode.draw();
         debugText.draw(canvas);
     }
 
@@ -117,10 +116,13 @@ public class StateManager {
 //        newState.setManagers(this, screenManager);
 //        currentState = newState;
 //        newState.initState();
-//        mode.processTouch(newState);
+//        mode.processTap(newState);
     }
 
     public void resetMode() {
+        touchedObjectStart = null;
+        draggedObject = null;
+        dragPoint = null;
         setMode(new NormalMode());
     }
 
@@ -134,7 +136,19 @@ public class StateManager {
         return mode;
     }
 
-//    public IStateHolder getCurrentState() {
+    public IInteractable getTouchedObjectStart() {
+        return touchedObjectStart;
+    }
+
+    public IDraggable getDraggedObject() {
+        return draggedObject;
+    }
+
+    public ScreenPoint getDragPoint() {
+        return dragPoint;
+    }
+
+    //    public IStateHolder getCurrentState() {
 //        return currentState;
 //    }
 

@@ -1,12 +1,16 @@
 package logisim.state.modes;
 
+import android.graphics.Canvas;
+
 import logisim.Grid;
 import logisim.sidebar.ComponentSidebarButton;
 import logisim.sidebar.SidebarButton;
 import logisim.state.StateManager;
 import logisim.tiles.Tile;
 import logisim.tiles.components.Component;
+import logisim.util.Paints;
 import logisim.util.ScreenPoint;
+import logisim.util.Util;
 
 public class AddMode extends AbstractMode {
 
@@ -25,8 +29,8 @@ public class AddMode extends AbstractMode {
     }
 
     @Override
-    public void processTouch(Object touchedObject) {
-
+    public void processTap(Object touchedObject) {
+        stateManager.resetMode();
     }
 
     @Override
@@ -41,7 +45,19 @@ public class AddMode extends AbstractMode {
 
     @Override
     public void draw() {
+        ScreenPoint dragPoint = stateManager.getDragPoint();
+        Util.drawDraggedObject(stateManager.canvas, button.getComponentImage(), dragPoint);
+        drawTileOutlines(stateManager.canvas);
 
+    }
+
+    private void drawTileOutlines(Canvas mainCanvas) {
+        ScreenPoint dragPoint = stateManager.getDragPoint();
+        Tile tileOver = grid.getTile(grid.convertToGridPoint(dragPoint));
+        if (grid.containsTouch(dragPoint) && tileOver != null) {
+            Util.drawTileOutline(tileOver, grid, mainCanvas,
+                    tileOver.isReplaceable() ? Paints.TILE_OUTLINE_ALLOW_PLACE : Paints.TILE_OUTLINE_DENY_PLACE);
+        }
     }
 
     @Override

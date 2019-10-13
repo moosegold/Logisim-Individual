@@ -15,7 +15,7 @@ public class WireMode extends AbstractMode {
     }
 
     @Override
-    public void processTouch(Object touchedObject) {
+    public void processTap(Object touchedObject) {
 
     }
 
@@ -26,7 +26,7 @@ public class WireMode extends AbstractMode {
 
     @Override
     public void draw() {
-        
+
     }
 
     @Override
