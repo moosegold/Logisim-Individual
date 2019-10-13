@@ -45,6 +45,7 @@ public abstract class SidebarButton {
         debugText.addText("Button Loc: " + point);
         debugText.addText("Button Size: " + size);
 
+        drawBackground();
         drawLabel();
         drawBounds();
 
@@ -60,6 +61,10 @@ public abstract class SidebarButton {
     public abstract void handleTap();
 
     public abstract void drawLabel();
+
+    public void drawBackground() {
+
+    }
 
     private void drawBounds() {
         Rect bounds = new Rect(0, 0, size.width - 1, size.height - 1);
