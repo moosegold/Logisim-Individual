@@ -35,8 +35,6 @@ public abstract class Tile implements IInteractable {
         this(tile.getPoint(), tile.grid);
     }
 
-    public void handleTouch() {};
-
     public GridPoint getPoint() {
         return gridPoint.copy();
     }
