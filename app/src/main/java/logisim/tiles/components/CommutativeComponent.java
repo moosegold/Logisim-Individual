@@ -7,6 +7,7 @@ import java.util.List;
 import logisim.tiles.Tile;
 import logisim.tiles.components.concrete.ANDGate;
 import logisim.tiles.components.concrete.ORGate;
+import logisim.util.LocalPoint;
 
 /**
  * Refers to a component, where the order of inputs is unimportant.
@@ -57,6 +58,24 @@ public abstract class CommutativeComponent extends Component {
             return inputs.get(input).eval();
         else
             return false;
+    }
+
+    @Override
+    public boolean hasInput() {
+        return true;
+    }
+
+    @Override
+    public boolean hasOutput() {
+        return true;
+    }
+
+    /**
+     * Returns the point local to grid partition of the input that the wire should be
+     * routed to.
+     */
+    public LocalPoint getInputPosFor(Component component) {
+        return grid.convertToLocalPoint(gridPoint);
     }
 
 }

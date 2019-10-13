@@ -89,6 +89,10 @@ public class Paints {
             .setColor(Color.BLACK)
             .setStyle(Paint.Style.STROKE).makePaint();
 
+    public static final Paint WIRE = PaintBuilder.start()
+            .setStrokeWidth(3)
+            .setColor(Color.BLACK).makePaint();
+
     public static final int TILE_OUTLINE_WIDTH = 3;
 
     /**

@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import logisim.IInteractable;
 import logisim.state.modes.ComponentInteractMode;
 import logisim.tiles.IDraggable;
+import logisim.util.LocalPoint;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.tiles.Tile;
@@ -25,6 +26,10 @@ public abstract class Component extends Tile implements ILogicComponent, IDragga
 
     public abstract int getRresource();
 
+    public abstract boolean hasOutput();
+
+    public abstract boolean hasInput();
+
     public final Bitmap getComponentImage() {
         return BitmapFactory.decodeResource(grid.screenManager.appContext.getResources(), getRresource());
     }
@@ -36,7 +41,7 @@ public abstract class Component extends Tile implements ILogicComponent, IDragga
     @Override
     public void draw() {
         super.draw();
-        debugText.addText("pos: " + grid.convertToScreenPoint(gridPoint));
+        debugText.addText("pos: " + grid.convertToLocalPoint(gridPoint));
         debugText.addText("size: " + grid.tileLength);
         drawComponentImage();
     }
@@ -64,6 +69,23 @@ public abstract class Component extends Tile implements ILogicComponent, IDragga
     @Override
     public IDraggable onDrag() {
         return this;
+    }
+
+    /**
+     * Returns the point local to grid partition of the input that the wire should be
+     * routed to.
+     */
+    public abstract LocalPoint getInputPosFor(Component component);
+
+    /**
+     * Returns the point local to the grid partition of the output that the wire should draw from
+     */
+    public LocalPoint getOutputPos() {
+        return convertToGridSpace(new LocalPoint((int) ((128.0 / 150) * grid.tileLength), getRect().centerY()));
+    }
+
+    private LocalPoint convertToGridSpace(LocalPoint localTilePoint) {
+        return new LocalPoint(localTilePoint.x + grid.tileLength * gridPoint.x, localTilePoint.y + grid.tileLength * gridPoint.y);
     }
 
 }

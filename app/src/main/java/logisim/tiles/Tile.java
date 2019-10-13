@@ -2,14 +2,15 @@ package logisim.tiles;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
+
+import androidx.annotation.NonNull;
 
 import logisim.IInteractable;
 import logisim.util.DebugTextDrawer;
 import logisim.Grid;
 import logisim.util.GridPoint;
+import logisim.util.LocalPoint;
 import logisim.util.ScreenPoint;
 
 /**
@@ -64,7 +65,7 @@ public abstract class Tile implements IInteractable {
     }
 
     public Rect getRect() {
-        ScreenPoint screenPoint = grid.convertToScreenPoint(gridPoint);
+        LocalPoint localPoint = grid.convertToLocalPoint(gridPoint);
         return new Rect(0, 0, grid.tileLength, grid.tileLength);
     }
 
@@ -72,4 +73,9 @@ public abstract class Tile implements IInteractable {
         return image;
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + getPoint();
+    }
 }

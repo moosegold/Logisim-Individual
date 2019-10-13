@@ -7,7 +7,6 @@ import android.graphics.Point;
 import android.graphics.Rect;
 
 import logisim.Grid;
-import logisim.tiles.IDraggable;
 import logisim.tiles.Tile;
 
 public class Util {
@@ -18,7 +17,7 @@ public class Util {
 
     public static void drawTileOutline(Tile tile, Grid grid, Canvas canvas, Paint paint) {
         if (tile != null) {
-            ScreenPoint pos = grid.convertToScreenPoint(tile.getPoint());
+            LocalPoint pos = grid.convertToLocalPoint(tile.getPoint());
             pos.offset(grid.getOrigin().x, grid.getOrigin().y);
             Size size = new Size(tile.getRect().width(), tile.getRect().height());
             int lineWidth = tile.getRect().width() / 8;

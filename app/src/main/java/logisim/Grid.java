@@ -212,7 +212,7 @@ public class Grid extends AbstractScreenPartition {
         for (Tile tile : tiles) {
             tile.draw();
             tile.drawDebugText();
-            ScreenPoint drawPoint = convertToScreenPoint(tile.getPoint());
+            LocalPoint drawPoint = convertToLocalPoint(tile.getPoint());
             canvas.drawBitmap(tile.getImage(), drawPoint.x, drawPoint.y, Paints.IMAGE_OPAQUE);
         }
 //        if (touchInProgress && dragPoint != null && getTile(dragPoint) != null) {
@@ -226,7 +226,7 @@ public class Grid extends AbstractScreenPartition {
 
 //    public void drawTileOutline(Tile tile, Paint paint) {
 //        if (tile != null) {
-//            ScreenPoint pos = convertToScreenPoint(tile.getPoint());
+//            ScreenPoint pos = convertToLocalPoint(tile.getPoint());
 //            Size size = new Size(tile.getRect().width(), tile.getRect().height());
 //            int lineWidth = tile.getRect().width() / 8;
 //            int lineHeight = tile.getRect().height() / 8;
@@ -304,8 +304,12 @@ public class Grid extends AbstractScreenPartition {
         return convertToGridPoint(convertToLocalPoint(screenPoint));
     }
 
+    public LocalPoint convertToLocalPoint(GridPoint gridPoint) {
+        return new LocalPoint(gridPoint.x * this.tileLength, gridPoint.y * this.tileLength);
+    }
+
     public ScreenPoint convertToScreenPoint(GridPoint gridPoint) {
-        return new ScreenPoint(gridPoint.x * this.tileLength, gridPoint.y * this.tileLength);
+        return convertToScreenPoint(convertToLocalPoint(gridPoint));
     }
 
 }

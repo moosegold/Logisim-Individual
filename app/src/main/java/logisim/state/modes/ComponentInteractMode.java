@@ -5,7 +5,6 @@ import java.util.TimerTask;
 
 import logisim.Grid;
 import logisim.state.StateManager;
-import logisim.state.states.GridComponentTouchState;
 import logisim.tiles.components.Component;
 import logisim.util.ScreenPoint;
 
@@ -28,7 +27,10 @@ public class ComponentInteractMode extends AbstractMode {
     @Override
     public void updateDrag(ScreenPoint screenPoint) {
         if (component != grid.getTile(grid.convertToGridPoint(screenPoint))) {
-            stateManager.setMode(new WireMode(stateManager));
+            if (component.hasOutput())
+                stateManager.setMode(new WireMode(stateManager, grid));
+            else
+                stateManager.resetMode();
             pressHoldTimer.cancel();
         }
     }
