@@ -4,13 +4,16 @@ import android.graphics.Canvas;
 
 import logisim.ScreenManager;
 import logisim.state.states.WaitingState;
+import logisim.util.DebugTextDrawer;
+import logisim.util.LocalPoint;
 import logisim.util.ScreenPoint;
 import logisim.util.TouchAction;
 
 public class StateManager {
 
-    final ScreenManager screenManager;
-    final Canvas canvas;
+    private final Canvas canvas;
+    public final ScreenManager screenManager;
+    public final DebugTextDrawer debugText;
 
     private IStateHolder currentState = new WaitingState();
 
@@ -19,6 +22,8 @@ public class StateManager {
     public StateManager(ScreenManager screenManager) {
         this.screenManager = screenManager;
         this.canvas = this.screenManager.getCanvas();
+        debugText = new DebugTextDrawer(new LocalPoint(screenManager.getDisplaySize().width - 4, 4), true);
+        debugText.alignRight = true;
     }
 
     public void update(ScreenPoint screenPoint, TouchAction action) {
@@ -31,8 +36,11 @@ public class StateManager {
     }
 
     public void draw() {
-        if (currentState.isValid())
+        debugText.addText("State: " + currentState.getClass().getSimpleName());
+        if (currentState.isValid()) {
             currentState.drawState(canvas);
+        }
+        debugText.draw(canvas);
     }
 
     /**

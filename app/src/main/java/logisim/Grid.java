@@ -36,9 +36,6 @@ public class Grid extends AbstractScreenPartition {
     // the length in pixels of a tile. The tiles are square so only 1 value is needed.
     public final int tileLength;
 
-    public ScreenManager screenManager;
-    public StateManager stateManager;
-
     private List<Tile> tiles;
 
 //    private Component dragSource;
@@ -50,12 +47,10 @@ public class Grid extends AbstractScreenPartition {
     private GridPoint tileBeingTouched;
     private boolean touchInProgress;
 
-    public Grid(int width, int height, int tileLength, StateManager stateManager, ScreenManager screenManager, ScreenPoint origin, Size size) {
-        super(origin, size, screenManager);
+    public Grid(int width, int height, int tileLength, ScreenManager screenManager, StateManager stateManager, ScreenPoint origin, Size size) {
+        super(origin, size, screenManager, stateManager);
         this.gridSize = new Size(width, height);
         this.tileLength = tileLength;
-        this.stateManager = stateManager;
-        this.screenManager = screenManager;
         this.tiles = new LinkedList<>();
         resetGrid();
 

@@ -9,6 +9,7 @@ import java.lang.reflect.Constructor;
 
 import logisim.AbstractScreenPartition;
 import logisim.Grid;
+import logisim.state.states.ComponentAddDragState;
 import logisim.util.GridPoint;
 import logisim.util.LocalPoint;
 import logisim.util.Paints;
@@ -24,9 +25,12 @@ public class ComponentSidebarButton extends SidebarButton {
 
     private Constructor componentConstructor;
 
-    public ComponentSidebarButton(LocalPoint point, int length, String componentName, int Rresource, AbstractScreenPartition partition, Class<? extends Component> representedComponent) {
+    private Grid grid;
+
+    public ComponentSidebarButton(LocalPoint point, int length, String componentName, int Rresource, AbstractScreenPartition partition, Class<? extends Component> representedComponent, Grid grid) {
         super(point, new Size(length, length), componentName, partition);
         this.Rresouce = Rresource;
+        this.grid = grid;
         try {
             componentConstructor = representedComponent.getDeclaredConstructor(Tile.class);
         } catch (Exception ex) {
@@ -42,14 +46,15 @@ public class ComponentSidebarButton extends SidebarButton {
         drawComponentImage();
     }
 
-    private Bitmap getComponentImage() {
+    public Bitmap getComponentImage() {
         return BitmapFactory.decodeResource(partition.screenManager.appContext.getResources(), Rresouce);
     }
 
     @Override
-    public void handleDragStart() {
-        partition.screenManager.dragSourceButton = this;
-        partition.screenManager.setDraggedObject(this.getComponentImage());
+    public void handleDragStart(ScreenPoint screenPoint) {
+        partition.stateManager.setState(new ComponentAddDragState(this, grid, screenPoint));
+//        partition.screenManager.dragSourceButton = this;
+//        partition.screenManager.setDraggedObject(this.getComponentImage());
 //        partition.screenManager.setStatusBarText(this.label);
     }
 

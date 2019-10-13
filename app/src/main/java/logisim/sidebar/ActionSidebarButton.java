@@ -2,8 +2,6 @@ package logisim.sidebar;
 
 import android.graphics.Paint;
 
-import java.util.List;
-
 import logisim.AbstractScreenPartition;
 import logisim.util.LocalPoint;
 import logisim.util.Paints;
@@ -26,8 +24,8 @@ public class ActionSidebarButton extends SidebarButton {
     }
 
     @Override
-    public void handleDragStart() {
-        // Do Nothing
+    public void handleDragStart(ScreenPoint screenPoint) {
+        // Do nothing
     }
 
     @Override

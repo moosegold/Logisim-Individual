@@ -42,7 +42,7 @@ public class TileMoveDragState extends AbstractStateHolder {
 
     @Override
     public void drawState(Canvas mainCanvas) {
-        Util.drawDraggedObject(mainCanvas, (IDraggable) dragSource, dragPoint);
+        Util.drawDraggedObject(mainCanvas, ((IDraggable) dragSource).getComponentImage(), dragPoint);
         drawTileOutlines(mainCanvas);
     }
 

@@ -2,14 +2,9 @@ package logisim.sidebar;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Rect;
 
 import androidx.annotation.NonNull;
-
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 import logisim.AbstractScreenPartition;
 import logisim.util.DebugTextDrawer;
@@ -17,7 +12,6 @@ import logisim.util.LocalPoint;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
-import logisim.util.TextDrawUtil;
 
 public abstract class SidebarButton {
 
@@ -57,7 +51,11 @@ public abstract class SidebarButton {
         debugText.draw(canvas);
     }
 
-    public abstract void handleDragStart();
+    /**
+     * Called when a drag starts on a button.
+     *
+     */
+    public abstract void handleDragStart(ScreenPoint screenPoint);
 
     public abstract void handleTap();
 

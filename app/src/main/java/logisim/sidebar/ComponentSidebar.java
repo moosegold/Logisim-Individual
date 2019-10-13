@@ -8,6 +8,8 @@ import java.util.LinkedList;
 
 import logisim.AbstractScreenPartition;
 import logisim.Grid;
+import logisim.state.StateManager;
+import logisim.state.states.SidebarButtonTouchState;
 import logisim.util.LocalPoint;
 import logisim.util.Paints;
 import logisim.R;
@@ -44,11 +46,11 @@ public class ComponentSidebar extends AbstractScreenPartition {
 
     private final Grid grid;
 
-    public ComponentSidebar(ScreenPoint origin, Size size, ScreenManager screenManager, Grid grid) {
-        super(origin, size, screenManager);
+    public ComponentSidebar(ScreenPoint origin, Size size, ScreenManager screenManager, StateManager stateManager, Grid grid) {
+        super(origin, size, screenManager, stateManager);
+        this.grid = grid;
         calculateInsets();
         addButtons();
-        this.grid = grid;
     }
 
     @Override
@@ -82,7 +84,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
         int xPos = insetPx;
         // Buttons are squares.
         int length = getButtonLength();
-        lastComponentButtonAdded = new ComponentSidebarButton(new LocalPoint(xPos, yPos), length, componentName, Rresource, this, representation);
+        lastComponentButtonAdded = new ComponentSidebarButton(new LocalPoint(xPos, yPos), length, componentName, Rresource, this, representation, grid);
         buttons.addLast(lastComponentButtonAdded);
     }
 
@@ -158,7 +160,8 @@ public class ComponentSidebar extends AbstractScreenPartition {
     }
 
     public void processTouchDown(LocalPoint localPoint) {
-
+        SidebarButton button = getButtonPress(localPoint);
+        stateManager.setStateIfNecessary(new SidebarButtonTouchState(this, button, convertToScreenPoint(localPoint)));
     }
 
     public void processTouchDrag(LocalPoint localPoint) {
@@ -192,7 +195,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
 //        }
 //    }
 
-    private SidebarButton getButtonPress(LocalPoint localPoint) {
+    public SidebarButton getButtonPress(LocalPoint localPoint) {
         for (SidebarButton button : buttons) {
             Rect buttonBounds = Util.getRect(button.point, button.size);
 

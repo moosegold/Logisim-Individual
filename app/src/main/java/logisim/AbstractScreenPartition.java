@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import logisim.state.StateManager;
 import logisim.util.LocalPoint;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
@@ -11,6 +12,7 @@ import logisim.util.Size;
 public abstract class AbstractScreenPartition implements IScreenPartition {
 
     public final ScreenManager screenManager;
+    public final StateManager stateManager;
 
     private ScreenPoint origin;
     private Size size;
@@ -18,12 +20,13 @@ public abstract class AbstractScreenPartition implements IScreenPartition {
     protected Canvas canvas;
     private Bitmap image;
 
-    public AbstractScreenPartition(ScreenPoint origin, Size size, ScreenManager screenManager) {
+    public AbstractScreenPartition(ScreenPoint origin, Size size, ScreenManager screenManager, StateManager stateManager) {
         this.origin = origin;
         this.size = size;
         image = Bitmap.createBitmap(size.width, size.height, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(image);
         this.screenManager = screenManager;
+        this.stateManager = stateManager;
     }
 
     @Override

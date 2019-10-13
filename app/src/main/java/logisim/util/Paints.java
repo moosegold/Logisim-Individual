@@ -95,7 +95,7 @@ public class Paints {
             .setStrokeWidth(TILE_OUTLINE_WIDTH).makePaint();
 
     public static final Paint TILE_OUTLINE_SOURCE = PaintBuilder.start()
-            .setColor(Color.GREEN)
+            .setColor(0xFF27cc27) // Green
             .setStrokeWidth(TILE_OUTLINE_WIDTH).makePaint();
 
     //----------------------------------------------------------------------------------------------

@@ -1,6 +1,7 @@
 package logisim.util;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -16,6 +17,7 @@ public class DebugTextDrawer {
     private boolean active;
 
     public boolean drawDownwards = true;
+    public boolean alignRight = false;
     private List<String> textToDraw = new LinkedList<>();
 
     public DebugTextDrawer(LocalPoint pos, boolean active) {
@@ -68,12 +70,20 @@ public class DebugTextDrawer {
 
     private void drawString(Canvas canvas, String text, int yCoord) {
         drawBackground(canvas, text, yCoord);
-        canvas.drawText(text, startPos.x, yCoord, Paints.DEBUG_TEXT);
+        if (alignRight)
+            canvas.drawText(text, startPos.x - TextDrawUtil.getTextWidthPx(text, Paints.DEBUG_TEXT), yCoord, Paints.DEBUG_TEXT);
+        else
+            canvas.drawText(text, startPos.x, yCoord, Paints.DEBUG_TEXT);
     }
 
     private void drawBackground(Canvas canvas, String text, int yCoord) {
-        float width = TextDrawUtil.getTextWidthPx(text, Paints.DEBUG_BACKGROUND_COLOR);
-        canvas.drawRect(startPos.x, yCoord - Paints.DEBUG_TEXT_SIZE, startPos.x + (int) width, yCoord + 2, Paints.DEBUG_BACKGROUND_COLOR);
+        Paint paint = Paints.DEBUG_BACKGROUND_COLOR;
+        float width = TextDrawUtil.getTextWidthPx(text, paint);
+        float height = TextDrawUtil.getTextHeightPx(text, paint);
+        if (alignRight)
+            canvas.drawRect(startPos.x - width, yCoord - height, startPos.x, yCoord + 2, paint);
+        else
+            canvas.drawRect(startPos.x, yCoord - Paints.DEBUG_TEXT_SIZE, startPos.x + (int) width, yCoord + 2, paint);
     }
 
 }

@@ -18,7 +18,7 @@ public class LogiSim extends Activity {
 
     private static final int GRID_WIDTH_TILES = 16;
 
-    public static final boolean DEBUG_TEXT_ENABLED = false;
+    public static final boolean DEBUG_TEXT_ENABLED = true;
 
     private ScreenManager screenManager;
     private StateManager stateManager;
@@ -65,7 +65,7 @@ public class LogiSim extends Activity {
         // How many tiles will fit vertically given the width of the tile. Tiles are squares.
         int heightTiles = size.height / tileLengthPx - 1;
 
-        Grid grid = new Grid(widthTiles, heightTiles, tileLengthPx, stateManager, screenManager, origin, size);
+        Grid grid = new Grid(widthTiles, heightTiles, tileLengthPx, screenManager, stateManager, origin, size);
         screenManager.addPartition(grid);
         return grid;
     }
@@ -73,7 +73,7 @@ public class LogiSim extends Activity {
     private void addSidebarPartition(Grid grid) {
         ScreenPoint origin = new ScreenPoint(0, 0);
         Size size = new Size(sidebar_width, screenManager.getDisplaySize().height);
-        screenManager.addPartition(new ComponentSidebar(origin, size, screenManager, grid));
+        screenManager.addPartition(new ComponentSidebar(origin, size, screenManager, stateManager, grid));
     }
 
     /**

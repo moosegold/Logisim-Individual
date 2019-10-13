@@ -38,8 +38,7 @@ public class Util {
         }
     }
 
-    public static void drawDraggedObject(Canvas canvas, IDraggable draggedObject, ScreenPoint dragPoint) {
-        Bitmap image = draggedObject.getComponentImage();
+    public static void drawDraggedObject(Canvas canvas, Bitmap image, ScreenPoint dragPoint) {
         if (image != null) {
             Rect orgRect = new Rect(0, 0, image.getWidth(), image.getHeight());
             Rect transformRect = new Rect(
