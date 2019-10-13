@@ -8,15 +8,11 @@ import logisim.util.ScreenPoint;
 /**
  * Default state of the app.
  */
-public class NormalMode extends AbstractMode {
-
-    public NormalMode(StateManager stateManager) {
-        super(stateManager);
-    }
+public class NormalMode implements IMode {
 
     @Override
     public void updateDrag(ScreenPoint screenPoint) {
-
+//        stateManager.setStatusBarText("");
     }
 
     @Override

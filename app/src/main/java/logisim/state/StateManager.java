@@ -22,7 +22,7 @@ public class StateManager {
     public final DebugTextDrawer debugText;
 
 //    private IStateHolder currentState = new WaitingState();
-    private IMode mode = new NormalMode(this);
+    private IMode mode = new NormalMode();
 
     private boolean touchInProgress;
     private boolean dragInProgress;
@@ -124,7 +124,7 @@ public class StateManager {
         touchedObjectStart = null;
         draggedObject = null;
         dragPoint = null;
-        setMode(new NormalMode(this));
+        setMode(new NormalMode());
     }
 
     public void setMode(IMode mode) {
