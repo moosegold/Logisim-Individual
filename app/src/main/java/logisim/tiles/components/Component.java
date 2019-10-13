@@ -35,6 +35,10 @@ public abstract class Component extends Tile implements IDraggable, IInteractabl
 
     public abstract void drawWires(Canvas canvas);
 
+    /**
+     * Get the result of the component, by evaluating a tree of connected inputs recursively,
+     * as shown in Daryl Posnett's Logisim Evaluation Example.
+     */
     public abstract boolean eval();
 
     public final Bitmap getComponentImage() {
