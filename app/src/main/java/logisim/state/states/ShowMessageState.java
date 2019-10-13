@@ -1,6 +1,10 @@
 package logisim.state.states;
 
 
+import logisim.ScreenManager;
+import logisim.util.ScreenPoint;
+import logisim.util.TouchAction;
+
 /**
  * For setting the status bar after a action is performed.
  */
@@ -10,6 +14,12 @@ public class ShowMessageState extends WaitingState {
 
     public ShowMessageState(String message) {
         this.message = message;
+    }
+
+    @Override
+    public void update(ScreenPoint screenPoint, TouchAction action) {
+        super.update(screenPoint, action);
+        stateManager.setState(new WaitingState());
     }
 
     @Override

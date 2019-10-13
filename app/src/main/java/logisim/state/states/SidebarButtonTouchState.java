@@ -33,6 +33,10 @@ public class SidebarButtonTouchState extends AbstractStateHolder {
         }
     }
 
+    public SidebarButton getButton() {
+        return button;
+    }
+
     @Override
     public void drawState(Canvas mainCanvas) {
         stateManager.debugText.addText("Button: " + button);

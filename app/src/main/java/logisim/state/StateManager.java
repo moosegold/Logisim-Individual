@@ -3,6 +3,8 @@ package logisim.state;
 import android.graphics.Canvas;
 
 import logisim.ScreenManager;
+import logisim.state.modes.IMode;
+import logisim.state.modes.NormalMode;
 import logisim.state.states.WaitingState;
 import logisim.util.DebugTextDrawer;
 import logisim.util.LocalPoint;
@@ -16,6 +18,7 @@ public class StateManager {
     public final DebugTextDrawer debugText;
 
     private IStateHolder currentState = new WaitingState();
+    private IMode mode = new NormalMode();
 
     private String statusBarText = "";
 
@@ -27,15 +30,15 @@ public class StateManager {
     }
 
     public void update(ScreenPoint screenPoint, TouchAction action) {
-        if (currentState.isValid())
-            currentState.update(screenPoint, action);
-        if (!currentState.isValid()) {
+        currentState.update(screenPoint, action);
+        if (!currentState.isValid() && !(currentState instanceof WaitingState)) {
             currentState.finalizeState();
             setState(new WaitingState());
         }
     }
 
     public void draw() {
+        debugText.addText("Mode: " + mode.getClass().getSimpleName());
         debugText.addText("State: " + currentState.getClass().getSimpleName());
         if (currentState.isValid()) {
             currentState.drawState(canvas);
@@ -63,6 +66,20 @@ public class StateManager {
         newState.setManagers(this, screenManager);
         currentState = newState;
         newState.initState();
+        mode.process(newState);
+    }
+
+    public void resetMode() {
+        setMode(new NormalMode());
+    }
+
+    public void setMode(IMode mode) {
+        this.mode.finalizeMode();
+        this.mode = mode;
+    }
+
+    public IMode getMode() {
+        return mode;
     }
 
     public IStateHolder getCurrentState() {

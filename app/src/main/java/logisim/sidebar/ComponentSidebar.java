@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import logisim.AbstractScreenPartition;
 import logisim.Grid;
 import logisim.state.StateManager;
-import logisim.state.states.SaveModeState;
+import logisim.state.modes.SaveMode;
 import logisim.state.states.ShowMessageState;
 import logisim.state.states.SidebarButtonTouchState;
 import logisim.util.LocalPoint;
@@ -46,7 +46,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
 
     public boolean saveMode = false;
 
-    private final Grid grid;
+    public final Grid grid;
 
     public ComponentSidebar(ScreenPoint origin, Size size, ScreenManager screenManager, StateManager stateManager, Grid grid) {
         super(origin, size, screenManager, stateManager);
@@ -93,7 +93,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
     /**
      * Adds a save button above the previous button starting from the bottom of the sidebar.
      */
-    private void addSaveSlotButton(String label) {
+    private void addSaveSlotButton(String slot) {
         int width = getButtonLength();
         int height = width / 2;
         width = width / 2 - insetPx;
@@ -104,21 +104,23 @@ public class ComponentSidebar extends AbstractScreenPartition {
         } else {
             yPos = lastSaveButtonAdded.point.y - insetPx - height;
         }
-        lastSaveButtonAdded = new ActionSidebarButton(new LocalPoint(xPos, yPos), new Size(width, height), label, this,
-                () -> {
-                    String feedback = "";
-                    if (saveMode) {
-                        boolean result = grid.saveGrid(label);
-                        feedback = result ? "Layout saved to " + label : "Failed to save layout";
-                    } else {
-                        boolean result = grid.loadGrid(label);
-                        feedback = result ? "Loaded layout " + label : "Failed to load layout " + label;
-                    }
-//                    screenManager.setStatusBarText(feedback);
-//                    System.out.println(feedback);
-                    stateManager.setState(new ShowMessageState(feedback));
-                });
+//        lastSaveButtonAdded = new LabelSidebarButton(new LocalPoint(xPos, yPos), new Size(width, height), label, this,
+//                () -> {
+//                    String feedback = "";
+//                    if (saveMode) {
+//                        boolean result = grid.saveGrid(label);
+//                        feedback = result ? "Layout saved to " + label : "Failed to save layout";
+//                    } else {
+//                        boolean result = grid.loadGrid(label);
+//                        feedback = result ? "Loaded layout " + label : "Failed to load layout " + label;
+//                    }
+////                    screenManager.setStatusBarText(feedback);
+////                    System.out.println(feedback);
+//                    stateManager.setState(new ShowMessageState(feedback));
+//                });
+        lastSaveButtonAdded = new SaveSlotButton(new LocalPoint(xPos, yPos), new Size(width, height), slot, this);
         buttons.addLast(lastSaveButtonAdded);
+
     }
 
     private void addSaveButton() {
@@ -126,12 +128,15 @@ public class ComponentSidebar extends AbstractScreenPartition {
         int xPos = getButtonLength() / 2 + insetPx * 2;
         int yPos = lastSaveButtonAdded.point.y;
         int height = screenManager.getDisplaySize().height - yPos - insetPx;
-        buttons.addLast(new ActionSidebarButton(new LocalPoint(xPos, yPos), new Size(width, height), "Save", this,
-                () -> {
-            saveMode = !saveMode;
-//            screenManager.setStatusBarText("Select save slot");
-            System.out.println("SaveMode: " + saveMode);
-                }));
+        buttons.addLast(new SaveButton(new LocalPoint(xPos, yPos), new Size(width, height), "Save", this));
+//        buttons.addLast(new LabelSidebarButton(new LocalPoint(xPos, yPos), new Size(width, height), "Save", this,
+//                () -> {
+////            saveMode = !saveMode;
+////            screenManager.setStatusBarText("Select save slot");
+////            System.out.println("SaveMode: " + saveMode);
+//                    if (!(stateManager.getMode() instanceof SaveMode))
+//                        stateManager.setMode(new SaveMode());
+//                }));
     }
 
     private void drawLoadLabel() {
@@ -164,7 +169,8 @@ public class ComponentSidebar extends AbstractScreenPartition {
 
     public void processTouchDown(LocalPoint localPoint) {
         SidebarButton button = getButtonPress(localPoint);
-        stateManager.trySetState(new SidebarButtonTouchState(this, button, convertToScreenPoint(localPoint)));
+        if (button != null)
+            stateManager.trySetState(new SidebarButtonTouchState(this, button, convertToScreenPoint(localPoint)));
     }
 
     public void processTouchDrag(LocalPoint localPoint) {

@@ -27,7 +27,7 @@ public class ComponentSidebarButton extends SidebarButton {
 
     private Grid grid;
 
-    public ComponentSidebarButton(LocalPoint point, int length, String componentName, int Rresource, AbstractScreenPartition partition, Class<? extends Component> representedComponent, Grid grid) {
+    public ComponentSidebarButton(LocalPoint point, int length, String componentName, int Rresource, ComponentSidebar partition, Class<? extends Component> representedComponent, Grid grid) {
         super(point, new Size(length, length), componentName, partition);
         this.Rresouce = Rresource;
         this.grid = grid;
@@ -47,15 +47,15 @@ public class ComponentSidebarButton extends SidebarButton {
     }
 
     public Bitmap getComponentImage() {
-        return BitmapFactory.decodeResource(partition.screenManager.appContext.getResources(), Rresouce);
+        return BitmapFactory.decodeResource(sidebar.screenManager.appContext.getResources(), Rresouce);
     }
 
     @Override
     public void handleDragStart(ScreenPoint screenPoint) {
-        partition.stateManager.setState(new ComponentAddDragState(this, grid, screenPoint));
-//        partition.screenManager.dragSourceButton = this;
-//        partition.screenManager.setDraggedObject(this.getComponentImage());
-//        partition.screenManager.setStatusBarText(this.label);
+        sidebar.stateManager.setState(new ComponentAddDragState(this, grid, screenPoint));
+//        sidebar.screenManager.dragSourceButton = this;
+//        sidebar.screenManager.setDraggedObject(this.getComponentImage());
+//        sidebar.screenManager.setStatusBarText(this.label);
     }
 
     @Override

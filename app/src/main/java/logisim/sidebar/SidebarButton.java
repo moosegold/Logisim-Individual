@@ -17,7 +17,7 @@ public abstract class SidebarButton {
 
     public final String label;
 
-    protected final AbstractScreenPartition partition;
+    protected final ComponentSidebar sidebar;
     private Bitmap image;
     protected Canvas canvas;
 
@@ -26,12 +26,12 @@ public abstract class SidebarButton {
 
     protected final DebugTextDrawer debugText;
 
-    public SidebarButton(LocalPoint point, Size size, String label, AbstractScreenPartition partition) {
+    public SidebarButton(LocalPoint point, Size size, String label, ComponentSidebar sidebar) {
         this.point = point;
         this.size = size;
         this.label = label;
         createCanvas();
-        this.partition = partition;
+        this.sidebar = sidebar;
         this.debugText = new DebugTextDrawer(false);
     }
 

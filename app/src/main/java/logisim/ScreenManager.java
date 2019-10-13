@@ -71,7 +71,7 @@ public class ScreenManager {
         if (touchedPartiton != null) {
             LocalPoint localPoint = touchedPartiton.convertToLocalPoint(screenPoint);
             if (action == MotionEvent.ACTION_UP) {
-                // Fire the release touch event on the partition released on before
+                // Fire the release touch event on the sidebar released on before
                 // firing on other partitions.
                 touchedPartiton.processTouchUp(localPoint);
             } else if (action == MotionEvent.ACTION_DOWN) {

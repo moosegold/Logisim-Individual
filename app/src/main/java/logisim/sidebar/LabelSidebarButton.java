@@ -9,13 +9,10 @@ import logisim.util.ScreenPoint;
 import logisim.util.Size;
 import logisim.util.TextDrawUtil;
 
-public class ActionSidebarButton extends SidebarButton {
+public abstract class LabelSidebarButton extends SidebarButton {
 
-    private final ITapProcedure action;
-
-    public ActionSidebarButton(LocalPoint point, Size size, String label, AbstractScreenPartition partition, ITapProcedure action) {
-        super(point, size, label, partition);
-        this.action = action;
+    public LabelSidebarButton(LocalPoint point, Size size, String label, ComponentSidebar sidebar) {
+        super(point, size, label, sidebar);
     }
 
     @Override
@@ -26,11 +23,6 @@ public class ActionSidebarButton extends SidebarButton {
     @Override
     public void handleDragStart(ScreenPoint screenPoint) {
         // Do nothing
-    }
-
-    @Override
-    public void handleTap() {
-        action.onTap();
     }
 
     @Override
