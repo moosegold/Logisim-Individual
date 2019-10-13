@@ -2,6 +2,7 @@ package logisim.state.modes;
 
 
 import logisim.state.IStateHolder;
+import logisim.util.ScreenPoint;
 
 /**
  * A long-term mode for the app to be in, requiring multiple steps to complete.
