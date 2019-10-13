@@ -4,12 +4,17 @@ package logisim.tiles.components;
 import android.graphics.Canvas;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 import logisim.tiles.Tile;
 import logisim.tiles.components.concrete.ANDGate;
 import logisim.tiles.components.concrete.ORGate;
+import logisim.util.GridPoint;
 import logisim.util.LocalPoint;
+import logisim.util.PaintBuilder;
 
 /**
  * Refers to a component, where the order of inputs is unimportant.
@@ -84,6 +89,29 @@ public abstract class CommutativeComponent extends Component {
     public boolean hasOutput() {
         return true;
     }
+
+    @Override
+    public String getAdditionalStorageData() {
+        String ret = " ";
+        for (Component input : inputs) {
+            ret += input.getPoint().x + " " + input.getPoint().y + " ";
+        }
+        return ret;
+    }
+
+    @Override
+    public void loadAdditionalStorageData(Scanner scanner) {
+        while (scanner.hasNextInt()) {
+            Tile tile = grid.getTile(new GridPoint(scanner.nextInt(), scanner.nextInt()));
+            if (tile instanceof Component)
+                connectInput((Component) tile);
+        }
+    }
+
+    public List<Tile> getInputs() {
+        return new LinkedList<>(inputs);
+    }
+
 
     /**
      * Returns the point local to grid partition of the input that the wire should be

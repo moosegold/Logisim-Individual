@@ -2,6 +2,8 @@ package logisim.tiles.components.concrete;
 
 import android.graphics.Canvas;
 
+import java.util.Scanner;
+
 import logisim.R;
 import logisim.tiles.Tile;
 import logisim.tiles.components.Component;
@@ -43,6 +45,16 @@ public class ComponentSwitch extends Component {
     @Override
     public String getStorageID() {
         return "switch";
+    }
+
+    @Override
+    public String getAdditionalStorageData() {
+        return " " + state;
+    }
+
+    @Override
+    public void loadAdditionalStorageData(Scanner scanner) {
+        this.state = scanner.nextBoolean();
     }
 
     @Override

@@ -7,10 +7,9 @@ import android.graphics.Rect;
 import androidx.annotation.Nullable;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -21,6 +20,7 @@ import logisim.tiles.components.Component;
 import logisim.tiles.Tile;
 import logisim.tiles.EmptyTile;
 import logisim.tiles.components.concrete.ANDGate;
+import logisim.tiles.components.concrete.ComponentLED;
 import logisim.tiles.components.concrete.ComponentSwitch;
 import logisim.tiles.components.concrete.NOTGate;
 import logisim.tiles.components.concrete.ORGate;
@@ -171,17 +171,34 @@ public class Grid extends AbstractScreenPartition {
         try {
             File outputFile = getSaveFile(slot);
             FileWriter writer = new FileWriter(outputFile);
+            List<Tile> savedTiles = new LinkedList<>();
             for (Tile tile : tiles) {
-                if (tile.getStorageID() == null)
-                    continue;
-                writer.write(tile.getStorageID() + " " + tile.getPoint().x + " " + tile.getPoint().y + " " + tile.additionalStorageData() + "\n");
+                writeRecursively(savedTiles, writer, tile);
             }
+            writer.flush();
             writer.close();
             return true;
         } catch (Exception ex) {
             System.out.println("Caught exception saving layout to slot " + slot + ": " + ex.getLocalizedMessage());
+            ex.printStackTrace();
             return false;
         }
+    }
+
+    private void writeRecursively(List<Tile> savedTiles, FileWriter writer, Tile tile) throws IOException {
+        for (Tile input : tile.getInputs()) {
+            writeRecursively(savedTiles, writer, input);
+        }
+        writeTile(savedTiles, writer, tile);
+    }
+
+    private void writeTile(List<Tile> savedTiles, FileWriter writer, Tile tile) throws IOException {
+        if (tile.getStorageID() == null || savedTiles.contains(tile))
+            return;
+        savedTiles.add(tile);
+        String line = tile.getStorageID() + " " + tile.getPoint().x + " " + tile.getPoint().y + " " + tile.getAdditionalStorageData();
+        System.out.println(line);
+        writer.write(line + "\n");
     }
 
     public boolean loadGrid(String slot) {
@@ -190,27 +207,36 @@ public class Grid extends AbstractScreenPartition {
             File inputFile = getSaveFile(slot);
             if (inputFile.exists()) {
                 Scanner fileScanner = new Scanner(inputFile);
-                String entry = fileScanner.nextLine();
-                Scanner entryScanner = new Scanner(entry);
-                String id = entryScanner.next();
-                int xPos = entryScanner.nextInt();
-                int yPos = entryScanner.nextInt();
+                while (fileScanner.hasNextLine()) {
+                    String entry = fileScanner.nextLine();
+                    System.out.println(entry);
+                    Scanner entryScanner = new Scanner(entry);
+                    String id = entryScanner.next();
+                    int xPos = entryScanner.nextInt();
+                    int yPos = entryScanner.nextInt();
+                    Tile tile = loadTileForID(id, xPos, yPos);
+                    if (tile != null)
+                        tile.loadAdditionalStorageData(entryScanner);
+                    entryScanner.close();
+                }
+                fileScanner.close();
                 return true;
             }
             return false;
         } catch (Exception ex) {
             System.out.println("Caught exception loading layout for slot " + slot + ": " + ex.getLocalizedMessage());
+            ex.printStackTrace();
             resetGrid();
             return false;
         }
     }
 
-    private void loadTileForID(String id, int xPos, int yPos) {
+    private Tile loadTileForID(String id, int xPos, int yPos) {
         GridPoint gridPoint = new GridPoint(xPos, yPos);
         Tile existingTile = getTile(gridPoint);
         if (existingTile == null) {
             System.out.println("Not adding tile at " + gridPoint + " because there is no empty tile at that place");
-            return;
+            return null;
         }
         if (id.equals("and"))
             setTile(new ANDGate(existingTile));
@@ -221,9 +247,13 @@ public class Grid extends AbstractScreenPartition {
         else if (id.equals("switch"))
             setTile(new ComponentSwitch(existingTile));
         else if (id.equals("led"))
-            setTile(new ComponentSwitch(existingTile));
-        else
-            System.out.println("id not recognized for component trying to be added at " + gridPoint);
+            setTile(new ComponentLED(existingTile));
+        else {
+           System.out.println("id not recognized for component trying to be added at " + gridPoint);
+           return null;
+        }
+
+        return getTile(gridPoint);
     }
 
     private File getSaveFile(String slot) {

@@ -6,6 +6,11 @@ import android.graphics.Rect;
 
 import androidx.annotation.NonNull;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
+
 import logisim.IInteractable;
 import logisim.util.DebugTextDrawer;
 import logisim.Grid;
@@ -90,8 +95,16 @@ public abstract class Tile implements IInteractable {
         return null;
     }
 
-    public String additionalStorageData() {
-        return "";
+    public String getAdditionalStorageData() {
+        return " ";
+    }
+
+    public void loadAdditionalStorageData(Scanner scanner) {
+
+    }
+
+    public List<Tile> getInputs() {
+        return new LinkedList<>(Collections.emptyList());
     }
 
     @NonNull

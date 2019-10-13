@@ -4,7 +4,13 @@ import android.graphics.Canvas;
 
 import androidx.annotation.Nullable;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
+
 import logisim.tiles.Tile;
+import logisim.util.GridPoint;
 import logisim.util.LocalPoint;
 
 public abstract class UnaryComponent extends Component {
@@ -52,6 +58,27 @@ public abstract class UnaryComponent extends Component {
     @Override
     public boolean hasOutput() {
         return true;
+    }
+
+    @Override
+    public String getAdditionalStorageData() {
+        if (input != null) {
+            return " " + input.getPoint().x + " " + input.getPoint().y;
+        }
+        return " ";
+    }
+
+    @Override
+    public void loadAdditionalStorageData(Scanner scanner) {
+        if (scanner.hasNextInt()) {
+            Tile tile = grid.getTile(new GridPoint(scanner.nextInt(), scanner.nextInt()));
+            if (tile instanceof Component)
+                attachWire((Component) tile);
+        }
+    }
+
+    public List<Tile> getInputs() {
+        return Collections.singletonList(input);
     }
 
     /**
