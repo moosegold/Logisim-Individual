@@ -22,7 +22,7 @@ public class SaveMode extends AbstractMode {
     }
 
     @Override
-    public void processDrag(Object source, Object dest) {
+    public void processDrag(Object dest) {
         stateManager.resetMode();
     }
 

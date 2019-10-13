@@ -1,14 +1,19 @@
 package logisim.state;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
+import logisim.IInteractable;
 import logisim.ScreenManager;
 import logisim.sidebar.SaveButton;
 import logisim.sidebar.SidebarButton;
 import logisim.state.modes.IMode;
 import logisim.state.modes.NormalMode;
+import logisim.tiles.IDraggable;
 import logisim.util.DebugTextDrawer;
 import logisim.util.LocalPoint;
+import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.TouchAction;
 
@@ -22,7 +27,10 @@ public class StateManager {
     private IMode mode = new NormalMode();
 
     private boolean touchInProgress;
-    private Object touchedObjectStart;
+    private boolean dragInProgress;
+    private IInteractable touchedObjectStart;
+    private IDraggable draggedObject;
+    private ScreenPoint dragPoint;
 
     private String statusBarText = "";
 
@@ -37,11 +45,11 @@ public class StateManager {
 
         if (action == TouchAction.UP) {
             touchInProgress = false;
-            Object touchedObject = screenManager.getTouchedObject(screenPoint);
-            if (touchedObjectStart == touchedObject) {
+            dragInProgress = false;
+            IInteractable touchedObject = screenManager.getTouchedObject(screenPoint);
+            if (touchedObject != null && touchedObjectStart == touchedObject) {
                 IMode tempMode = mode;
-                if (touchedObjectStart instanceof SidebarButton)
-                    ((SidebarButton) touchedObjectStart).handleTap();
+                touchedObject.onTap();
                 tempMode.processTouch(touchedObjectStart);
             } else {
                 mode.processDrag(touchedObject);
@@ -52,7 +60,10 @@ public class StateManager {
             }
             touchInProgress = true;
         } else if (action == TouchAction.MOVE) {
-
+            if (!dragInProgress)
+                draggedObject = touchedObjectStart.onDrag();
+            dragInProgress = true;
+            dragPoint = screenPoint;
         }
 
 //        currentState.update(screenPoint, action);
@@ -69,6 +80,19 @@ public class StateManager {
 //            currentState.drawState(canvas);
 //        }
         debugText.draw(canvas);
+    }
+
+    private void drawDraggedObject() {
+        Bitmap image = this.draggedObject.getComponentImage();
+        if (image != null) {
+            Rect orgRect = new Rect(0, 0, image.getWidth(), image.getHeight());
+            Rect transformRect = new Rect(
+                    dragPoint.x - image.getWidth() / 3,
+                    dragPoint.y - image.getHeight() / 3,
+                    dragPoint.x + image.getWidth() / 3,
+                    dragPoint.y + image.getHeight() / 3);
+            canvas.drawBitmap(image, orgRect, transformRect, Paints.IMAGE_TRANSLUCENT);
+        }
     }
 
     /**

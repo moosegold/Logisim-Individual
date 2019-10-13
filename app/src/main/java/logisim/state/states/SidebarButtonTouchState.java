@@ -27,7 +27,7 @@ public class SidebarButtonTouchState extends AbstractStateHolder {
         if (action == TouchAction.UP) {
             this.isValid = false;
             if (button == sidebar.getButtonPress(sidebar.convertToLocalPoint(screenPoint)))
-                button.handleTap();
+                button.onTap();
         } else if (action == TouchAction.MOVE) {
             button.handleDragStart(screenPoint);
         }

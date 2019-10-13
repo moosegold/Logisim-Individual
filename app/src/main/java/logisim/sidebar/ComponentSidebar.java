@@ -8,6 +8,7 @@ import java.util.LinkedList;
 
 import logisim.AbstractScreenPartition;
 import logisim.Grid;
+import logisim.IInteractable;
 import logisim.state.StateManager;
 import logisim.state.modes.SaveMode;
 import logisim.state.states.ShowMessageState;
@@ -178,7 +179,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
     }
 
     @Override
-    public Object getTouchedObject(LocalPoint localPoint) {
+    public IInteractable getTouchedObject(LocalPoint localPoint) {
         return getButtonPress(localPoint);
     }
 

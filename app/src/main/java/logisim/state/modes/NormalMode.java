@@ -14,7 +14,7 @@ public class NormalMode implements IMode {
     }
 
     @Override
-    public void processDrag(Object source, Object dest) {
+    public void processDrag(Object dest) {
 
     }
 

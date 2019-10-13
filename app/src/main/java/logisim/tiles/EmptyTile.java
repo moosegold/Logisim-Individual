@@ -28,6 +28,16 @@ public class EmptyTile extends Tile {
         return true;
     }
 
+    @Override
+    public void onTap() {
+        // Do nothing
+    }
+
+    @Override
+    public IDraggable onDrag() {
+        return null;
+    }
+
     public void drawBounds() {
         canvas.drawRect(new Rect(0, 0, grid.tileLength - 1, grid.tileLength - 1), Paints.TILE_BORDER_COLOR_DEBUG);
     }

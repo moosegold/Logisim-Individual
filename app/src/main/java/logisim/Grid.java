@@ -108,7 +108,7 @@ public class Grid extends AbstractScreenPartition {
     }
 
     @Override
-    public Object getTouchedObject(LocalPoint localPoint) {
+    public IInteractable getTouchedObject(LocalPoint localPoint) {
         return getTile(convertToGridPoint(localPoint));
     }
 

@@ -4,13 +4,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 
+import logisim.IInteractable;
 import logisim.tiles.IDraggable;
-import logisim.util.GridPoint;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.tiles.Tile;
 
-public abstract class Component extends Tile implements ILogicComponent, IDraggable {
+public abstract class Component extends Tile implements ILogicComponent, IDraggable, IInteractable {
 
     public Component(Tile tile) {
         super(tile);
@@ -49,4 +49,15 @@ public abstract class Component extends Tile implements ILogicComponent, IDragga
         debugText.addText("isize:" + new ScreenPoint(transformRect.width(), transformRect.height()));
         canvas.drawBitmap(componentImage, orgRect, transformRect, Paints.IMAGE_OPAQUE);
     }
+
+    @Override
+    public void onTap() {
+
+    }
+
+    @Override
+    public IDraggable onDrag() {
+        return this;
+    }
+
 }

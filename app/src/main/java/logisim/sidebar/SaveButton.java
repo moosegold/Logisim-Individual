@@ -44,7 +44,7 @@ public class SaveButton extends SidebarButton {
     }
 
     @Override
-    public void handleTap() {
+    public void onTap() {
         if (!(sidebar.stateManager.getMode() instanceof SaveMode)) {
 //            sidebar.stateManager.setState(new ShowMessageState("Select A Save Slot"));
             sidebar.stateManager.setMode(new SaveMode(sidebar.stateManager));

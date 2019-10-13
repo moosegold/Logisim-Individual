@@ -109,7 +109,7 @@ public class ScreenManager {
         this.draggedObject = image;
     }
 
-    public Object getTouchedObject(ScreenPoint screenPoint) {
+    public IInteractable getTouchedObject(ScreenPoint screenPoint) {
         IScreenPartition partition = getTouchedPartition(screenPoint);
         if (partition != null) {
             return partition.getTouchedObject(partition.convertToLocalPoint(screenPoint));

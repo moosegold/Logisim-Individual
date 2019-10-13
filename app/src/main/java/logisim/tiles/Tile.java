@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import logisim.IInteractable;
 import logisim.util.DebugTextDrawer;
 import logisim.Grid;
 import logisim.util.GridPoint;
@@ -14,7 +15,7 @@ import logisim.util.ScreenPoint;
 /**
  * Maintains the state of something on the grid, so that it can be rendered.
  */
-public abstract class Tile {
+public abstract class Tile implements IInteractable {
 
     protected final DebugTextDrawer debugText;
 

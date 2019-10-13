@@ -7,9 +7,10 @@ import android.graphics.Rect;
 
 import java.lang.reflect.Constructor;
 
-import logisim.AbstractScreenPartition;
 import logisim.Grid;
+import logisim.state.modes.AddMode;
 import logisim.state.states.ComponentAddDragState;
+import logisim.tiles.IDraggable;
 import logisim.util.GridPoint;
 import logisim.util.LocalPoint;
 import logisim.util.Paints;
@@ -19,7 +20,7 @@ import logisim.tiles.Tile;
 import logisim.tiles.components.Component;
 import logisim.util.TextDrawUtil;
 
-public class ComponentSidebarButton extends SidebarButton {
+public class ComponentSidebarButton extends SidebarButton implements IDraggable {
 
     private final int Rresouce;
 
@@ -51,6 +52,11 @@ public class ComponentSidebarButton extends SidebarButton {
     }
 
     @Override
+    public String getName() {
+        return this.label;
+    }
+
+    @Override
     public void handleDragStart(ScreenPoint screenPoint) {
         sidebar.stateManager.setState(new ComponentAddDragState(this, grid, screenPoint));
 //        sidebar.screenManager.dragSourceButton = this;
@@ -59,8 +65,14 @@ public class ComponentSidebarButton extends SidebarButton {
     }
 
     @Override
-    public void handleTap() {
+    public void onTap() {
         // Do Nothing
+    }
+
+    @Override
+    public IDraggable onDrag() {
+        sidebar.stateManager.setMode(new AddMode(sidebar.stateManager, this, grid));
+        return this;
     }
 
     @Override

@@ -31,7 +31,7 @@ public class SaveSlotButton extends SidebarButton {
     }
 
     @Override
-    public void handleTap() {
+    public void onTap() {
         String feedback = "";
         if (sidebar.stateManager.getMode() instanceof SaveMode) {
             boolean result = sidebar.grid.saveGrid(label);
