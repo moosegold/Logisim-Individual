@@ -1,6 +1,9 @@
 package logisim.state.states;
 
 
+/**
+ * For setting the status bar after a action is performed.
+ */
 public class ShowMessageState extends WaitingState {
 
     private String message;
