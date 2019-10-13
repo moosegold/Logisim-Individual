@@ -10,6 +10,9 @@ import logisim.util.TouchAction;
 
 public class WaitingState implements IStateHolder {
 
+    protected ScreenManager screenManager;
+    protected StateManager stateManager;
+
     @Override
     public void update(ScreenPoint screenPoint, TouchAction action) {
 
@@ -37,6 +40,7 @@ public class WaitingState implements IStateHolder {
 
     @Override
     public void setManagers(StateManager stateManager, ScreenManager screenManager) {
-        
+        this.screenManager = screenManager;
+        this.stateManager = stateManager;
     }
 }
