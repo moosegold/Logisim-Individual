@@ -60,6 +60,12 @@ public class ComponentLED extends Component {
     }
 
     @Override
+    public void validate() {
+        if (input != null && !input.onGrid())
+            detachWire();
+    }
+
+    @Override
     public String getStorageID() {
         return "led";
     }

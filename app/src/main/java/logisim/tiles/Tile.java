@@ -55,6 +55,10 @@ public abstract class Tile implements IInteractable {
         debugText.addText("gpos: " + getPoint());
     }
 
+    public void validate() {
+
+    }
+
     public void drawDebugText() {
         debugText.draw(canvas);
     }

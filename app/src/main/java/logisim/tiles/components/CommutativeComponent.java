@@ -69,15 +69,20 @@ public abstract class CommutativeComponent extends Component {
     protected boolean getInput(int input) {
         if (input < inputs.size()) {
             Component source = inputs.get(input);
-            if (!source.onGrid()) {
-                removeInput(source);
-                return false;
-            } else {
-                return inputs.get(input).eval();
-            }
+            return inputs.get(input).eval();
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void validate() {
+        LinkedList<Component> toRemove = new LinkedList<>();
+        for (Component input : inputs) {
+            if (!input.onGrid())
+                toRemove.add(input);
+        }
+        inputs.removeAll(toRemove);
     }
 
     @Override

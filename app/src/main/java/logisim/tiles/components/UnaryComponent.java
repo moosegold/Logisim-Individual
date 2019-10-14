@@ -44,6 +44,12 @@ public abstract class UnaryComponent extends Component {
         drawWire(canvas, input, this);
     }
 
+    @Override
+    public void validate() {
+        if (input != null && !input.onGrid())
+            detachWire();
+    }
+
     protected boolean getInput() {
         if (input != null && !input.onGrid())
             detachWire();

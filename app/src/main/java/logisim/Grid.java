@@ -132,6 +132,7 @@ public class Grid extends AbstractScreenPartition {
         screenManager.debugText.addText("Grid Size: " + gridSize);
         screenManager.debugText.addText("Tile Length: " + tileLength);
         for (Tile tile : tiles) {
+            tile.validate();
             tile.draw();
             tile.drawDebugText();
             LocalPoint drawPoint = convertToLocalPoint(tile.getPoint());
