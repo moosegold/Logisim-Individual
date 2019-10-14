@@ -131,7 +131,6 @@ public class Grid extends AbstractScreenPartition {
         screenManager.debugText.addText("");
         screenManager.debugText.addText("Grid Size: " + gridSize);
         screenManager.debugText.addText("Tile Length: " + tileLength);
-        //screenManager.debugText.addText("Last Tile: " + (lastTouched == null ? null : lastTouched.getPoint()));
         for (Tile tile : tiles) {
             tile.draw();
             tile.drawDebugText();
@@ -189,7 +188,6 @@ public class Grid extends AbstractScreenPartition {
             return;
         savedTiles.add(tile);
         String line = tile.getStorageID() + " " + tile.getPoint().x + " " + tile.getPoint().y + " " + tile.getAdditionalStorageData();
-        System.out.println(line);
         writer.write(line + "\n");
     }
 
@@ -201,7 +199,6 @@ public class Grid extends AbstractScreenPartition {
                 Scanner fileScanner = new Scanner(inputFile);
                 while (fileScanner.hasNextLine()) {
                     String entry = fileScanner.nextLine();
-                    System.out.println(entry);
                     Scanner entryScanner = new Scanner(entry);
                     String id = entryScanner.next();
                     int xPos = entryScanner.nextInt();
