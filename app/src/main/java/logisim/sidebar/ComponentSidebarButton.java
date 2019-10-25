@@ -34,8 +34,8 @@ public class ComponentSidebarButton extends SidebarButton implements IDraggable 
         try {
             componentConstructor = representedComponent.getDeclaredConstructor(Tile.class);
         } catch (Exception ex) {
-            System.out.println("Unable to get constructor for component: " + ex.getLocalizedMessage());
-            System.out.println("The app will now close, as it will not work properly.");
+            System.err.println("Unable to get constructor for component: " + ex.getLocalizedMessage());
+            System.err.println("The app will now close, as it will not work properly.");
             System.exit(1);
         }
     }
