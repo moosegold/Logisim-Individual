@@ -122,7 +122,7 @@ public class StateManager {
 
     public void setStatusBarText(String text) {
         statusMessageTimer.cancel();
-        if (text == null) {
+        if (text == null || text.equals("")) {
             statusBarText = "";
         } else {
             statusBarText = text;
