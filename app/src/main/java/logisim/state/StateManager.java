@@ -4,6 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import logisim.IInteractable;
 import logisim.ScreenManager;
 import logisim.state.modes.IMode;
@@ -30,6 +33,7 @@ public class StateManager {
     private ScreenPoint dragPoint;
 
     private String statusBarText = "";
+    private Timer statusMessageTimer = new Timer();
 
     public StateManager(ScreenManager screenManager) {
         this.screenManager = screenManager;
@@ -117,10 +121,20 @@ public class StateManager {
     }
 
     public void setStatusBarText(String text) {
-        if (text == null)
+        statusMessageTimer.cancel();
+        if (text == null) {
             statusBarText = "";
-        else
+        } else {
             statusBarText = text;
+            statusMessageTimer = new Timer();
+            statusMessageTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    setStatusBarText("");
+                    screenManager.draw();
+                }
+            }, 3000);
+        }
     }
 
     public String getStatusBarText() {
