@@ -7,9 +7,8 @@ import logisim.util.LocalPoint;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
-import logisim.util.TextDrawUtil;
 
-public class SaveButton extends SidebarButton {
+public class SaveButton extends CenterLabelButton {
 
     public SaveButton(LocalPoint point, Size size, String label, ComponentSidebar sidebar) {
         super(point, size, label, sidebar);
@@ -27,19 +26,14 @@ public class SaveButton extends SidebarButton {
 
     @Override
     public void drawBackground() {
-        super.drawBackground();
         if (sidebar.stateManager.getMode() instanceof SaveMode)
             canvas.drawRect(0, 0, size.width, size.height, Paints.SAVE_MODE_SAVE_BUTTON_BACKGROUND_COLOR);
     }
 
     @Override
-    public void drawLabel() {
-        boolean saveMode = sidebar.stateManager.getMode() instanceof SaveMode;
-        Paint paint = saveMode ? Paints.SAVE_MODE_SAVE_BUTTON_TEXT : Paints.SAVE_BUTTON_TEXT;
-        int xPos = getLocalCenter().x - TextDrawUtil.getTextWidthPx(label, paint) / 2;
-        int yPos = getLocalCenter().y + TextDrawUtil.getTextHeightPx(label, paint) / 2;
-        debugText.addText("labelPos: " + new ScreenPoint(xPos, yPos));
-        canvas.drawText(label, xPos, yPos, paint);
+    Paint getPaint() {
+        return sidebar.stateManager.getMode() instanceof SaveMode ?
+                Paints.SAVE_MODE_SAVE_BUTTON_TEXT : Paints.SAVE_BUTTON_TEXT;
     }
 
     @Override
