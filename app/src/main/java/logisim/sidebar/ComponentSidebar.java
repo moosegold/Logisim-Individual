@@ -140,18 +140,6 @@ public class ComponentSidebar extends AbstractScreenPartition {
         drawLoadLabel();
     }
 
-    public void processTouchUp(LocalPoint localPoint) {
-
-    }
-
-    public void processTouchDown(LocalPoint localPoint) {
-
-    }
-
-    public void processTouchDrag(LocalPoint localPoint) {
-
-    }
-
     @Override
     public IInteractable getTouchedObject(LocalPoint localPoint) {
         return getButtonPress(localPoint);

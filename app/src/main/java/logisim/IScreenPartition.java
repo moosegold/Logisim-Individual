@@ -8,12 +8,6 @@ import logisim.util.Size;
 
 public interface IScreenPartition {
 
-    void processTouchDown(LocalPoint localPoint);
-
-    void processTouchUp(LocalPoint localPoint);
-
-    void processTouchDrag(LocalPoint localPoint);
-
     boolean containsTouch(ScreenPoint screenPoint);
 
     IInteractable getTouchedObject(LocalPoint localPoint);

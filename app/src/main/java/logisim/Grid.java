@@ -87,19 +87,6 @@ public class Grid extends AbstractScreenPartition {
     }
 
     @Override
-    public void processTouchDown(LocalPoint localPoint) {
-        
-    }
-
-    public void processTouchUp(LocalPoint localPoint) {
-
-    }
-
-    public void processTouchDrag(LocalPoint localPoint) {
-
-    }
-
-    @Override
     public IInteractable getTouchedObject(LocalPoint localPoint) {
         return getTile(convertToGridPoint(localPoint));
     }
