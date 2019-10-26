@@ -4,18 +4,16 @@ import android.graphics.Canvas;
 
 import logisim.Grid;
 import logisim.sidebar.ComponentSidebarButton;
-import logisim.sidebar.SidebarButton;
 import logisim.state.StateManager;
 import logisim.tiles.Tile;
-import logisim.tiles.components.Component;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.Util;
 
 public class AddMode extends AbstractMode {
 
-    private ComponentSidebarButton button;
-    private Grid grid;
+    private final ComponentSidebarButton button;
+    private final Grid grid;
 
     public AddMode(StateManager stateManager, ComponentSidebarButton button, Grid grid) {
         super(stateManager);

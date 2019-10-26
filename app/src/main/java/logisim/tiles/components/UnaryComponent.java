@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import androidx.annotation.Nullable;
 
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -44,14 +43,13 @@ public abstract class UnaryComponent extends Component {
         drawWire(canvas, input, this);
     }
 
-    @Override
     public void validate() {
-        if (input != null && !input.onGrid())
+        if (input != null && input.notOnGrid())
             detachWire();
     }
 
     protected boolean getInput() {
-        if (input != null && !input.onGrid())
+        if (input != null && input.notOnGrid())
             detachWire();
         return input != null && input.eval();
     }

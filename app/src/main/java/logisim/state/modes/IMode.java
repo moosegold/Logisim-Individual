@@ -1,7 +1,6 @@
 package logisim.state.modes;
 
 
-import logisim.state.IStateHolder;
 import logisim.util.ScreenPoint;
 
 /**

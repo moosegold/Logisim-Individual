@@ -14,8 +14,8 @@ import logisim.util.Util;
 
 public class MoveMode extends AbstractMode {
 
-    private Grid grid;
-    private Component start;
+    private final Grid grid;
+    private final Component start;
 
     public MoveMode(StateManager stateManager, Component start, Grid grid) {
         super(stateManager);

@@ -6,12 +6,10 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.Display;
-import android.view.MotionEvent;
 import android.widget.ImageView;
 
 import java.util.LinkedList;
 
-import logisim.sidebar.ComponentSidebarButton;
 import logisim.state.StateManager;
 import logisim.util.DebugTextDrawer;
 import logisim.util.LocalPoint;
@@ -23,12 +21,12 @@ import logisim.util.Util;
 
 public class ScreenManager {
 
-    private LinkedList<IScreenPartition> partitions;
-    private Display display;
+    private final LinkedList<IScreenPartition> partitions;
+    private final Display display;
     private Canvas mainCanvas;
     private Bitmap mainImage;
-    private ImageView imageView;
-    protected DebugTextDrawer debugText;
+    private final ImageView imageView;
+    protected final DebugTextDrawer debugText;
 
     private StateManager stateManager;
 

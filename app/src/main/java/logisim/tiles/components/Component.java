@@ -63,13 +63,9 @@ public abstract class Component extends Tile implements IDraggable, IInteractabl
         canvas.drawBitmap(componentImage, orgRect, transformRect, Paints.IMAGE_OPAQUE);
     }
 
-    public void validate() {
-
-    }
-
     protected void drawWire(Canvas canvas, Component source, Component dest) {
         if (source != null && dest != null)
-            Util.drawWire(canvas, grid, source, dest);
+            Util.drawWire(canvas, source, dest);
     }
 
     @Override

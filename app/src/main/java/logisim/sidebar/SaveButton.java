@@ -5,23 +5,12 @@ import android.graphics.Paint;
 import logisim.state.modes.SaveMode;
 import logisim.util.LocalPoint;
 import logisim.util.Paints;
-import logisim.util.ScreenPoint;
 import logisim.util.Size;
 
 public class SaveButton extends CenterLabelButton {
 
     public SaveButton(LocalPoint point, Size size, String label, ComponentSidebar sidebar) {
         super(point, size, label, sidebar);
-    }
-
-    @Override
-    public void handleDragStart(ScreenPoint screenPoint) {
-        // Do nothing
-    }
-
-    @Override
-    public void draw() {
-        super.draw();
     }
 
     @Override

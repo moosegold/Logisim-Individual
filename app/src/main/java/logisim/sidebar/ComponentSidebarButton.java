@@ -25,7 +25,7 @@ public class ComponentSidebarButton extends SidebarButton implements IDraggable 
 
     private Constructor componentConstructor;
 
-    private Grid grid;
+    private final Grid grid;
 
     public ComponentSidebarButton(LocalPoint point, int length, String componentName, int Rresource, ComponentSidebar partition, Class<? extends Component> representedComponent, Grid grid) {
         super(point, new Size(length, length), componentName, partition);
@@ -46,11 +46,6 @@ public class ComponentSidebarButton extends SidebarButton implements IDraggable 
         drawComponentImage();
     }
 
-    @Override
-    public void handleDragStart(ScreenPoint screenPoint) {
-
-    }
-
     public Bitmap getComponentImage() {
         return BitmapFactory.decodeResource(sidebar.screenManager.appContext.getResources(), Rresouce);
     }
@@ -61,19 +56,14 @@ public class ComponentSidebarButton extends SidebarButton implements IDraggable 
     }
 
     @Override
-    public void onTouch() {
-        // Do Nothing
+    public IDraggable onDrag() {
+        sidebar.stateManager.setMode(new AddMode(sidebar.stateManager, this, grid));
+        return this;
     }
 
     @Override
     public void onTap() {
-        // Do Nothing
-    }
-
-    @Override
-    public IDraggable onDrag() {
-        sidebar.stateManager.setMode(new AddMode(sidebar.stateManager, this, grid));
-        return this;
+        
     }
 
     @Override

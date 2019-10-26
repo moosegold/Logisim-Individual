@@ -3,7 +3,6 @@ package logisim.sidebar;
 import android.graphics.Paint;
 
 import logisim.util.LocalPoint;
-import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
 import logisim.util.TextDrawUtil;
@@ -18,7 +17,7 @@ public abstract class CenterLabelButton extends SidebarButton {
 
     @Override
     public void drawLabel() {
-        Paint paint = Paints.SAVE_BUTTON_TEXT;
+        Paint paint = getPaint();
         int xPos = getLocalCenter().x - TextDrawUtil.getTextWidthPx(label, paint) / 2;
         int yPos = getLocalCenter().y + TextDrawUtil.getTextHeightPx(label, paint) / 2;
         debugText.addText("labelPos: " + new ScreenPoint(xPos, yPos));

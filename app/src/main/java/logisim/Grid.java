@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -39,7 +38,7 @@ public class Grid extends AbstractScreenPartition {
     // the length in pixels of a tile. The tiles are square so only 1 value is needed.
     public final int tileLength;
 
-    private List<Tile> tiles;
+    private final List<Tile> tiles;
 
     public Grid(int width, int height, int tileLength, ScreenManager screenManager, StateManager stateManager, ScreenPoint origin, Size size) {
         super(origin, size, screenManager, stateManager);
@@ -63,7 +62,6 @@ public class Grid extends AbstractScreenPartition {
     }
 
     private void fillGrid() {
-        int i = 0;
         for (int y = 0; y <= gridSize.height; y++) {
             for (int x = 0; x <= gridSize.width; x++) {
                 GridPoint point = new GridPoint(x, y);
@@ -89,17 +87,6 @@ public class Grid extends AbstractScreenPartition {
     @Override
     public IInteractable getTouchedObject(LocalPoint localPoint) {
         return getTile(convertToGridPoint(localPoint));
-    }
-
-    private Tile getTileTouched(LocalPoint localPoint) {
-        GridPoint gridPoint = convertToGridPoint(localPoint);
-        Tile tile = getTile(gridPoint);
-        return tile;
-    }
-
-    private boolean tileIsComponent(GridPoint gridPoint) {
-        Tile tile = getTile(gridPoint);
-        return tile instanceof Component;
     }
 
     public void moveTile(Tile src, Tile dest) {
@@ -258,10 +245,6 @@ public class Grid extends AbstractScreenPartition {
 
     public LocalPoint convertToLocalPoint(GridPoint gridPoint) {
         return new LocalPoint(gridPoint.x * this.tileLength, gridPoint.y * this.tileLength);
-    }
-
-    public ScreenPoint convertToScreenPoint(GridPoint gridPoint) {
-        return convertToScreenPoint(convertToLocalPoint(gridPoint));
     }
 
 }

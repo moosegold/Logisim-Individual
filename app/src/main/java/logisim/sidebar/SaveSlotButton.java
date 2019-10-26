@@ -5,7 +5,6 @@ import android.graphics.Paint;
 import logisim.state.modes.SaveMode;
 import logisim.util.LocalPoint;
 import logisim.util.Paints;
-import logisim.util.ScreenPoint;
 import logisim.util.Size;
 
 public class SaveSlotButton extends CenterLabelButton {
@@ -20,13 +19,8 @@ public class SaveSlotButton extends CenterLabelButton {
     }
 
     @Override
-    public void handleDragStart(ScreenPoint screenPoint) {
-        // Do nothing
-    }
-
-    @Override
     public void onTap() {
-        String feedback = "";
+        String feedback;
         if (sidebar.stateManager.getMode() instanceof SaveMode) {
             boolean result = sidebar.grid.saveGrid(label);
             feedback = result ? "Layout saved to " + label : "Failed to save layout";
@@ -37,4 +31,5 @@ public class SaveSlotButton extends CenterLabelButton {
         sidebar.stateManager.resetMode();
         sidebar.stateManager.setStatusBarText(feedback);
     }
+
 }

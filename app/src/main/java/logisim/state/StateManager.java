@@ -1,8 +1,6 @@
 package logisim.state;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Rect;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -15,7 +13,6 @@ import logisim.state.modes.NormalMode;
 import logisim.tiles.IDraggable;
 import logisim.util.DebugTextDrawer;
 import logisim.util.LocalPoint;
-import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.TouchAction;
 
@@ -27,7 +24,7 @@ public class StateManager {
 
     private IMode mode = new NormalMode();
 
-    public ActionHistory history = new ActionHistory(this);
+    public final ActionHistory history = new ActionHistory(this);
 
     private boolean touchInProgress;
     private boolean dragInProgress;
@@ -79,19 +76,6 @@ public class StateManager {
         debugText.addText("Mode: " + mode.getClass().getSimpleName());
         mode.draw();
         debugText.draw(canvas);
-    }
-
-    private void drawDraggedObject() {
-        Bitmap image = this.draggedObject.getComponentImage();
-        if (image != null) {
-            Rect orgRect = new Rect(0, 0, image.getWidth(), image.getHeight());
-            Rect transformRect = new Rect(
-                    dragPoint.x - image.getWidth() / 3,
-                    dragPoint.y - image.getHeight() / 3,
-                    dragPoint.x + image.getWidth() / 3,
-                    dragPoint.y + image.getHeight() / 3);
-            canvas.drawBitmap(image, orgRect, transformRect, Paints.IMAGE_TRANSLUCENT);
-        }
     }
 
     public void resetMode() {

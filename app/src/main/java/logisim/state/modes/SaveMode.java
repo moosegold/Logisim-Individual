@@ -1,9 +1,7 @@
 package logisim.state.modes;
 
 
-import logisim.sidebar.SaveButton;
 import logisim.sidebar.SaveSlotButton;
-import logisim.state.IStateHolder;
 import logisim.state.StateManager;
 import logisim.util.ScreenPoint;
 

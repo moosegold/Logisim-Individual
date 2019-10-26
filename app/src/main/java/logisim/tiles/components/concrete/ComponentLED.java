@@ -11,7 +11,6 @@ import logisim.tiles.Tile;
 import logisim.tiles.components.Component;
 import logisim.util.GridPoint;
 import logisim.util.LocalPoint;
-import logisim.util.PaintBuilder;
 
 public class ComponentLED extends Component {
 
@@ -48,7 +47,7 @@ public class ComponentLED extends Component {
     }
 
     private boolean getInput() {
-        if (input != null && !input.onGrid())
+        if (input != null && input.notOnGrid())
             detachWire();
         return input != null && input.eval();
     }
@@ -59,9 +58,8 @@ public class ComponentLED extends Component {
         drawWire(canvas, input, this);
     }
 
-    @Override
     public void validate() {
-        if (input != null && !input.onGrid())
+        if (input != null && input.notOnGrid())
             detachWire();
     }
 

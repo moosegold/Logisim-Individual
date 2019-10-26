@@ -2,7 +2,7 @@ package logisim.history;
 
 class HistoryItem {
 
-    UndoProcedure procedure;
+    final UndoProcedure procedure;
 
     HistoryItem prevItem = null;
     HistoryItem nextItem = null;

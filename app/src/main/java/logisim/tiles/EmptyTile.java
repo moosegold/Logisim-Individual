@@ -43,6 +43,7 @@ public class EmptyTile extends Tile {
         return null;
     }
 
+    @SuppressWarnings("unused")
     public void drawBounds() {
         canvas.drawRect(new Rect(0, 0, grid.tileLength - 1, grid.tileLength - 1), Paints.TILE_BORDER_COLOR_DEBUG);
     }

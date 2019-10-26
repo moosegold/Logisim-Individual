@@ -4,7 +4,6 @@ package logisim.tiles.components.concrete;
 import logisim.R;
 import logisim.tiles.Tile;
 import logisim.tiles.components.CommutativeComponent;
-import logisim.tiles.components.Component;
 
 public class ORGate extends CommutativeComponent {
 

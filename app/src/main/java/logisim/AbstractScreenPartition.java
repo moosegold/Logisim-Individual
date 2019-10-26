@@ -14,11 +14,11 @@ public abstract class AbstractScreenPartition implements IScreenPartition {
     public final ScreenManager screenManager;
     public final StateManager stateManager;
 
-    private ScreenPoint origin;
-    private Size size;
+    private final ScreenPoint origin;
+    private final Size size;
 
-    protected Canvas canvas;
-    private Bitmap image;
+    protected final Canvas canvas;
+    private final Bitmap image;
 
     public AbstractScreenPartition(ScreenPoint origin, Size size, ScreenManager screenManager, StateManager stateManager) {
         this.origin = origin;

@@ -12,10 +12,10 @@ public class ComponentInteractMode extends AbstractMode {
 
     private final static int DRAG_START_DELAY_MS = 500;
 
-    private Grid grid;
-    private Component component;
+    private final Grid grid;
+    private final Component component;
 
-    private Timer pressHoldTimer = new Timer();
+    private final Timer pressHoldTimer = new Timer();
 
     public ComponentInteractMode(StateManager stateManager, Component component, Grid grid) {
         super(stateManager);

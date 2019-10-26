@@ -6,13 +6,11 @@ import android.graphics.Rect;
 
 import androidx.annotation.NonNull;
 
-import logisim.AbstractScreenPartition;
 import logisim.IInteractable;
 import logisim.tiles.IDraggable;
 import logisim.util.DebugTextDrawer;
 import logisim.util.LocalPoint;
 import logisim.util.Paints;
-import logisim.util.ScreenPoint;
 import logisim.util.Size;
 
 public abstract class SidebarButton implements IInteractable {
@@ -54,19 +52,13 @@ public abstract class SidebarButton implements IInteractable {
         debugText.draw(canvas);
     }
 
-    /**
-     * Called when a drag starts on a button.
-     *
-     */
-    public abstract void handleDragStart(ScreenPoint screenPoint);
-
     public abstract void drawLabel();
 
     public void drawBackground() {}
 
     @Override
     public void onTouch() {
-        // Do Nothing
+
     }
 
     @Override

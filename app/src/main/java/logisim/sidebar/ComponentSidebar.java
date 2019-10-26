@@ -27,15 +27,13 @@ import logisim.tiles.components.concrete.ORGate;
 
 public class ComponentSidebar extends AbstractScreenPartition {
 
-    private final double BUTTON_INSET_RATIO = 1.0 / 20;
+    private static final double BUTTON_INSET_RATIO = 1.0 / 20;
     private int insetPx;
 
-    private Deque<SidebarButton> buttons = new LinkedList<>();
+    private final Deque<SidebarButton> buttons = new LinkedList<>();
 
     private SidebarButton lastComponentButtonAdded;
     private SidebarButton lastSaveButtonAdded;
-
-    public boolean saveMode = false;
 
     public final Grid grid;
 

@@ -4,7 +4,7 @@ import logisim.state.StateManager;
 
 public class ActionHistory {
 
-    private StateManager stateManager;
+    private final StateManager stateManager;
 
     public ActionHistory(StateManager stateManager) {
         this.stateManager = stateManager;

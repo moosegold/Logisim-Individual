@@ -4,7 +4,6 @@ package logisim.tiles.components;
 import android.graphics.Canvas;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -14,7 +13,6 @@ import logisim.tiles.components.concrete.ANDGate;
 import logisim.tiles.components.concrete.ORGate;
 import logisim.util.GridPoint;
 import logisim.util.LocalPoint;
-import logisim.util.PaintBuilder;
 
 /**
  * Refers to a component, where the order of inputs is unimportant.
@@ -28,7 +26,7 @@ public abstract class CommutativeComponent extends Component {
 
     private static final int MAX_INPUTS = 2;
 
-    private List<Component> inputs = new ArrayList<>(MAX_INPUTS);
+    private final List<Component> inputs = new ArrayList<>(MAX_INPUTS);
 
     public CommutativeComponent(Tile tile) {
         super(tile);
@@ -68,18 +66,16 @@ public abstract class CommutativeComponent extends Component {
      */
     protected boolean getInput(int input) {
         if (input < inputs.size()) {
-            Component source = inputs.get(input);
             return inputs.get(input).eval();
         } else {
             return false;
         }
     }
 
-    @Override
     public void validate() {
         LinkedList<Component> toRemove = new LinkedList<>();
         for (Component input : inputs) {
-            if (!input.onGrid())
+            if (input.notOnGrid())
                 toRemove.add(input);
         }
         inputs.removeAll(toRemove);

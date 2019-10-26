@@ -13,12 +13,12 @@ public class DebugTextDrawer {
 
     private static final int VERTICAL_SPACING = 1;
 
-    private LocalPoint startPos;
+    private final LocalPoint startPos;
     private boolean active;
 
     public boolean drawDownwards = true;
     public boolean alignRight = false;
-    private List<String> textToDraw = new LinkedList<>();
+    private final List<String> textToDraw = new LinkedList<>();
 
     public DebugTextDrawer(LocalPoint pos, boolean active) {
         this.startPos = pos;
@@ -60,6 +60,7 @@ public class DebugTextDrawer {
         }
     }
 
+    @SuppressWarnings("unused")
     public void setActive(boolean active) {
         this.active = active;
     }

@@ -15,7 +15,6 @@ import logisim.IInteractable;
 import logisim.util.DebugTextDrawer;
 import logisim.Grid;
 import logisim.util.GridPoint;
-import logisim.util.LocalPoint;
 
 /**
  * Maintains the state of something on the grid, so that it can be rendered.
@@ -63,10 +62,6 @@ public abstract class Tile implements IInteractable {
         debugText.draw(canvas);
     }
 
-    public final boolean isDraggable() {
-        return this instanceof IDraggable;
-    }
-
     public abstract boolean isReplaceable();
 
     public boolean canAcceptWire() {
@@ -79,7 +74,6 @@ public abstract class Tile implements IInteractable {
     }
 
     public Rect getRect() {
-        LocalPoint localPoint = grid.convertToLocalPoint(gridPoint);
         return new Rect(0, 0, grid.tileLength, grid.tileLength);
     }
 
@@ -87,8 +81,8 @@ public abstract class Tile implements IInteractable {
         return image;
     }
 
-    public boolean onGrid() {
-        return onGrid;
+    public boolean notOnGrid() {
+        return !onGrid;
     }
 
     public void removeFromGrid() {

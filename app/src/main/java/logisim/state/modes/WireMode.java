@@ -12,7 +12,7 @@ import logisim.util.Util;
 
 public class WireMode extends AbstractMode {
 
-    Grid grid;
+    final Grid grid;
 
     public WireMode(StateManager stateManager, Grid grid) {
         super(stateManager);

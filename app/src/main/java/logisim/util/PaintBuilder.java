@@ -4,7 +4,7 @@ import android.graphics.Paint;
 
 public class PaintBuilder {
 
-    private Paint paint;
+    private final Paint paint;
 
     private PaintBuilder() {
         paint = new Paint();
