@@ -15,7 +15,6 @@ import logisim.util.LocalPoint;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
-import logisim.tiles.Tile;
 import logisim.tiles.components.Component;
 import logisim.util.TextDrawUtil;
 
@@ -32,7 +31,7 @@ public class ComponentSidebarButton extends SidebarButton implements IDraggable 
         this.Rresouce = Rresource;
         this.grid = grid;
         try {
-            componentConstructor = representedComponent.getDeclaredConstructor(Tile.class);
+            componentConstructor = representedComponent.getDeclaredConstructor(Grid.class);
         } catch (Exception ex) {
             System.err.println("Unable to get constructor for component: " + ex.getLocalizedMessage());
             System.err.println("The app will now close, as it will not work properly.");
@@ -63,7 +62,7 @@ public class ComponentSidebarButton extends SidebarButton implements IDraggable 
 
     @Override
     public void onTap() {
-        
+
     }
 
     @Override
@@ -76,10 +75,10 @@ public class ComponentSidebarButton extends SidebarButton implements IDraggable 
     }
 
     public void createNewComponent(GridPoint gridPoint, Grid grid) {
-        Tile existingTile = grid.getTile(gridPoint);
+        Component existingComp = grid.getTile(gridPoint);
         try {
-            if (existingTile != null) {
-                grid.setTile(gridPoint, (Tile) componentConstructor.newInstance(existingTile));
+            if (existingComp != null) {
+                grid.setTile(gridPoint, (Component) componentConstructor.newInstance(existingComp));
             }
         } catch (Exception ex) {
             System.out.println("Caught exception creating component: " + ex.getLocalizedMessage());

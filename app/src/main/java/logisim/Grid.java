@@ -9,14 +9,15 @@ import androidx.annotation.Nullable;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 import logisim.state.StateManager;
 import logisim.tiles.components.Component;
-import logisim.tiles.Tile;
-import logisim.tiles.EmptyTile;
 import logisim.tiles.components.concrete.ANDGate;
 import logisim.tiles.components.concrete.ComponentLED;
 import logisim.tiles.components.concrete.ComponentSwitch;
@@ -38,50 +39,40 @@ public class Grid extends AbstractScreenPartition {
     // the length in pixels of a tile. The tiles are square so only 1 value is needed.
     public final int tileLength;
 
-    private final List<Tile> tiles;
+    private final Map<GridPoint, Component> components;
 
     public Grid(int width, int height, int tileLength, ScreenManager screenManager, StateManager stateManager, ScreenPoint origin, Size size) {
         super(origin, size, screenManager, stateManager);
         this.gridSize = new Size(width, height);
         this.tileLength = tileLength;
-        this.tiles = new LinkedList<>();
+        this.components = new HashMap<>();
         resetGrid();
     }
 
     public void resetGrid() {
-        tiles.clear();
-        fillGrid();
+        components.clear();
     }
 
-    public void setTile(GridPoint point, Tile tile) {
-        tiles.set(getTileIndex(point), tile);
-    }
-
-    public void setTile(Tile tile) {
-        tiles.set(getTileIndex(tile.getPoint()), tile);
-    }
-
-    private void fillGrid() {
-        for (int y = 0; y <= gridSize.height; y++) {
-            for (int x = 0; x <= gridSize.width; x++) {
-                GridPoint point = new GridPoint(x, y);
-                tiles.add(new EmptyTile(point, this));
-            }
+    public void setTile(GridPoint point, Component component) {
+        if (component != null) {
+            Component existingComp = components.get(point);
+            if (existingComp != null)
+                existingComp.setOnGrid(false);
+            components.put(point, component);
+            component.setPoint(point);
         }
+    }
+
+    public void removeTile(GridPoint point) {
+        Component component = components.get(point);
+        if (component != null)
+            component.setOnGrid(false);
+        components.remove(point);
     }
 
     @Nullable
-    public Tile getTile(GridPoint point) {
-        if (
-                point.x > gridSize.width || point.x < 0 ||
-                        point.y > gridSize.height || point.y < 0) {
-            return null;
-        }
-        return tiles.get(getTileIndex(point));
-    }
-
-    private int getTileIndex(GridPoint gridPoint) {
-        return gridPoint.y * (gridSize.width + 1) + gridPoint.x;
+    public Component getTile(GridPoint point) {
+        return components.get(point);
     }
 
     @Override
@@ -89,14 +80,13 @@ public class Grid extends AbstractScreenPartition {
         return getTile(convertToGridPoint(localPoint));
     }
 
-    public void moveTile(Tile src, Tile dest) {
-        clearTile(src);
-        src.setPoint(dest.getPoint());
-        setTile(src.getPoint(), src);
-    }
-
-    private void clearTile(Tile tile) {
-        setTile(tile.getPoint(), new EmptyTile(tile));
+    public void moveTile(GridPoint src, GridPoint dest) {
+        Component component = components.get(src);
+        if (component != null) {
+            components.remove(src);
+            components.put(dest, component);
+            component.setPoint(dest);
+        }
     }
 
     @Override
@@ -105,17 +95,14 @@ public class Grid extends AbstractScreenPartition {
         screenManager.debugText.addText("");
         screenManager.debugText.addText("Grid Size: " + gridSize);
         screenManager.debugText.addText("Tile Length: " + tileLength);
-        for (Tile tile : tiles) {
-            tile.validate();
-            tile.draw();
-            tile.drawDebugText();
-            LocalPoint drawPoint = convertToLocalPoint(tile.getPoint());
-            canvas.drawBitmap(tile.getImage(), drawPoint.x, drawPoint.y, Paints.IMAGE_OPAQUE);
+        for (Component component : components.values()) {
+            component.draw();
+            component.drawDebugText();
+            LocalPoint drawPoint = convertToLocalPoint(component.getPoint());
+            canvas.drawBitmap(component.getComponentImage(), drawPoint.x, drawPoint.y, Paints.IMAGE_OPAQUE);
         }
-        for (Tile tile : tiles) {
-            if (tile instanceof Component) {
-                ((Component) tile).drawWires(canvas);
-            }
+        for (Component component : components.values()) {
+                component.drawWires(canvas);
         }
         drawStatusBar();
     }
@@ -137,9 +124,9 @@ public class Grid extends AbstractScreenPartition {
         try {
             File outputFile = getSaveFile(slot);
             FileWriter writer = new FileWriter(outputFile);
-            List<Tile> savedTiles = new LinkedList<>();
-            for (Tile tile : tiles) {
-                writeRecursively(savedTiles, writer, tile);
+            List<Component> savedTiles = new LinkedList<>();
+            for (Component component : components.values()) {
+                writeRecursively(savedTiles, writer, component);
             }
             writer.flush();
             writer.close();
@@ -151,18 +138,18 @@ public class Grid extends AbstractScreenPartition {
         }
     }
 
-    private void writeRecursively(List<Tile> savedTiles, FileWriter writer, Tile tile) throws IOException {
-        for (Tile input : tile.getInputs()) {
+    private void writeRecursively(List<Component> savedTiles, FileWriter writer, Component component) throws IOException {
+        for (Component input : component.getInputs()) {
             writeRecursively(savedTiles, writer, input);
         }
-        writeTile(savedTiles, writer, tile);
+        writeTile(savedTiles, writer, component);
     }
 
-    private void writeTile(List<Tile> savedTiles, FileWriter writer, Tile tile) throws IOException {
-        if (tile.getStorageID() == null || savedTiles.contains(tile))
+    private void writeTile(List<Component> savedTiles, FileWriter writer, Component component) throws IOException {
+        if (component.getStorageID() == null || savedTiles.contains(component))
             return;
-        savedTiles.add(tile);
-        String line = tile.getStorageID() + " " + tile.getPoint().x + " " + tile.getPoint().y + " " + tile.getAdditionalStorageData();
+        savedTiles.add(component);
+        String line = component.getStorageID() + " " + component.getPoint().x + " " + component.getPoint().y + " " + component.getAdditionalStorageData();
         writer.write(line + "\n");
     }
 
@@ -178,9 +165,9 @@ public class Grid extends AbstractScreenPartition {
                     String id = entryScanner.next();
                     int xPos = entryScanner.nextInt();
                     int yPos = entryScanner.nextInt();
-                    Tile tile = loadTileForID(id, xPos, yPos);
-                    if (tile != null)
-                        tile.loadAdditionalStorageData(entryScanner);
+                    Component component = loadTileForID(id, xPos, yPos);
+                    if (component != null)
+                        component.loadAdditionalStorageData(entryScanner);
                     entryScanner.close();
                 }
                 fileScanner.close();
@@ -195,23 +182,23 @@ public class Grid extends AbstractScreenPartition {
         }
     }
 
-    private Tile loadTileForID(String id, int xPos, int yPos) {
+    private Component loadTileForID(String id, int xPos, int yPos) {
         GridPoint gridPoint = new GridPoint(xPos, yPos);
-        Tile existingTile = getTile(gridPoint);
+        Component existingTile = getTile(gridPoint);
         if (existingTile == null) {
             System.out.println("Not adding tile at " + gridPoint + " because there is no empty tile at that place");
             return null;
         }
         if (id.equals("and"))
-            setTile(new ANDGate(existingTile));
+            setTile(gridPoint, new ANDGate(this));
         else if (id.equals("or"))
-            setTile(new ORGate(existingTile));
+            setTile(gridPoint, new ORGate(this));
         else if (id.equals("not"))
-            setTile(new NOTGate(existingTile));
+            setTile(gridPoint, new NOTGate(this));
         else if (id.equals("switch"))
-            setTile(new ComponentSwitch(existingTile));
+            setTile(gridPoint, new ComponentSwitch(this));
         else if (id.equals("led"))
-            setTile(new ComponentLED(existingTile));
+            setTile(gridPoint, new ComponentLED(this));
         else {
            System.out.println("id not recognized for component trying to be added at " + gridPoint);
            return null;

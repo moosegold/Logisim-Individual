@@ -15,7 +15,7 @@ public interface IMode {
      */
     void processTap(Object touchedObject);
 
-    void processDrag(Object dest);
+    void processDrag(ScreenPoint screenPoint, Object dest);
 
     void draw();
 

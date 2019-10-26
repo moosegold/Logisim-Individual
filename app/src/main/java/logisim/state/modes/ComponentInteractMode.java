@@ -27,7 +27,7 @@ public class ComponentInteractMode extends AbstractMode {
     @Override
     public void updateDrag(ScreenPoint screenPoint) {
         if (component != grid.getTile(grid.convertToGridPoint(screenPoint))) {
-            if (component.hasOutput())
+            if (component.hasOutputPin())
                 stateManager.setMode(new WireMode(stateManager, grid));
             else
                 stateManager.resetMode();
@@ -41,7 +41,7 @@ public class ComponentInteractMode extends AbstractMode {
     }
 
     @Override
-    public void processDrag(Object dest) {
+    public void processDrag(ScreenPoint screenPoint, Object dest) {
 
     }
 

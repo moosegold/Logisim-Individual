@@ -1,13 +1,13 @@
 package logisim.tiles.components.concrete;
 
+import logisim.Grid;
 import logisim.R;
-import logisim.tiles.Tile;
 import logisim.tiles.components.UnaryComponent;
 
 public class NOTGate extends UnaryComponent {
 
-    public NOTGate(Tile tile) {
-        super(tile);
+    public NOTGate(Grid grid) {
+        super(grid);
     }
 
     @Override

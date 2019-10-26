@@ -2,10 +2,11 @@ package logisim.tiles.components.concrete;
 
 import android.graphics.Canvas;
 
+import java.util.List;
 import java.util.Scanner;
 
+import logisim.Grid;
 import logisim.R;
-import logisim.tiles.Tile;
 import logisim.tiles.components.Component;
 import logisim.util.LocalPoint;
 
@@ -13,8 +14,8 @@ public class ComponentSwitch extends Component {
 
     private boolean state;
 
-    public ComponentSwitch(Tile tile) {
-        super(tile);
+    public ComponentSwitch(Grid grid) {
+        super(grid);
     }
 
     @Override
@@ -63,13 +64,23 @@ public class ComponentSwitch extends Component {
     }
 
     @Override
-    public boolean hasInput() {
+    public boolean hasInputPin() {
         return false;
     }
 
     @Override
-    public boolean hasOutput() {
+    public boolean hasOutputPin() {
         return true;
+    }
+
+    @Override
+    public List<Component> getInputs() {
+        return null;
+    }
+
+    @Override
+    public void setInput(int input, Component component) {
+
     }
 
     /**

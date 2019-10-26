@@ -7,7 +7,6 @@ import android.graphics.Point;
 import android.graphics.Rect;
 
 import logisim.Grid;
-import logisim.tiles.Tile;
 import logisim.tiles.components.Component;
 
 public class Util {
@@ -16,7 +15,7 @@ public class Util {
         return new Rect(point.x, point.y, point.x + size.width, point.y + size.height);
     }
 
-    public static void drawTileOutline(Tile tile, Grid grid, Canvas canvas, Paint paint) {
+    public static void drawTileOutline(Component tile, Grid grid, Canvas canvas, Paint paint) {
         if (tile != null) {
             LocalPoint pos = grid.convertToLocalPoint(tile.getPoint());
             pos.offset(grid.getOrigin().x, grid.getOrigin().y);

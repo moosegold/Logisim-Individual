@@ -19,7 +19,7 @@ public class NormalMode implements IMode {
     }
 
     @Override
-    public void processDrag(Object dest) {
+    public void processDrag(ScreenPoint screenPoint, Object dest) {
 
     }
 

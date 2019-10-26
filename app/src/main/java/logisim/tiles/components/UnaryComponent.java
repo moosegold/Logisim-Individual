@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
-import logisim.tiles.Tile;
+import logisim.Grid;
 import logisim.util.GridPoint;
 import logisim.util.LocalPoint;
 
@@ -17,24 +17,16 @@ public abstract class UnaryComponent extends Component {
     @Nullable
     private Component input;
 
-    public UnaryComponent(Tile tile) {
-        super(tile);
+    public UnaryComponent(Grid grid) {
+        super(grid);
     }
 
     @Override
     public void processConnection(Component source) {
         if (input == source)
-            detachWire();
+            setInput(null);
         else
-            attachWire(source);
-    }
-
-    private void attachWire(Component source) {
-        input = source;
-    }
-
-    private void detachWire() {
-        input = null;
+            setInput(source);
     }
 
     @Override
@@ -43,24 +35,35 @@ public abstract class UnaryComponent extends Component {
         drawWire(canvas, input, this);
     }
 
-    public void validate() {
-        if (input != null && input.notOnGrid())
-            detachWire();
-    }
+//    public void validate() {
+//        if (input != null && input.notOnGrid())
+//            detachWire();
+//    }
 
     protected boolean getInput() {
         if (input != null && input.notOnGrid())
-            detachWire();
+            setInput(null);
         return input != null && input.eval();
     }
 
     @Override
-    public boolean hasInput() {
+    public void setInput(int input, Component component) {
+        if (input == 0) {
+            this.input = component;
+        }
+    }
+
+    private void setInput(Component component) {
+        setInput(0, component);
+    }
+
+    @Override
+    public boolean hasInputPin() {
         return true;
     }
 
     @Override
-    public boolean hasOutput() {
+    public boolean hasOutputPin() {
         return true;
     }
 
@@ -75,13 +78,12 @@ public abstract class UnaryComponent extends Component {
     @Override
     public void loadAdditionalStorageData(Scanner scanner) {
         if (scanner.hasNextInt()) {
-            Tile tile = grid.getTile(new GridPoint(scanner.nextInt(), scanner.nextInt()));
-            if (tile instanceof Component)
-                attachWire((Component) tile);
+            Component component = grid.getTile(new GridPoint(scanner.nextInt(), scanner.nextInt()));
+            setInput(component);
         }
     }
 
-    public List<Tile> getInputs() {
+    public List<Component> getInputs() {
         if (input != null)
             return Collections.singletonList(input);
         else

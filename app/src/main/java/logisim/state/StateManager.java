@@ -54,7 +54,7 @@ public class StateManager {
                 touchedObject.onTap();
                 tempMode.processTap(touchedObjectStart);
             } else {
-                mode.processDrag(touchedObject);
+                mode.processDrag(screenPoint, touchedObject);
             }
         } else if (action == TouchAction.DOWN) {
             if (!touchInProgress) {
@@ -74,6 +74,8 @@ public class StateManager {
 
     public void draw() {
         debugText.addText("Mode: " + mode.getClass().getSimpleName());
+        debugText.addText("Dragging: " + draggedObject);
+        debugText.addText("Drag Point: " + dragPoint);
         mode.draw();
         debugText.draw(canvas);
     }

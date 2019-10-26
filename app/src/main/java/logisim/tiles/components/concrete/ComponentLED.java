@@ -6,8 +6,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
+import logisim.Grid;
 import logisim.R;
-import logisim.tiles.Tile;
 import logisim.tiles.components.Component;
 import logisim.util.GridPoint;
 import logisim.util.LocalPoint;
@@ -16,8 +16,8 @@ public class ComponentLED extends Component {
 
     private Component input;
 
-    public ComponentLED(Tile tile) {
-        super(tile);
+    public ComponentLED(Grid grid) {
+        super(grid);
     }
 
     @Override
@@ -28,17 +28,9 @@ public class ComponentLED extends Component {
     @Override
     public void processConnection(Component source) {
         if (this.input == null || this.input != source)
-            attachWire(source);
+            setInput(source);
         else
-            detachWire();
-    }
-
-    private void attachWire(Component source) {
-        input = source;
-    }
-
-    private void detachWire() {
-        input = null;
+            setInput(null);
     }
 
     @Override
@@ -48,7 +40,7 @@ public class ComponentLED extends Component {
 
     private boolean getInput() {
         if (input != null && input.notOnGrid())
-            detachWire();
+            setInput(null);
         return input != null && input.eval();
     }
 
@@ -58,10 +50,10 @@ public class ComponentLED extends Component {
         drawWire(canvas, input, this);
     }
 
-    public void validate() {
-        if (input != null && input.notOnGrid())
-            detachWire();
-    }
+//    public void validate() {
+//        if (input != null && input.notOnGrid())
+//            detachWire();
+//    }
 
     @Override
     public String getStorageID() {
@@ -79,18 +71,27 @@ public class ComponentLED extends Component {
     @Override
     public void loadAdditionalStorageData(Scanner scanner) {
         if (scanner.hasNextInt()) {
-            Tile tile = grid.getTile(new GridPoint(scanner.nextInt(), scanner.nextInt()));
-            if (tile instanceof Component)
-                attachWire((Component) tile);
+            Component component = grid.getTile(new GridPoint(scanner.nextInt(), scanner.nextInt()));
+            if (component != null)
+                setInput(component);
         }
-
     }
 
-    public List<Tile> getInputs() {
+    public List<Component> getInputs() {
         if (input != null)
             return Collections.singletonList(input);
         else
             return Collections.emptyList();
+    }
+
+    @Override
+    public void setInput(int input, Component component) {
+        if (input == 0)
+            this.input = component;
+    }
+
+    public void setInput(Component component) {
+        setInput(0, component);
     }
 
     @Override
@@ -99,12 +100,12 @@ public class ComponentLED extends Component {
     }
 
     @Override
-    public boolean hasInput() {
+    public boolean hasInputPin() {
         return true;
     }
 
     @Override
-    public boolean hasOutput() {
+    public boolean hasOutputPin() {
         return false;
     }
 

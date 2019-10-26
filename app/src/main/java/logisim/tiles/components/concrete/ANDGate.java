@@ -1,14 +1,14 @@
 package logisim.tiles.components.concrete;
 
 
+import logisim.Grid;
 import logisim.R;
-import logisim.tiles.Tile;
 import logisim.tiles.components.CommutativeComponent;
 
 public class ANDGate extends CommutativeComponent {
 
-    public ANDGate(Tile tile) {
-        super(tile);
+    public ANDGate(Grid grid) {
+        super(grid);
     }
 
     @Override

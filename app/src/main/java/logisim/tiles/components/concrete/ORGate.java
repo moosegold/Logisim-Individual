@@ -1,14 +1,14 @@
 package logisim.tiles.components.concrete;
 
 
+import logisim.Grid;
 import logisim.R;
-import logisim.tiles.Tile;
 import logisim.tiles.components.CommutativeComponent;
 
 public class ORGate extends CommutativeComponent {
 
-    public ORGate(Tile tile) {
-        super(tile);
+    public ORGate(Grid grid) {
+        super(grid);
     }
 
     @Override

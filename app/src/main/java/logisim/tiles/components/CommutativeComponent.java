@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-import logisim.tiles.Tile;
+import logisim.Grid;
 import logisim.tiles.components.concrete.ANDGate;
 import logisim.tiles.components.concrete.ORGate;
 import logisim.util.GridPoint;
@@ -28,8 +28,8 @@ public abstract class CommutativeComponent extends Component {
 
     private final List<Component> inputs = new ArrayList<>(MAX_INPUTS);
 
-    public CommutativeComponent(Tile tile) {
-        super(tile);
+    public CommutativeComponent(Grid grid) {
+        super(grid);
     }
 
     @Override
@@ -72,22 +72,27 @@ public abstract class CommutativeComponent extends Component {
         }
     }
 
-    public void validate() {
-        LinkedList<Component> toRemove = new LinkedList<>();
-        for (Component input : inputs) {
-            if (input.notOnGrid())
-                toRemove.add(input);
-        }
-        inputs.removeAll(toRemove);
+//    public void validate() {
+//        LinkedList<Component> toRemove = new LinkedList<>();
+//        for (Component input : inputs) {
+//            if (input.notOnGrid())
+//                toRemove.add(input);
+//        }
+//        inputs.removeAll(toRemove);
+//    }
+
+    @Override
+    public void setInput(int input, Component component) {
+        inputs.set(input, component);
     }
 
     @Override
-    public boolean hasInput() {
+    public boolean hasInputPin() {
         return true;
     }
 
     @Override
-    public boolean hasOutput() {
+    public boolean hasOutputPin() {
         return true;
     }
 
@@ -108,16 +113,15 @@ public abstract class CommutativeComponent extends Component {
     @Override
     public void loadAdditionalStorageData(Scanner scanner) {
         while (scanner.hasNextInt()) {
-            Tile tile = grid.getTile(new GridPoint(scanner.nextInt(), scanner.nextInt()));
-            if (tile instanceof Component)
-                connectInput((Component) tile);
+            Component component = grid.getTile(new GridPoint(scanner.nextInt(), scanner.nextInt()));
+            if (component != null)
+                connectInput(component);
         }
     }
 
-    public List<Tile> getInputs() {
+    public List<Component> getInputs() {
         return new LinkedList<>(inputs);
     }
-
 
     /**
      * Returns the point local to grid partition of the input that the wire should be
@@ -132,7 +136,7 @@ public abstract class CommutativeComponent extends Component {
                 return convertToGridSpace(new LocalPoint((int) ((35.0 / 150) * grid.tileLength), getRect().centerY() + (int) ((15.0 / 150) * grid.tileLength)));
             }
         } else {
-            return grid.convertToLocalPoint(gridPoint);
+            return grid.convertToLocalPoint(new GridPoint(0, 0));
         }
     }
 

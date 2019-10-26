@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 import logisim.Grid;
 import logisim.sidebar.ComponentSidebarButton;
 import logisim.state.StateManager;
-import logisim.tiles.Tile;
+import logisim.tiles.components.Component;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.Util;
@@ -32,12 +32,9 @@ public class AddMode extends AbstractMode {
     }
 
     @Override
-    public void processDrag(Object dest) {
-        if (dest instanceof Tile) {
-            Tile tile = (Tile) dest;
-            if (tile.isReplaceable())
-                button.createNewComponent(tile.getPoint(), grid);
-        }
+    public void processDrag(ScreenPoint screenPoint, Object dest) {
+        if (dest == null)
+            button.createNewComponent(grid.convertToGridPoint(screenPoint), grid);
         stateManager.resetMode();
     }
 
@@ -46,15 +43,14 @@ public class AddMode extends AbstractMode {
         ScreenPoint dragPoint = stateManager.getDragPoint();
         Util.drawDraggedObject(stateManager.canvas, button.getComponentImage(), dragPoint);
         drawTileOutlines(stateManager.canvas);
-
     }
 
     private void drawTileOutlines(Canvas mainCanvas) {
         ScreenPoint dragPoint = stateManager.getDragPoint();
-        Tile tileOver = grid.getTile(grid.convertToGridPoint(dragPoint));
-        if (grid.containsTouch(dragPoint) && tileOver != null) {
-            Util.drawTileOutline(tileOver, grid, mainCanvas,
-                    tileOver.isReplaceable() ? Paints.TILE_OUTLINE_ALLOW_PLACE : Paints.TILE_OUTLINE_DENY_PLACE);
+        Component compOver = grid.getTile(grid.convertToGridPoint(dragPoint));
+        if (grid.containsTouch(dragPoint)) {
+            Util.drawTileOutline(compOver, grid, mainCanvas,
+                    compOver == null ? Paints.TILE_OUTLINE_ALLOW_PLACE : Paints.TILE_OUTLINE_DENY_PLACE);
         }
     }
 

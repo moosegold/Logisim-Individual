@@ -18,7 +18,7 @@ public class LogiSim extends Activity {
 
     private static final int GRID_WIDTH_TILES = 12;
 
-    public static final boolean DEBUG_TEXT_ENABLED = false;
+    public static final boolean DEBUG_TEXT_ENABLED = true;
 
     private ScreenManager screenManager;
     private StateManager stateManager;
