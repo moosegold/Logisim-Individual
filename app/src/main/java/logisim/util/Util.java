@@ -15,26 +15,28 @@ public class Util {
         return new Rect(point.x, point.y, point.x + size.width, point.y + size.height);
     }
 
-    public static void drawTileOutline(Component tile, Grid grid, Canvas canvas, Paint paint) {
-        if (tile != null) {
-            LocalPoint pos = grid.convertToLocalPoint(tile.getPoint());
-            pos.offset(grid.getOrigin().x, grid.getOrigin().y);
-            Size size = new Size(tile.getRect().width(), tile.getRect().height());
-            int lineWidth = tile.getRect().width() / 8;
-            int lineHeight = tile.getRect().height() / 8;
-            // Top left corner
-            canvas.drawLine(pos.x, pos.y, pos.x + lineWidth, pos.y, paint);
-            canvas.drawLine(pos.x, pos.y, pos.x, pos.y + lineHeight, paint);
-            // Top right corner
-            canvas.drawLine(pos.x + size.width, pos.y, pos.x + size.width - lineWidth, pos.y, paint);
-            canvas.drawLine(pos.x + size.width, pos.y, pos.x + size.width, pos.y + lineHeight, paint);
-            // Bottom left corner
-            canvas.drawLine(pos.x, pos.y + size.height, pos.x + lineWidth, pos.y + size.height, paint);
-            canvas.drawLine(pos.x, pos.y + size.height, pos.x, pos.y + size.height - lineHeight, paint);
-            // Bottom right corner
-            canvas.drawLine(pos.x + size.width, pos.y + size.height, pos.x + size.width - lineWidth, pos.y + size.height, paint);
-            canvas.drawLine(pos.x + size.width, pos.y + size.height, pos.x + size.width, pos.y + size.height - lineHeight, paint);
-        }
+    public static void drawTileOutline(Component component, Grid grid, Canvas canvas, Paint paint) {
+        drawTileOutline(component.getPoint(), grid, canvas, paint);
+    }
+
+    public static void drawTileOutline(GridPoint gridPoint, Grid grid, Canvas canvas, Paint paint) {
+        LocalPoint pos = grid.convertToLocalPoint(gridPoint);
+        pos.offset(grid.getOrigin().x, grid.getOrigin().y);
+        Size size = new Size(grid.tileLength, grid.tileLength);
+        int lineWidth = size.width / 8;
+        int lineHeight = size.height / 8;
+        // Top left corner
+        canvas.drawLine(pos.x, pos.y, pos.x + lineWidth, pos.y, paint);
+        canvas.drawLine(pos.x, pos.y, pos.x, pos.y + lineHeight, paint);
+        // Top right corner
+        canvas.drawLine(pos.x + size.width, pos.y, pos.x + size.width - lineWidth, pos.y, paint);
+        canvas.drawLine(pos.x + size.width, pos.y, pos.x + size.width, pos.y + lineHeight, paint);
+        // Bottom left corner
+        canvas.drawLine(pos.x, pos.y + size.height, pos.x + lineWidth, pos.y + size.height, paint);
+        canvas.drawLine(pos.x, pos.y + size.height, pos.x, pos.y + size.height - lineHeight, paint);
+        // Bottom right corner
+        canvas.drawLine(pos.x + size.width, pos.y + size.height, pos.x + size.width - lineWidth, pos.y + size.height, paint);
+        canvas.drawLine(pos.x + size.width, pos.y + size.height, pos.x + size.width, pos.y + size.height - lineHeight, paint);
     }
 
     public static void drawDraggedObject(Canvas canvas, Bitmap image, ScreenPoint dragPoint) {

@@ -49,7 +49,7 @@ public class AddMode extends AbstractMode {
         ScreenPoint dragPoint = stateManager.getDragPoint();
         Component compOver = grid.getTile(grid.convertToGridPoint(dragPoint));
         if (grid.containsTouch(dragPoint)) {
-            Util.drawTileOutline(compOver, grid, mainCanvas,
+            Util.drawTileOutline(grid.convertToGridPoint(dragPoint), grid, mainCanvas,
                     compOver == null ? Paints.TILE_OUTLINE_ALLOW_PLACE : Paints.TILE_OUTLINE_DENY_PLACE);
         }
     }
