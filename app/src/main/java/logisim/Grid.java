@@ -143,7 +143,7 @@ public class Grid extends AbstractScreenPartition {
      * Storage format
      * --------------
      * 1 component per line
-     * | = space
+     * | = whitespace
      * storageID | posX | posY | [additional whitespace delineated data for component]
      */
     public boolean saveGrid(String slot) {
