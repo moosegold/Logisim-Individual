@@ -6,7 +6,7 @@ public class ActionHistory {
 
     private StateManager stateManager;
 
-    ActionHistory(StateManager stateManager) {
+    public ActionHistory(StateManager stateManager) {
         this.stateManager = stateManager;
     }
 

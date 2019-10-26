@@ -27,7 +27,7 @@ public class StateManager {
 
     private IMode mode = new NormalMode();
 
-    public ActionHistory history = new ActionHistory();
+    public ActionHistory history = new ActionHistory(this);
 
     private boolean touchInProgress;
     private boolean dragInProgress;
