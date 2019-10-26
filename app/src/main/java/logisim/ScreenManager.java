@@ -82,7 +82,6 @@ public class ScreenManager {
     }
 
     public void draw() {
-        long drawStartTime = System.currentTimeMillis();
         debugText.addText("Display Size: " + getDisplaySize());
         for (IScreenPartition partition : partitions) {
             partition.draw();
@@ -95,7 +94,6 @@ public class ScreenManager {
         stateManager.draw();
         debugText.draw(mainCanvas);
         this.imageView.setImageBitmap(this.mainImage);
-        System.out.println("Draw time: " + (System.currentTimeMillis() - drawStartTime));
     }
 
     private void createCanvas() {

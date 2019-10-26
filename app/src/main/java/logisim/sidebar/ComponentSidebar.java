@@ -7,6 +7,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 import logisim.AbstractScreenPartition;
+import logisim.ActionHistory;
 import logisim.Grid;
 import logisim.IInteractable;
 import logisim.state.StateManager;
@@ -36,13 +37,6 @@ public class ComponentSidebar extends AbstractScreenPartition {
     private SidebarButton lastComponentButtonAdded;
     private SidebarButton lastSaveButtonAdded;
 
-    /**
-     * Set to the button a touch began on.
-     * Becomes null when the drag ends.
-     */
-    private SidebarButton buttonBeingTouched;
-    private boolean touchInProgress;
-
     public boolean saveMode = false;
 
     public final Grid grid;
@@ -60,6 +54,9 @@ public class ComponentSidebar extends AbstractScreenPartition {
     }
 
     private void addButtons() {
+        addUndoButton();
+        addRedoButton();
+
         addComponentButton("AND Gate", R.drawable.and_gate, ANDGate.class);
         addComponentButton("OR Gate", R.drawable.or_gate, ORGate.class);
         addComponentButton("NOT Gate", R.drawable.not_gate, NOTGate.class);
@@ -71,6 +68,21 @@ public class ComponentSidebar extends AbstractScreenPartition {
         addSaveSlotButton("A");
 
         addSaveButton();
+    }
+
+    private void addUndoButton() {
+        LocalPoint point = new LocalPoint(insetPx, insetPx);
+        Size size = new Size(getHalfButtonLength(), getHalfButtonLength());
+        lastComponentButtonAdded = new UndoButton(point, size, "Undo", this, stateManager.history);
+        buttons.addLast(lastComponentButtonAdded);
+    }
+
+    private void addRedoButton() {
+        int posX = lastComponentButtonAdded.point.x + lastComponentButtonAdded.size.width + insetPx * 2;
+        int posY = insetPx;
+        Size size = new Size(getHalfButtonLength(), getHalfButtonLength());
+        lastComponentButtonAdded = new RedoButton(new LocalPoint(posX, posY), size, "Redo", this, stateManager.history);
+        buttons.addLast(lastComponentButtonAdded);
     }
 
     /**
@@ -93,9 +105,8 @@ public class ComponentSidebar extends AbstractScreenPartition {
      * Adds a save button above the previous button starting from the bottom of the sidebar.
      */
     private void addSaveSlotButton(String slot) {
-        int width = getButtonLength();
-        int height = width / 2;
-        width = width / 2 - insetPx;
+        int width = getHalfButtonLength();
+        int height = getHalfButtonLength();
         int xPos = insetPx;
         int yPos;
         if (lastSaveButtonAdded == null) {
@@ -109,7 +120,7 @@ public class ComponentSidebar extends AbstractScreenPartition {
     }
 
     private void addSaveButton() {
-        int width = getButtonLength() / 2 - insetPx;
+        int width = getHalfButtonLength();
         int xPos = getButtonLength() / 2 + insetPx * 2;
         int yPos = lastSaveButtonAdded.point.y;
         int height = screenManager.getDisplaySize().height - yPos - insetPx;
@@ -126,6 +137,10 @@ public class ComponentSidebar extends AbstractScreenPartition {
 
     private int getButtonLength() {
         return getSize().width - (insetPx * 2);
+    }
+
+    private int getHalfButtonLength() {
+        return getButtonLength() / 2 - insetPx;
     }
 
     @Override

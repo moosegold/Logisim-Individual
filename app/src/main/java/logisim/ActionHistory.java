@@ -10,4 +10,8 @@ public class ActionHistory {
 
     }
 
+    public void pushAction() {
+
+    }
+
 }

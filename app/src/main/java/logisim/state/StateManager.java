@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import logisim.ActionHistory;
 import logisim.IInteractable;
 import logisim.ScreenManager;
 import logisim.state.modes.IMode;
@@ -25,6 +26,8 @@ public class StateManager {
     public final DebugTextDrawer debugText;
 
     private IMode mode = new NormalMode();
+
+    public ActionHistory history = new ActionHistory();
 
     private boolean touchInProgress;
     private boolean dragInProgress;
