@@ -2,7 +2,7 @@ package logisim.sidebar;
 
 import android.graphics.Paint;
 
-import logisim.ActionHistory;
+import logisim.history.ActionHistory;
 import logisim.util.LocalPoint;
 import logisim.util.Paints;
 import logisim.util.ScreenPoint;

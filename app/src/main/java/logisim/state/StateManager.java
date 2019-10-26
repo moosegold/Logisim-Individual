@@ -7,7 +7,7 @@ import android.graphics.Rect;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import logisim.ActionHistory;
+import logisim.history.ActionHistory;
 import logisim.IInteractable;
 import logisim.ScreenManager;
 import logisim.state.modes.IMode;

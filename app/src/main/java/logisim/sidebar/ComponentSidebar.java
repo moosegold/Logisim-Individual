@@ -7,11 +7,9 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 import logisim.AbstractScreenPartition;
-import logisim.ActionHistory;
 import logisim.Grid;
 import logisim.IInteractable;
 import logisim.state.StateManager;
-import logisim.state.modes.SaveMode;
 import logisim.util.LocalPoint;
 import logisim.util.Paints;
 import logisim.R;
