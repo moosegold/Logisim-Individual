@@ -41,7 +41,7 @@ public abstract class Component implements IDraggable, IInteractable {
      */
     private GridPoint point;
 
-    private boolean onGrid = true;
+    private boolean onGrid = false;
 
     public Component(Grid grid) {
         this.grid = grid;

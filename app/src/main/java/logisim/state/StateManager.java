@@ -75,6 +75,8 @@ public class StateManager {
     public void draw() {
         debugText.addText("Mode: " + mode.getClass().getSimpleName());
         mode.draw();
+        debugText.addText("");
+        history.addDebugInformation();
         debugText.draw(canvas);
     }
 

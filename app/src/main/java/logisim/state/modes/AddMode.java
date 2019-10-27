@@ -3,6 +3,7 @@ package logisim.state.modes;
 import android.graphics.Canvas;
 
 import logisim.Grid;
+import logisim.history.UndoProcedure;
 import logisim.sidebar.ComponentSidebarButton;
 import logisim.state.StateManager;
 import logisim.tiles.components.Component;
@@ -33,9 +34,26 @@ public class AddMode extends AbstractMode {
 
     @Override
     public void processDrag(ScreenPoint screenPoint, Object dest) {
-        if (dest == null)
-            button.createNewComponent(grid.convertToGridPoint(screenPoint), grid);
+        if (dest == null) {
+            Component newComponent = button.createNewComponent(grid.convertToGridPoint(screenPoint), grid);
+            if (newComponent != null)
+                pushActionToHistory(newComponent);
+        }
         stateManager.resetMode();
+    }
+
+    private void pushActionToHistory(Component componentAdded) {
+        stateManager.history.pushAction("Adding " + componentAdded, new UndoProcedure() {
+            @Override
+            public void performUndo() {
+                grid.removeTile(componentAdded.getPoint());
+            }
+
+            @Override
+            public void performRedo() {
+                grid.setTile(componentAdded.getPoint(), componentAdded);
+            }
+        });
     }
 
     @Override

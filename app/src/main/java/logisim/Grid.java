@@ -61,6 +61,7 @@ public class Grid extends AbstractScreenPartition {
                 existingComp.setOnGrid(false);
             components.put(point, component);
             component.setPoint(point);
+            component.setOnGrid(true);
         }
     }
 

@@ -2,6 +2,7 @@ package logisim.util;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 
 public class Paints {
 
@@ -26,6 +27,7 @@ public class Paints {
      */
     public static final Paint DEBUG_TEXT = PaintBuilder.start()
             .setColor(Color.BLACK)
+            .setTypeface(Typeface.MONOSPACE)
             .setTextSize(DEBUG_TEXT_SIZE).makePaint();
 
     /**

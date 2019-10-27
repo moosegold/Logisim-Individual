@@ -1,5 +1,8 @@
 package logisim.history;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import logisim.state.StateManager;
 
 public class ActionHistory {
@@ -30,10 +33,36 @@ public class ActionHistory {
         }
     }
 
-    public void pushAction(UndoProcedure procedure) {
+    public void pushAction(String action, UndoProcedure procedure) {
         HistoryItem newItem = new HistoryItem(procedure);
-        currentItem.nextItem = newItem;
+        newItem.action = action;
+        if (currentItem != null)
+            currentItem.nextItem = newItem;
+        newItem.prevItem = currentItem;
         currentItem = newItem;
+    }
+
+    public void addDebugInformation() {
+        stateManager.debugText.addText("History");
+        stateManager.debugText.addText("-------------");
+        for (HistoryItem item : getHistoryList()) {
+            stateManager.debugText.addText(item.toString() + (item == currentItem ? " <-- |" : "     |"));
+        }
+    }
+
+    private List<HistoryItem> getHistoryList() {
+        LinkedList<HistoryItem> items = new LinkedList<>();
+        HistoryItem look = currentItem;
+        if (look != null) {
+            while (look.nextItem != null) {
+                look = look.nextItem;
+            }
+            while (look != null) {
+                items.add(look);
+                look = look.prevItem;
+            }
+        }
+        return items;
     }
 
 }

@@ -1,6 +1,7 @@
 package logisim.util;
 
 import android.graphics.Paint;
+import android.graphics.Typeface;
 
 public class PaintBuilder {
 
@@ -45,6 +46,11 @@ public class PaintBuilder {
 
     public PaintBuilder setStrokeWidth(int px) {
         paint.setStrokeWidth(px);
+        return this;
+    }
+
+    public PaintBuilder setTypeface(Typeface typeface) {
+        paint.setTypeface(typeface);
         return this;
     }
 

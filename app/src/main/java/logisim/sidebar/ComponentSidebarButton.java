@@ -74,13 +74,18 @@ public class ComponentSidebarButton extends SidebarButton implements IDraggable 
         canvas.drawText(label, xPos, yPos, paint);
     }
 
-    public void createNewComponent(GridPoint gridPoint, Grid grid) {
+    public Component createNewComponent(GridPoint gridPoint, Grid grid) {
         try {
-            grid.setTile(gridPoint, (Component) componentConstructor.newInstance(grid));
+            if (grid.getTile(gridPoint) == null) {
+                Component newComponent = (Component) componentConstructor.newInstance(grid);
+                grid.setTile(gridPoint, newComponent);
+                return newComponent;
+            }
         } catch (Exception ex) {
             System.out.println("Caught exception creating component: " + ex.getLocalizedMessage());
             ex.printStackTrace();
         }
+        return null;
     }
 
     private void drawComponentImage() {
