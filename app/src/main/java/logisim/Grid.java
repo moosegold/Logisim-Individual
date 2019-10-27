@@ -68,10 +68,29 @@ public class Grid extends AbstractScreenPartition {
     }
 
     public void removeTile(GridPoint point) {
+        removeTile(point, true);
+    }
+
+    public void removeTile(GridPoint point, boolean writeToHistory) {
         Component component = components.get(point);
         if (component != null)
             component.setOnGrid(false);
         components.remove(point);
+
+        if (writeToHistory) {
+            Grid grid = this;
+            stateManager.history.pushAction("Removing " + component, new UndoProcedure() {
+                @Override
+                public void performUndo() {
+                    grid.setTile(point, component);
+                }
+
+                @Override
+                public void performRedo() {
+                    grid.removeTile(point, false);
+                }
+            });
+        }
     }
 
     @Nullable
@@ -85,11 +104,30 @@ public class Grid extends AbstractScreenPartition {
     }
 
     public void moveTile(GridPoint src, GridPoint dest) {
+        moveTile(src, dest, true);
+    }
+
+    public void moveTile(GridPoint src, GridPoint dest, boolean writeToHistory) {
         Component component = components.get(src);
         if (component != null && getTile(dest) == null) {
             components.remove(src);
             components.put(dest, component);
             component.setPoint(dest);
+
+            if (writeToHistory) {
+                Grid grid = this;
+                stateManager.history.pushAction("Moving " + component + " from " + src, new UndoProcedure() {
+                    @Override
+                    public void performUndo() {
+                        moveTile(dest, src, false);
+                    }
+
+                    @Override
+                    public void performRedo() {
+                        moveTile(src, dest, false);
+                    }
+                });
+            }
         }
     }
 

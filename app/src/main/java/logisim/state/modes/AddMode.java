@@ -46,7 +46,7 @@ public class AddMode extends AbstractMode {
         stateManager.history.pushAction("Adding " + componentAdded, new UndoProcedure() {
             @Override
             public void performUndo() {
-                grid.removeTile(componentAdded.getPoint());
+                grid.removeTile(componentAdded.getPoint(), false);
             }
 
             @Override
