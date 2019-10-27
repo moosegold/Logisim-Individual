@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -29,6 +30,8 @@ public abstract class Component implements IDraggable, IInteractable {
     protected Canvas canvas;
 
     protected final DebugTextDrawer debugText;
+
+    protected final List<Component> outputs = new LinkedList<>();
 
     /**
      * The location of the component on the grid;
@@ -73,8 +76,6 @@ public abstract class Component implements IDraggable, IInteractable {
     public abstract List<Component> getInputs();
 
     public abstract void setInput(int input, Component component);
-
-//    public abstract void setInputs(List<Component> inputs);
 
     /**
      * Returns the point local to grid partition of the input that the wire should be

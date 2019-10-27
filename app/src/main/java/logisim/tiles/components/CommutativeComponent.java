@@ -111,11 +111,6 @@ public abstract class CommutativeComponent extends Component {
     }
 
     @Override
-    public void validate() {
-        super.validate();
-    }
-
-    @Override
     public void setInput(int input, Component component) {
         inputs[input] = component;
     }
