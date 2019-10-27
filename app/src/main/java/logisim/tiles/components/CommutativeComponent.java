@@ -26,6 +26,11 @@ public abstract class CommutativeComponent extends Component {
 
     private static final int MAX_INPUTS = 2;
 
+    /**
+     * An array of components representing wires connected to this component.
+     * a pin with no input is null. When wires are disconnected, any subsequent non-null
+     * inputs are shifted to fill its place meaning all nulls are at the end of the array.
+     */
     private final Component[] inputs = new Component[MAX_INPUTS];
 
     public CommutativeComponent(Grid grid) {
@@ -54,6 +59,7 @@ public abstract class CommutativeComponent extends Component {
         for (int i = 0; i < inputs.length; i++) {
             if (inputs[i] == component)
                 inputs[i] = null;
+            // Shift null to end of array.
             if (i < inputs.length - 1 && inputs[i] == null && inputs[i+1] != null) {
                 Component swap = inputs[i];
                 inputs[i] = inputs[i+1];
