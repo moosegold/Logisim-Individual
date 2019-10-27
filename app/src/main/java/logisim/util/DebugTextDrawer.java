@@ -30,7 +30,8 @@ public class DebugTextDrawer {
     }
 
     public void addText(String string) {
-        textToDraw.add(string);
+        if (string != null)
+            textToDraw.add(string);
     }
 
     public void draw(Canvas canvas) {
@@ -54,9 +55,12 @@ public class DebugTextDrawer {
     }
 
     private void drawUpwards(Canvas canvas) {
-        Collections.reverse(textToDraw);
+        // Cloning the list prevents ConcurrentModificationExceptions when the app is being
+        // overloaded with draw requests.
+        List<String> reversed = new LinkedList<>(textToDraw);
+        Collections.reverse(reversed);
         int yCoord = startPos.y;
-        for (String text : textToDraw) {
+        for (String text : reversed) {
             drawString(canvas, text, yCoord);
             yCoord -= Paints.DEBUG_TEXT_SIZE + VERTICAL_SPACING;
         }

@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import logisim.history.UndoProcedure;
 import logisim.state.StateManager;
 import logisim.tiles.components.Component;
 import logisim.tiles.components.concrete.ANDGate;
@@ -104,7 +105,7 @@ public class Grid extends AbstractScreenPartition {
             canvas.drawBitmap(component.getRenderImage(), drawPoint.x, drawPoint.y, Paints.IMAGE_OPAQUE);
         }
         for (Component component : components.values()) {
-                component.drawWires(canvas);
+            component.drawWires(canvas);
         }
         drawStatusBar();
     }
@@ -197,8 +198,8 @@ public class Grid extends AbstractScreenPartition {
         else if (id.equals("led"))
             setTile(gridPoint, new ComponentLED(this));
         else {
-           System.out.println("id not recognized for component trying to be added at " + gridPoint);
-           return null;
+            System.out.println("id not recognized for component trying to be added at " + gridPoint);
+            return null;
         }
 
         return getTile(gridPoint);

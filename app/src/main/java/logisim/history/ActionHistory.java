@@ -9,22 +9,30 @@ public class ActionHistory {
 
     private final StateManager stateManager;
 
+    private StackTopDummyItem topItem;
     private AbstractHistoryItem currentItem;
+    private StackFloorDummyItem bottomItem;
 
     public ActionHistory(StateManager stateManager) {
         this.stateManager = stateManager;
-        currentItem = new StackFloorDummyItem(stateManager);
+        init();
+
     }
 
+    private void init() {
+        topItem = new StackTopDummyItem(stateManager);
+        bottomItem = new StackFloorDummyItem(stateManager);
+        bottomItem.setNextItem(topItem);
+        topItem.setPrevItem(bottomItem);
+        currentItem = bottomItem;
+    }
 
     public void undo() {
-        if (currentItem != null) {
-            currentItem.performUndo();
-            if (currentItem.hasPrevItem())
-                currentItem = currentItem.getPrevItem();
-        } else {
-            stateManager.setStatusBarText("Nothing to undo");
-        }
+        if (currentItem == topItem)
+            currentItem = topItem.getPrevItem();
+        currentItem.performUndo();
+        if (currentItem.hasPrevItem())
+            currentItem = currentItem.getPrevItem();
         stateManager.screenManager.draw();
     }
 
@@ -38,9 +46,14 @@ public class ActionHistory {
     public void pushAction(String action, UndoProcedure procedure) {
         AbstractHistoryItem newItem = new HistoryItem(procedure);
         newItem.action = action;
-        if (currentItem != null)
-            currentItem.setNextItem(newItem);
+        if (currentItem == topItem) {
+            // We are at the top of the stack, in the StackTopDummyItem;
+            currentItem = topItem.getPrevItem();
+        }
+        topItem.setPrevItem(newItem);
+        newItem.setNextItem(topItem);
         newItem.setPrevItem(currentItem);
+        currentItem.setNextItem(newItem);
         currentItem = newItem;
     }
 
@@ -63,6 +76,7 @@ public class ActionHistory {
                 items.add(look);
                 look = look.getPrevItem();
             }
+            items.add(look);
         }
         return items;
     }
