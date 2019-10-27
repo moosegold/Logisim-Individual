@@ -86,7 +86,7 @@ public class Grid extends AbstractScreenPartition {
 
     public void moveTile(GridPoint src, GridPoint dest) {
         Component component = components.get(src);
-        if (component != null) {
+        if (component != null && getTile(dest) == null) {
             components.remove(src);
             components.put(dest, component);
             component.setPoint(dest);

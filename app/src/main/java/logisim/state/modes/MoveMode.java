@@ -51,9 +51,9 @@ public class MoveMode extends AbstractMode {
 
     private void drawTileOutlines(Canvas mainCanvas) {
         ScreenPoint dragPoint = stateManager.getDragPoint();
-        Util.drawTileOutline(grid.convertToGridPoint(dragPoint), grid, mainCanvas, Paints.TILE_OUTLINE_SOURCE);
+        Util.drawTileOutline((Component) stateManager.getTouchedObjectStart(), grid, mainCanvas, Paints.TILE_OUTLINE_SOURCE);
         Component compOver = grid.getTile(grid.convertToGridPoint(dragPoint));
-        if (grid.containsTouch(dragPoint)) {
+        if (grid.containsTouch(dragPoint) && compOver != stateManager.getTouchedObjectStart()) {
             Util.drawTileOutline(grid.convertToGridPoint(dragPoint), grid, mainCanvas,
                     compOver == null ? Paints.TILE_OUTLINE_ALLOW_PLACE : Paints.TILE_OUTLINE_DENY_PLACE);
         }
