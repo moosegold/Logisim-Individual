@@ -4,9 +4,11 @@ package logisim.tiles.components;
 import android.graphics.Canvas;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Vector;
 
 import logisim.Grid;
 import logisim.tiles.components.concrete.ANDGate;
@@ -26,7 +28,7 @@ public abstract class CommutativeComponent extends Component {
 
     private static final int MAX_INPUTS = 2;
 
-    private final List<Component> inputs = new ArrayList<>(MAX_INPUTS);
+    private final List<Component> inputs = new Vector<>(MAX_INPUTS);
 
     public CommutativeComponent(Grid grid) {
         super(grid);
@@ -72,14 +74,11 @@ public abstract class CommutativeComponent extends Component {
         }
     }
 
-//    public void validate() {
-//        LinkedList<Component> toRemove = new LinkedList<>();
-//        for (Component input : inputs) {
-//            if (input.notOnGrid())
-//                toRemove.add(input);
-//        }
-//        inputs.removeAll(toRemove);
-//    }
+    @Override
+    public void validate() {
+        super.validate();
+        inputs.removeAll(Collections.singletonList(null));
+    }
 
     @Override
     public void setInput(int input, Component component) {

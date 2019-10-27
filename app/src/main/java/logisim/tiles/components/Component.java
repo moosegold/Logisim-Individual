@@ -4,7 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.hardware.biometrics.BiometricManager;
 
+import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
@@ -21,12 +23,14 @@ import logisim.util.DebugTextDrawer;
 import logisim.util.GridPoint;
 import logisim.util.LocalPoint;
 import logisim.util.Paints;
+import logisim.util.ScreenPoint;
 import logisim.util.Util;
 
 public abstract class Component implements IDraggable, IInteractable {
 
     protected Grid grid;
 
+    private Bitmap image;
     protected Canvas canvas;
 
     protected final DebugTextDrawer debugText;
@@ -37,7 +41,7 @@ public abstract class Component implements IDraggable, IInteractable {
      */
     private GridPoint point;
 
-    private boolean onGrid;
+    private boolean onGrid = true;
 
     public Component(Grid grid) {
         this.grid = grid;
@@ -93,12 +97,20 @@ public abstract class Component implements IDraggable, IInteractable {
      */
     public abstract void loadAdditionalStorageData(Scanner scanner);
 
+    public final Bitmap getRenderImage() {
+        return image;
+    }
+
     public final Bitmap getComponentImage() {
         return BitmapFactory.decodeResource(grid.screenManager.appContext.getResources(), getRresource());
     }
 
     public void draw() {
+        validate();
+        createCanvas();
+        debugText.addText("pos: " + grid.convertToLocalPoint(getPoint()));
         drawComponentImage();
+        drawDebugText();
     }
 
     public void drawDebugText() {
@@ -142,6 +154,16 @@ public abstract class Component implements IDraggable, IInteractable {
         return new Rect(0, 0, grid.tileLength, grid.tileLength);
     }
 
+    @CallSuper
+    public void validate() {
+        for (int i = 0; i < getInputs().size(); i++) {
+            Component input = getInputs().get(i);
+            if (input == null || input.notOnGrid()) {
+                setInput(i, null);
+            }
+        }
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -174,7 +196,7 @@ public abstract class Component implements IDraggable, IInteractable {
     }
 
     private void createCanvas() {
-        Bitmap image = Bitmap.createBitmap(grid.tileLength, grid.tileLength, Bitmap.Config.ARGB_8888);
+        image = Bitmap.createBitmap(grid.tileLength, grid.tileLength, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(image);
     }
 }

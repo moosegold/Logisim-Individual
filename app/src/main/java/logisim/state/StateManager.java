@@ -74,8 +74,6 @@ public class StateManager {
 
     public void draw() {
         debugText.addText("Mode: " + mode.getClass().getSimpleName());
-        debugText.addText("Dragging: " + draggedObject);
-        debugText.addText("Drag Point: " + dragPoint);
         mode.draw();
         debugText.draw(canvas);
     }

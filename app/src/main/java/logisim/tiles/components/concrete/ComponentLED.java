@@ -27,7 +27,7 @@ public class ComponentLED extends Component {
 
     @Override
     public void processConnection(Component source) {
-        if (this.input == null || this.input != source)
+        if (this.input != source)
             setInput(source);
         else
             setInput(null);
@@ -39,8 +39,6 @@ public class ComponentLED extends Component {
     }
 
     private boolean getInput() {
-        if (input != null && input.notOnGrid())
-            setInput(null);
         return input != null && input.eval();
     }
 
@@ -52,7 +50,7 @@ public class ComponentLED extends Component {
 
 //    public void validate() {
 //        if (input != null && input.notOnGrid())
-//            detachWire();
+//            setInput(null);
 //    }
 
     @Override

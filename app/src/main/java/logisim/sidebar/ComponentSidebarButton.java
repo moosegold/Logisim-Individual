@@ -75,11 +75,8 @@ public class ComponentSidebarButton extends SidebarButton implements IDraggable 
     }
 
     public void createNewComponent(GridPoint gridPoint, Grid grid) {
-        Component existingComp = grid.getTile(gridPoint);
         try {
-            if (existingComp != null) {
-                grid.setTile(gridPoint, (Component) componentConstructor.newInstance(existingComp));
-            }
+            grid.setTile(gridPoint, (Component) componentConstructor.newInstance(grid));
         } catch (Exception ex) {
             System.out.println("Caught exception creating component: " + ex.getLocalizedMessage());
             ex.printStackTrace();

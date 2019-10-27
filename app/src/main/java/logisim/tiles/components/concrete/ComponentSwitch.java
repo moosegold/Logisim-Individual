@@ -2,6 +2,7 @@ package logisim.tiles.components.concrete;
 
 import android.graphics.Canvas;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -64,6 +65,11 @@ public class ComponentSwitch extends Component {
     }
 
     @Override
+    public boolean canAcceptWire() {
+        return false;
+    }
+
+    @Override
     public boolean hasInputPin() {
         return false;
     }
@@ -75,7 +81,7 @@ public class ComponentSwitch extends Component {
 
     @Override
     public List<Component> getInputs() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override

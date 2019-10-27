@@ -35,14 +35,13 @@ public abstract class UnaryComponent extends Component {
         drawWire(canvas, input, this);
     }
 
+//    @Override
 //    public void validate() {
 //        if (input != null && input.notOnGrid())
-//            detachWire();
+//            setInput(null);
 //    }
 
     protected boolean getInput() {
-        if (input != null && input.notOnGrid())
-            setInput(null);
         return input != null && input.eval();
     }
 

@@ -45,7 +45,9 @@ public class DebugTextDrawer {
 
     private void drawDownwards(Canvas canvas) {
         int yCoord = startPos.y + Paints.DEBUG_TEXT_SIZE;
-        for (String text : textToDraw) {
+        // Cloning the list prevents ConcurrentModificationExceptions when the app is being
+        // overloaded with draw requests.
+        for (String text : new LinkedList<>(textToDraw)) {
             drawString(canvas, text, yCoord);
             yCoord += Paints.DEBUG_TEXT_SIZE + VERTICAL_SPACING;
         }

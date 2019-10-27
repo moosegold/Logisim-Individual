@@ -6,7 +6,9 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 
+import logisim.AbstractScreenPartition;
 import logisim.Grid;
+import logisim.IScreenPartition;
 import logisim.tiles.components.Component;
 
 public class Util {

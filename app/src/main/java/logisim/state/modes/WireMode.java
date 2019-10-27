@@ -80,9 +80,9 @@ public class WireMode extends AbstractMode {
         ScreenPoint screenPoint = stateManager.getDragPoint();
         if (grid.containsTouch(screenPoint)) {
             Component hoverTile = grid.getTile(grid.convertToGridPoint(screenPoint));
-            if (hoverTile != null) {
+            if (hoverTile != null && hoverTile != stateManager.getDraggedObject()) {
                 Paint paint = isLoopSafe((Component) stateManager.getTouchedObjectStart(), hoverTile) && hoverTile.canAcceptWire() ? Paints.TILE_OUTLINE_ALLOW_PLACE : Paints.TILE_OUTLINE_DENY_PLACE;
-                Util.drawTileOutline(grid.getTile(grid.convertToGridPoint(screenPoint)), grid, stateManager.canvas, paint);
+                Util.drawTileOutline(hoverTile, grid, stateManager.canvas, paint);
             }
         }
     }

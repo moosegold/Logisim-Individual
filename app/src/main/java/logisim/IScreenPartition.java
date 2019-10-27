@@ -1,6 +1,7 @@
 package logisim;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 
 import logisim.util.LocalPoint;
 import logisim.util.ScreenPoint;

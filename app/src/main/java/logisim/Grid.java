@@ -29,6 +29,7 @@ import logisim.util.Paints;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
 import logisim.util.TextDrawUtil;
+import logisim.util.Util;
 
 /**
  * Maintains the grid and components.
@@ -99,7 +100,7 @@ public class Grid extends AbstractScreenPartition {
             component.draw();
             component.drawDebugText();
             LocalPoint drawPoint = convertToLocalPoint(component.getPoint());
-            canvas.drawBitmap(component.getComponentImage(), drawPoint.x, drawPoint.y, Paints.IMAGE_OPAQUE);
+            canvas.drawBitmap(component.getRenderImage(), drawPoint.x, drawPoint.y, Paints.IMAGE_OPAQUE);
         }
         for (Component component : components.values()) {
                 component.drawWires(canvas);
@@ -184,11 +185,6 @@ public class Grid extends AbstractScreenPartition {
 
     private Component loadTileForID(String id, int xPos, int yPos) {
         GridPoint gridPoint = new GridPoint(xPos, yPos);
-        Component existingTile = getTile(gridPoint);
-        if (existingTile == null) {
-            System.out.println("Not adding tile at " + gridPoint + " because there is no empty tile at that place");
-            return null;
-        }
         if (id.equals("and"))
             setTile(gridPoint, new ANDGate(this));
         else if (id.equals("or"))
