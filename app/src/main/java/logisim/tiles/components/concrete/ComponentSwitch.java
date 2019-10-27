@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import logisim.Grid;
 import logisim.R;
+import logisim.history.UndoProcedure;
 import logisim.tiles.components.Component;
 import logisim.util.LocalPoint;
 
@@ -31,7 +32,22 @@ public class ComponentSwitch extends Component {
 
     @Override
     public void onTap() {
+        boolean stateForUndo = this.state;
         this.state = !this.state;
+        boolean stateForRedo = this.state;
+
+        Component thisSwitch = this;
+        grid.stateManager.history.pushAction("Set " + thisSwitch + " " + (state ? "on" : "off"), new UndoProcedure() {
+            @Override
+            public void performUndo() {
+                state = stateForUndo;
+            }
+
+            @Override
+            public void performRedo() {
+                state = stateForRedo;
+            }
+        });
     }
 
     @Override
