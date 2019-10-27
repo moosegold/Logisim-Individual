@@ -2,9 +2,11 @@ package logisim.state.modes;
 
 import android.graphics.Paint;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import logisim.Grid;
+import logisim.history.UndoProcedure;
 import logisim.state.StateManager;
 import logisim.tiles.components.Component;
 import logisim.util.Paints;
@@ -35,9 +37,9 @@ public class WireMode extends AbstractMode {
         if (dest instanceof Component) {
             Component component = (Component) dest;
             if (isLoopSafe((Component) stateManager.getDraggedObject(), (Component) dest)) {
-//                List<Component> oldComponents = new LinkedList<Component>(component.getInputs());
+                List<Component> oldComponents = new LinkedList<Component>(component.getInputs());
                 component.processConnection((Component) stateManager.getDraggedObject());
-//                addWireingToHistory((Component) stateManager.getDraggedObject(), component);
+                addWireingToHistory(oldComponents, component.getInputs(), component);
             }
         }
         stateManager.resetMode();
@@ -45,7 +47,27 @@ public class WireMode extends AbstractMode {
 
 
     private void addWireingToHistory(List<Component> oldInputs, List<Component> newInputs, Component dest) {
+        stateManager.history.pushAction("Updating inputs for " + dest, new UndoProcedure() {
+            @Override
+            public void performUndo() {
+                setInputsTo(oldInputs);
+            }
 
+            @Override
+            public void performRedo() {
+                setInputsTo(newInputs);
+            }
+
+            private void setInputsTo(List<Component> state) {
+                // Clear existing inputs
+                for (int i = 0; i < dest.getInputs().size(); i++) {
+                    dest.setInput(i, null);
+                }
+                for (int i = 0; i < state.size(); i++) {
+                    dest.setInput(i, state.get(i));
+                }
+            }
+        });
     }
 
     private boolean isLoopSafe(Component source, Component dest) {
