@@ -108,6 +108,7 @@ public abstract class Component implements IDraggable, IInteractable {
     public void draw() {
         validate();
         createCanvas();
+        debugText.addText("gpos: " + getPoint());
         debugText.addText("pos: " + grid.convertToLocalPoint(getPoint()));
         drawComponentImage();
         drawDebugText();

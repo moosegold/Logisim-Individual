@@ -9,57 +9,59 @@ public class ActionHistory {
 
     private final StateManager stateManager;
 
+    private AbstractHistoryItem currentItem;
+
     public ActionHistory(StateManager stateManager) {
         this.stateManager = stateManager;
+        currentItem = new StackFloorDummyItem(stateManager);
     }
 
-    private HistoryItem currentItem;
 
     public void undo() {
         if (currentItem != null) {
-            currentItem.procedure.performUndo();
-            currentItem = currentItem.prevItem;
+            currentItem.performUndo();
+            if (currentItem.hasPrevItem())
+                currentItem = currentItem.getPrevItem();
         } else {
             stateManager.setStatusBarText("Nothing to undo");
         }
+        stateManager.screenManager.draw();
     }
 
     public void redo() {
-        if (currentItem != null) {
-            currentItem.procedure.performRedo();
-            currentItem = currentItem.prevItem;
-        } else {
-            stateManager.setStatusBarText("Nothing to redo");
-        }
+        if (currentItem.hasNextItem())
+            currentItem = currentItem.getNextItem();
+        currentItem.performRedo();
+        stateManager.screenManager.draw();
     }
 
     public void pushAction(String action, UndoProcedure procedure) {
-        HistoryItem newItem = new HistoryItem(procedure);
+        AbstractHistoryItem newItem = new HistoryItem(procedure);
         newItem.action = action;
         if (currentItem != null)
-            currentItem.nextItem = newItem;
-        newItem.prevItem = currentItem;
+            currentItem.setNextItem(newItem);
+        newItem.setPrevItem(currentItem);
         currentItem = newItem;
     }
 
     public void addDebugInformation() {
         stateManager.debugText.addText("History");
         stateManager.debugText.addText("-------------");
-        for (HistoryItem item : getHistoryList()) {
+        for (AbstractHistoryItem item : getHistoryList()) {
             stateManager.debugText.addText(item.toString() + (item == currentItem ? " <-- |" : "     |"));
         }
     }
 
-    private List<HistoryItem> getHistoryList() {
-        LinkedList<HistoryItem> items = new LinkedList<>();
-        HistoryItem look = currentItem;
+    private List<AbstractHistoryItem> getHistoryList() {
+        LinkedList<AbstractHistoryItem> items = new LinkedList<>();
+        AbstractHistoryItem look = currentItem;
         if (look != null) {
-            while (look.nextItem != null) {
-                look = look.nextItem;
+            while (look.hasNextItem()) {
+                look = look.getNextItem();
             }
-            while (look != null) {
+            while (look.hasPrevItem()) {
                 items.add(look);
-                look = look.prevItem;
+                look = look.getPrevItem();
             }
         }
         return items;

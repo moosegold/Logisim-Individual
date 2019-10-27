@@ -1,23 +1,52 @@
 package logisim.history;
 
-import androidx.annotation.NonNull;
+class HistoryItem extends AbstractHistoryItem {
 
-class HistoryItem {
+    private UndoProcedure procedure;
 
-    final UndoProcedure procedure;
-
-    HistoryItem prevItem = null;
-    HistoryItem nextItem = null;
-
-    String action;
+    private AbstractHistoryItem prevItem = null;
+    private AbstractHistoryItem nextItem = null;
 
     HistoryItem(UndoProcedure procedure) {
         this.procedure = procedure;
     }
 
-    @NonNull
     @Override
-    public String toString() {
-        return action;
+    void performUndo() {
+        procedure.performUndo();
+    }
+
+    @Override
+    void performRedo() {
+        procedure.performRedo();
+    }
+
+    @Override
+    AbstractHistoryItem getPrevItem() {
+        return prevItem;
+    }
+
+    @Override
+    void setPrevItem(AbstractHistoryItem prevItem) {
+        this.prevItem = prevItem;
+    }
+
+    @Override
+    AbstractHistoryItem getNextItem() {
+        return nextItem;
+    }
+
+    @Override
+    void setNextItem(AbstractHistoryItem nextItem) {
+        this.nextItem = nextItem;
+    }
+
+    @Override
+    boolean hasPrevItem() {
+        return true;
+    }
+
+    boolean hasNextItem() {
+        return nextItem != null;
     }
 }
