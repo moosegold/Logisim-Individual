@@ -53,6 +53,7 @@ public class Grid extends AbstractScreenPartition {
 
     public void resetGrid() {
         components.clear();
+        stateManager.history.clear();
     }
 
     public void setTile(GridPoint point, Component component) {

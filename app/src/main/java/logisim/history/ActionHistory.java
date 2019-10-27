@@ -11,6 +11,7 @@ public class ActionHistory {
 
     private StackTopDummyItem topItem;
     private AbstractHistoryItem currentItem;
+    private StackFloorDummyItem bottomItem;
 
     public ActionHistory(StateManager stateManager) {
         this.stateManager = stateManager;
@@ -20,7 +21,7 @@ public class ActionHistory {
 
     private void init() {
         topItem = new StackTopDummyItem(stateManager);
-        StackFloorDummyItem bottomItem = new StackFloorDummyItem(stateManager);
+        bottomItem = new StackFloorDummyItem(stateManager);
         bottomItem.setNextItem(topItem);
         topItem.setPrevItem(bottomItem);
         currentItem = bottomItem;
@@ -54,6 +55,12 @@ public class ActionHistory {
         newItem.setPrevItem(currentItem);
         currentItem.setNextItem(newItem);
         currentItem = newItem;
+    }
+
+    public void clear() {
+        bottomItem.setNextItem(topItem  );
+        topItem.setPrevItem(bottomItem);
+        currentItem = bottomItem;
     }
 
     public void addDebugInformation() {

@@ -4,26 +4,21 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.hardware.biometrics.BiometricManager;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
 
 import java.util.List;
 import java.util.Scanner;
 
 import logisim.Grid;
 import logisim.IInteractable;
-import logisim.sidebar.ComponentSidebarButton;
 import logisim.state.modes.ComponentInteractMode;
 import logisim.tiles.IDraggable;
 import logisim.util.DebugTextDrawer;
 import logisim.util.GridPoint;
 import logisim.util.LocalPoint;
 import logisim.util.Paints;
-import logisim.util.ScreenPoint;
 import logisim.util.Util;
 
 public abstract class Component implements IDraggable, IInteractable {
@@ -63,7 +58,7 @@ public abstract class Component implements IDraggable, IInteractable {
 
     public abstract boolean hasInputPin();
 
-    public boolean canAcceptWire() {
+    public boolean canAcceptWire(Component component) {
         return true;
     }
 
@@ -78,6 +73,8 @@ public abstract class Component implements IDraggable, IInteractable {
     public abstract List<Component> getInputs();
 
     public abstract void setInput(int input, Component component);
+
+//    public abstract void setInputs(List<Component> inputs);
 
     /**
      * Returns the point local to grid partition of the input that the wire should be

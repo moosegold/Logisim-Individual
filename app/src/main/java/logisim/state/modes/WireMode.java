@@ -45,7 +45,6 @@ public class WireMode extends AbstractMode {
         stateManager.resetMode();
     }
 
-
     private void addWireingToHistory(List<Component> oldInputs, List<Component> newInputs, Component dest) {
         stateManager.history.pushAction("Updating inputs for " + dest, new UndoProcedure() {
             @Override
@@ -73,6 +72,8 @@ public class WireMode extends AbstractMode {
     private boolean isLoopSafe(Component source, Component dest) {
         boolean isSafe = true;
         for (Component input : source.getInputs()) {
+            if (input == null)
+                continue;
             if (input.equals(dest))
                 isSafe = false;
             else
@@ -103,7 +104,9 @@ public class WireMode extends AbstractMode {
         if (grid.containsTouch(screenPoint)) {
             Component hoverTile = grid.getTile(grid.convertToGridPoint(screenPoint));
             if (hoverTile != null && hoverTile != stateManager.getDraggedObject()) {
-                Paint paint = isLoopSafe((Component) stateManager.getTouchedObjectStart(), hoverTile) && hoverTile.canAcceptWire() ? Paints.TILE_OUTLINE_ALLOW_PLACE : Paints.TILE_OUTLINE_DENY_PLACE;
+                boolean isLoopSafe = isLoopSafe((Component) stateManager.getTouchedObjectStart(), hoverTile);
+                stateManager.debugText.addText("loopSafe: " + isLoopSafe);
+                Paint paint = isLoopSafe ? Paints.TILE_OUTLINE_ALLOW_PLACE : Paints.TILE_OUTLINE_DENY_PLACE;
                 Util.drawTileOutline(hoverTile, grid, stateManager.canvas, paint);
             }
         }

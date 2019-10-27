@@ -3,12 +3,10 @@ package logisim.tiles.components;
 
 import android.graphics.Canvas;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Vector;
 
 import logisim.Grid;
 import logisim.tiles.components.concrete.ANDGate;
@@ -28,7 +26,7 @@ public abstract class CommutativeComponent extends Component {
 
     private static final int MAX_INPUTS = 2;
 
-    private final List<Component> inputs = new Vector<>(MAX_INPUTS);
+    private final Component[] inputs = new Component[MAX_INPUTS];
 
     public CommutativeComponent(Grid grid) {
         super(grid);
@@ -36,7 +34,7 @@ public abstract class CommutativeComponent extends Component {
 
     @Override
     public void processConnection(Component source) {
-        if (inputs.contains(source))
+        if (hasInput(source))
             // Disconnect the wire if drawn from a component already connected.
             removeInput(source);
         else
@@ -44,22 +42,54 @@ public abstract class CommutativeComponent extends Component {
     }
 
     private void connectInput(Component component) {
-        if (inputs.size() >= MAX_INPUTS) {
+        int slotsInUse = slotsInUse();
+        if (slotsInUse >= MAX_INPUTS) {
             System.out.println("Not adding connection; Gate full");
         } else {
-            inputs.add(component);
+            setInput(slotsInUse, component);
         }
     }
 
     private void removeInput(Component component) {
-        inputs.remove(component);
+        for (int i = 0; i < inputs.length; i++) {
+            if (inputs[i] == component)
+                inputs[i] = null;
+            if (i < inputs.length - 1 && inputs[i] == null && inputs[i+1] != null) {
+                Component swap = inputs[i];
+                inputs[i] = inputs[i+1];
+                inputs[i+1] = swap;
+            }
+        }
+    }
+
+    private int slotsInUse() {
+        int count = 0;
+        for (Component input : inputs) {
+            if (input != null)
+                count++;
+            else
+                return count;
+        }
+        return count;
+    }
+
+    private int getIndex(Component component) {
+        for (int i = 0; i < inputs.length; i++) {
+            if (inputs[i] == component)
+                return i;
+        }
+        return -1;
+    }
+
+    private boolean hasInput(Component component) {
+        return getIndex(component) != -1;
     }
 
     @Override
     public void drawWires(Canvas canvas) {
-        for (int i = 0; i < inputs.size(); i++) {
-            debugText.addText("i" + i + ": " + inputs.get(i));
-            drawWire(canvas, inputs.get(i), this);
+        for (int i = 0; i < slotsInUse(); i++) {
+            debugText.addText("i" + i + ": " + inputs[i]);
+            drawWire(canvas, inputs[i], this);
         }
     }
 
@@ -67,8 +97,8 @@ public abstract class CommutativeComponent extends Component {
      * @return true if the input is on, and false if it is off.
      */
     protected boolean getInput(int input) {
-        if (input < inputs.size()) {
-            return inputs.get(input).eval();
+        if (input < slotsInUse()) {
+            return inputs[input].eval();
         } else {
             return false;
         }
@@ -77,12 +107,11 @@ public abstract class CommutativeComponent extends Component {
     @Override
     public void validate() {
         super.validate();
-        inputs.removeAll(Collections.singletonList(null));
     }
 
     @Override
     public void setInput(int input, Component component) {
-        inputs.set(input, component);
+        inputs[input] = component;
     }
 
     @Override
@@ -96,8 +125,8 @@ public abstract class CommutativeComponent extends Component {
     }
 
     @Override
-    public boolean canAcceptWire() {
-        return inputs.size() < MAX_INPUTS;
+    public boolean canAcceptWire(Component component) {
+        return slotsInUse() < MAX_INPUTS || hasInput(component);
     }
 
     @Override
@@ -119,7 +148,7 @@ public abstract class CommutativeComponent extends Component {
     }
 
     public List<Component> getInputs() {
-        return new LinkedList<>(inputs);
+        return new LinkedList<>(Arrays.asList(inputs));
     }
 
     /**
@@ -127,7 +156,7 @@ public abstract class CommutativeComponent extends Component {
      * routed to.
      */
     public LocalPoint getInputPosFor(Component component) {
-        int input = inputs.indexOf(component);
+        int input = getIndex(component);
         if (input != -1) {
             if (input == 0) {
                 return convertToGridSpace(new LocalPoint((int) ((35.0 / 150) * grid.tileLength), getRect().centerY() - (int) ((15.0 / 150) * grid.tileLength)));

@@ -81,7 +81,7 @@ public class ComponentSwitch extends Component {
     }
 
     @Override
-    public boolean canAcceptWire() {
+    public boolean canAcceptWire(Component component) {
         return false;
     }
 
