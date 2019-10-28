@@ -7,6 +7,8 @@ import logisim.state.StateManager;
 
 public class ActionHistory {
 
+    private static final int MAX_HISTORY = 100;
+
     private final StateManager stateManager;
 
     private StackTopDummyItem topItem;
@@ -16,7 +18,6 @@ public class ActionHistory {
     public ActionHistory(StateManager stateManager) {
         this.stateManager = stateManager;
         init();
-
     }
 
     private void init() {
@@ -55,6 +56,13 @@ public class ActionHistory {
         newItem.setPrevItem(currentItem);
         currentItem.setNextItem(newItem);
         currentItem = newItem;
+
+        if (getHistorySize() > MAX_HISTORY) {
+            AbstractHistoryItem newLastItem = bottomItem.getNextItem().getNextItem();
+            newLastItem.setPrevItem(bottomItem);
+            newLastItem.getNextItem().setPrevItem(newLastItem);
+            bottomItem.setNextItem(newLastItem);
+        }
     }
 
     public void clear() {
@@ -63,9 +71,20 @@ public class ActionHistory {
         currentItem = bottomItem;
     }
 
+    private int getHistorySize() {
+        int i = 0;
+        AbstractHistoryItem look = topItem;
+        while (look.hasPrevItem()) {
+            look = look.getPrevItem();
+            i++;
+        }
+        // Subtract one to exclude the dummy floor item from being counted.
+        return i-1;
+    }
+
     public void addDebugInformation() {
-        stateManager.debugText.addText("History");
-        stateManager.debugText.addText("-------------");
+        stateManager.debugText.addText("History [" + getHistorySize() + " of " + MAX_HISTORY + "]");
+        stateManager.debugText.addText("------------------------");
         for (AbstractHistoryItem item : getHistoryList()) {
             stateManager.debugText.addText(item.toString() + (item == currentItem ? " <-- |" : "     |"));
         }
