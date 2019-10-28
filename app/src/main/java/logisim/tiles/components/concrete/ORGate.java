@@ -17,7 +17,10 @@ public class ORGate extends CommutativeComponent {
     }
 
     public boolean eval() {
-        return this.getInput(0) || this.getInput(1);
+        boolean state = false;
+        for (int i = 0; i < getInputs().size(); i++)
+            state = state || evalInput(i);
+        return state;
     }
 
     @Override

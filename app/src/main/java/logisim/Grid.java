@@ -9,11 +9,13 @@ import androidx.annotation.Nullable;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.TreeMap;
 
 import logisim.history.UndoProcedure;
@@ -73,24 +75,35 @@ public class Grid extends AbstractScreenPartition {
 
     public void removeTile(GridPoint point, boolean writeToHistory) {
         Component component = components.get(point);
-        if (component != null)
+        if (component != null) {
+            Map<Component, List<Component>> connections = new HashMap<>();
+            for (Component output : component.getOutputs()) {
+                connections.put(output, new LinkedList<>(output.getInputs()));
+                output.removeInput(component);
+            }
             component.setOnGrid(false);
-        components.remove(point);
 
-        if (writeToHistory) {
-            Grid grid = this;
-            stateManager.history.pushAction("Removing " + component, new UndoProcedure() {
-                @Override
-                public void performUndo() {
-                    grid.setTile(point, component);
-                }
+            if (writeToHistory) {
+                Grid grid = this;
+                stateManager.history.pushAction("Removing " + component, new UndoProcedure() {
 
-                @Override
-                public void performRedo() {
-                    grid.removeTile(point, false);
-                }
-            });
+                    @Override
+                    public void performUndo() {
+                        grid.setTile(point, component);
+                        for (Map.Entry<Component, List<Component>> connection : connections.entrySet()) {
+                            connection.getKey().setInputs(connection.getValue());
+                        }
+                    }
+
+                    @Override
+                    public void performRedo() {
+                        grid.removeTile(point, false);
+                    }
+                });
+            }
         }
+
+        components.remove(point);
     }
 
     @Nullable

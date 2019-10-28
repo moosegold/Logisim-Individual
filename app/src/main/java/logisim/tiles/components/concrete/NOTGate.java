@@ -17,7 +17,7 @@ public class NOTGate extends UnaryComponent {
 
     @Override
     public boolean eval() {
-        return !this.getInput();
+        return !this.evalInput();
     }
 
     @Override

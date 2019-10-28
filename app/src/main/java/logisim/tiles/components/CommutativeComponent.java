@@ -3,6 +3,8 @@ package logisim.tiles.components;
 
 import android.graphics.Canvas;
 
+import androidx.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,10 +57,11 @@ public abstract class CommutativeComponent extends Component {
         }
     }
 
-    private void removeInput(Component component) {
+    @Override
+    public void removeInput(Component component) {
         for (int i = 0; i < inputs.length; i++) {
             if (inputs[i] == component)
-                inputs[i] = null;
+                setInput(i, null);
             // Shift null to end of array.
             if (i < inputs.length - 1 && inputs[i] == null && inputs[i+1] != null) {
                 Component swap = inputs[i];
@@ -102,7 +105,7 @@ public abstract class CommutativeComponent extends Component {
     /**
      * @return true if the input is on, and false if it is off.
      */
-    protected boolean getInput(int input) {
+    protected final boolean evalInput(int input) {
         if (input < slotsInUse()) {
             return inputs[input].eval();
         } else {
@@ -111,7 +114,7 @@ public abstract class CommutativeComponent extends Component {
     }
 
     @Override
-    public void setInput(int input, Component component) {
+    public void setInputInternal(int input, Component component) {
         inputs[input] = component;
     }
 
@@ -149,7 +152,13 @@ public abstract class CommutativeComponent extends Component {
     }
 
     public List<Component> getInputs() {
-        return new LinkedList<>(Arrays.asList(inputs));
+        return Arrays.asList(inputs);
+    }
+
+    @Nullable
+    @Override
+    public Component getInput(int input) {
+        return inputs[input];
     }
 
     /**

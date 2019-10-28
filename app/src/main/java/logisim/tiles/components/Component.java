@@ -7,10 +7,13 @@ import android.graphics.Rect;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 import logisim.Grid;
 import logisim.IInteractable;
@@ -19,6 +22,7 @@ import logisim.tiles.IDraggable;
 import logisim.util.DebugTextDrawer;
 import logisim.util.GridPoint;
 import logisim.util.LocalPoint;
+import logisim.util.PaintBuilder;
 import logisim.util.Paints;
 import logisim.util.Util;
 
@@ -31,7 +35,7 @@ public abstract class Component implements IDraggable, IInteractable {
 
     protected final DebugTextDrawer debugText;
 
-    protected final List<Component> outputs = new LinkedList<>();
+    private final Set<Component> outputs = new HashSet<>();
 
     /**
      * The location of the component on the grid;
@@ -75,7 +79,46 @@ public abstract class Component implements IDraggable, IInteractable {
 
     public abstract List<Component> getInputs();
 
-    public abstract void setInput(int input, Component component);
+    public final List<Component> getOutputs() {
+        return new LinkedList<>(outputs);
+    }
+
+    @Nullable
+    public abstract Component getInput(int input);
+
+    public abstract void removeInput(Component component);
+
+    public final void setInput(int input, Component component) {
+        Component compPreUpdate = getInput(input);
+        if (compPreUpdate != null)
+            compPreUpdate.removeOutput(this);
+
+        setInputInternal(input, component);
+
+        Component compPostUpdate = getInput(input);
+        if (compPostUpdate != null)
+            compPostUpdate.addOutput(this);
+    }
+
+    protected abstract void setInputInternal(int input, Component component);
+
+    public final void setInputs(List<Component> inputList) {
+        // Clear existing inputs
+        for (int i = 0; i < getInputs().size(); i++) {
+            setInput(i, null);
+        }
+        for (int i = 0; i < inputList.size(); i++) {
+            setInput(i, inputList.get(i));
+        }
+    }
+
+    private void removeOutput(Component component) {
+        outputs.remove(component);
+    }
+
+    private void addOutput(Component component) {
+        outputs.add(component);
+    }
 
     /**
      * Returns the point local to grid partition of the input that the wire should be
@@ -104,7 +147,7 @@ public abstract class Component implements IDraggable, IInteractable {
     }
 
     public void draw() {
-        validate();
+//        validate();
         createCanvas();
         debugText.addText("gpos: " + getPoint());
         debugText.addText("pos: " + grid.convertToLocalPoint(getPoint()));
@@ -153,15 +196,15 @@ public abstract class Component implements IDraggable, IInteractable {
         return new Rect(0, 0, grid.tileLength, grid.tileLength);
     }
 
-    @CallSuper
-    public void validate() {
-        for (int i = 0; i < getInputs().size(); i++) {
-            Component input = getInputs().get(i);
-            if (input == null || input.notOnGrid()) {
-                setInput(i, null);
-            }
-        }
-    }
+//    @CallSuper
+//    public void validate() {
+//        for (int i = 0; i < getInputs().size(); i++) {
+//            Component input = getInputs().get(i);
+//            if (input == null || input.notOnGrid()) {
+//                setInput(i, null);
+//            }
+//        }
+//    }
 
     @NonNull
     @Override

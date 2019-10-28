@@ -4,6 +4,7 @@ package logisim.tiles.components.concrete;
 import logisim.Grid;
 import logisim.R;
 import logisim.tiles.components.CommutativeComponent;
+import logisim.tiles.components.Component;
 
 public class ANDGate extends CommutativeComponent {
 
@@ -17,7 +18,10 @@ public class ANDGate extends CommutativeComponent {
     }
 
     public boolean eval() {
-        return this.getInput(0) && this.getInput(1);
+        boolean state = true;
+        for (int i = 0; i < getInputs().size(); i++)
+            state = state && evalInput(i);
+        return state;
     }
 
     @Override

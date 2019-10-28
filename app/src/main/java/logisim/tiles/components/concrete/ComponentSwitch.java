@@ -2,6 +2,8 @@ package logisim.tiles.components.concrete;
 
 import android.graphics.Canvas;
 
+import androidx.annotation.Nullable;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
@@ -100,8 +102,19 @@ public class ComponentSwitch extends Component {
         return Collections.emptyList();
     }
 
+    @Nullable
     @Override
-    public void setInput(int input, Component component) {
+    public Component getInput(int input) {
+        return null;
+    }
+
+    @Override
+    public void removeInput(Component component) {
+
+    }
+
+    @Override
+    public void setInputInternal(int input, Component component) {
 
     }
 

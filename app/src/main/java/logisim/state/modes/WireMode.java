@@ -49,22 +49,12 @@ public class WireMode extends AbstractMode {
         stateManager.history.pushAction("Updating inputs for " + dest, new UndoProcedure() {
             @Override
             public void performUndo() {
-                setInputsTo(oldInputs);
+                dest.setInputs(oldInputs);
             }
 
             @Override
             public void performRedo() {
-                setInputsTo(newInputs);
-            }
-
-            private void setInputsTo(List<Component> state) {
-                // Clear existing inputs
-                for (int i = 0; i < dest.getInputs().size(); i++) {
-                    dest.setInput(i, null);
-                }
-                for (int i = 0; i < state.size(); i++) {
-                    dest.setInput(i, state.get(i));
-                }
+                dest.setInputs(newInputs);
             }
         });
     }
