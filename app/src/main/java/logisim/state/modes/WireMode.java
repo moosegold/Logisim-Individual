@@ -39,13 +39,13 @@ public class WireMode extends AbstractMode {
             if (isLoopSafe((Component) stateManager.getDraggedObject(), (Component) dest)) {
                 List<Component> oldComponents = new LinkedList<Component>(component.getInputs());
                 component.processConnection((Component) stateManager.getDraggedObject());
-                addWireingToHistory(oldComponents, component.getInputs(), component);
+                addWiringToHistory(oldComponents, new LinkedList<>(component.getInputs()), component);
             }
         }
         stateManager.resetMode();
     }
 
-    private void addWireingToHistory(List<Component> oldInputs, List<Component> newInputs, Component dest) {
+    private void addWiringToHistory(List<Component> oldInputs, List<Component> newInputs, Component dest) {
         stateManager.history.pushAction("Updating inputs for " + dest, new UndoProcedure() {
             @Override
             public void performUndo() {
