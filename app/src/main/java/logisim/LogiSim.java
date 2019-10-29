@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Guideline;
 import androidx.fragment.app.FragmentActivity;
 
@@ -63,7 +64,12 @@ public class LogiSim extends FragmentActivity {
 //        (new Timer()).schedule(new TimerTask() {
 //            @Override
 //            public void run() {
-//                runOnUiThread(() -> findViewById(R.id.sidebar));
+//                runOnUiThread(() -> {
+//                    Guideline guideline = findViewById(R.id.guideline);
+//                    ConstraintLayout.LayoutParams guidelineParams = (ConstraintLayout.LayoutParams) guideline.getLayoutParams();
+//                    guidelineParams.guideBegin = 400;
+//                    guideline.setLayoutParams(guidelineParams);
+//                });
 //            }
 //        }, 5000);
 
