@@ -5,13 +5,17 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
+import androidx.fragment.app.FragmentActivity;
+
 import logisim.sidebar.ComponentSidebar;
 import logisim.state.StateManager;
+import logisim.tiles.components.concrete.ANDGate;
+import logisim.util.GridPoint;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
 
 
-public class LogiSim extends Activity {
+public class LogiSim extends FragmentActivity {
 
     private static final double SIDEBAR_WIDTH_RATIO = 1.0/12;
     private int sidebar_width;
@@ -29,11 +33,13 @@ public class LogiSim extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_layout);
         setupScreenManager();
     }
 
     public void setupScreenManager() {
-        ImageView imageView = new ImageView(this);
+//        ImageView imageView = new ImageView(this);
+        ImageView imageView = findViewById(R.id.contentView);
         this.screenManager = new ScreenManager(getWindowManager().getDefaultDisplay(), imageView, this.getApplicationContext());
         this.stateManager = new StateManager(screenManager);
         screenManager.setStateManager(this.stateManager);
@@ -41,10 +47,11 @@ public class LogiSim extends Activity {
         calculateSidebarWidth();
 
         Grid grid = setupGrid(GRID_WIDTH_TILES);
-        addSidebarPartition(grid);
+        grid.setTile(new GridPoint(1,1), new ANDGate(grid));
+//        addSidebarPartition(grid);
         screenManager.draw();
 
-        setContentView(imageView);
+//        setContentView(R.layout.main_layout);
 
     }
 
