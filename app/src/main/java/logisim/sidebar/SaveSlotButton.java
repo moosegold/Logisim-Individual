@@ -22,14 +22,14 @@ public class SaveSlotButton extends CenterLabelButton {
     public void onTap() {
         String feedback;
         if (sidebar.stateManager.getMode() instanceof SaveMode) {
-            boolean result = sidebar.grid.saveGrid(label);
-            feedback = result ? "Layout saved to " + label : "Failed to save layout";
+//            boolean result = sidebar.grid.saveGrid(label);
+//            feedback = result ? "Layout saved to " + label : "Failed to save layout";
         } else {
-            boolean result = sidebar.grid.loadGrid(label);
-            feedback = result ? "Loaded layout " + label : "Failed to load layout " + label;
+//            boolean result = sidebar.grid.loadGrid(label);
+//            feedback = result ? "Loaded layout " + label : "Failed to load layout " + label;
         }
         sidebar.stateManager.resetMode();
-        sidebar.stateManager.setStatusBarText(feedback);
+//        sidebar.stateManager.setStatusBarText(feedback);
     }
 
 }

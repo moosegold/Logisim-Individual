@@ -1,11 +1,13 @@
 package logisim;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.Display;
+import android.view.View;
 import android.widget.ImageView;
 
 import java.util.LinkedList;
@@ -32,7 +34,9 @@ public class ScreenManager {
 
     public final Context appContext;
 
-    public ScreenManager(Display display, ImageView imageView, Context appContext) {
+    public final Activity activity;
+
+    public ScreenManager(Display display, Activity activity, ImageView imageView, Context appContext) {
         this.partitions = new LinkedList<>();
         this.display = display;
         this.appContext = appContext;
@@ -40,6 +44,7 @@ public class ScreenManager {
         debugText = new DebugTextDrawer(new LocalPoint(getDisplaySize().width - 4, getDisplaySize().height - 4), true);
         debugText.drawDownwards = false;
         debugText.alignRight = true;
+        this.activity = activity;
         createCanvas();
     }
 

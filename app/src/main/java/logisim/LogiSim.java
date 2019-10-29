@@ -1,15 +1,24 @@
 package logisim;
 
 import android.app.Activity;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 
+import androidx.constraintlayout.widget.Guideline;
 import androidx.fragment.app.FragmentActivity;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import logisim.sidebar.ComponentSidebar;
 import logisim.state.StateManager;
+import logisim.tiles.components.Component;
 import logisim.tiles.components.concrete.ANDGate;
+import logisim.tiles.components.concrete.ComponentLED;
+import logisim.tiles.components.concrete.ComponentSwitch;
 import logisim.util.GridPoint;
 import logisim.util.ScreenPoint;
 import logisim.util.Size;
@@ -27,6 +36,8 @@ public class LogiSim extends FragmentActivity {
     private ScreenManager screenManager;
     private StateManager stateManager;
 
+    Grid grid;
+
     /**
      * Base android setup.
      */
@@ -38,18 +49,27 @@ public class LogiSim extends FragmentActivity {
     }
 
     public void setupScreenManager() {
-//        ImageView imageView = new ImageView(this);
-        ImageView imageView = findViewById(R.id.contentView);
-        this.screenManager = new ScreenManager(getWindowManager().getDefaultDisplay(), imageView, this.getApplicationContext());
+        ImageView imageView = new ImageView(this);
+        this.screenManager = new ScreenManager(getWindowManager().getDefaultDisplay(), this, imageView, this.getApplicationContext());
         this.stateManager = new StateManager(screenManager);
         screenManager.setStateManager(this.stateManager);
 
         calculateSidebarWidth();
 
-        Grid grid = setupGrid(GRID_WIDTH_TILES);
-        grid.setTile(new GridPoint(1,1), new ANDGate(grid));
+        grid = setupGrid(GRID_WIDTH_TILES);
+
+//        final View sidebar = findViewById(R.id.sidebar);
+
+//        (new Timer()).schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                runOnUiThread(() -> findViewById(R.id.sidebar));
+//            }
+//        }, 5000);
+
+
 //        addSidebarPartition(grid);
-        screenManager.draw();
+//        screenManager.draw();
 
 //        setContentView(R.layout.main_layout);
 
@@ -72,8 +92,23 @@ public class LogiSim extends FragmentActivity {
         // How many tiles will fit vertically given the width of the tile. Tiles are squares.
         int heightTiles = size.height / tileLengthPx - 1;
 
-        Grid grid = new Grid(widthTiles, heightTiles, tileLengthPx, screenManager, stateManager, origin, size);
-        screenManager.addPartition(grid);
+        ImageView contentView = findViewById(R.id.contentView);
+        contentView.addOnLayoutChangeListener((v, left, top, right, bottom,
+                                               oldLeft, oldTop, oldRight, oldBottom) -> grid.draw());
+//        contentView.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.landscape_image));
+        Grid grid = new Grid(widthTiles, heightTiles, tileLengthPx, contentView, screenManager, stateManager);
+
+        ComponentSwitch compSwitch = new ComponentSwitch(grid);
+        compSwitch.setState(true);
+        Component led = new ComponentLED(grid);
+
+        grid.setTile(new GridPoint(0, 0), compSwitch);
+        grid.setTile(new GridPoint(1, 1), led);
+
+        led.setInput(0, compSwitch);
+
+        grid.draw();
+//        screenManager.addPartition(grid);
         return grid;
     }
 
@@ -91,6 +126,7 @@ public class LogiSim extends FragmentActivity {
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction() & MotionEvent.ACTION_MASK;
         ScreenPoint point = new ScreenPoint((int) event.getX(), (int) event.getY());
+        grid.draw();
         screenManager.handleTouch(point, action);
         return true;
     }

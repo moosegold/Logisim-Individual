@@ -42,14 +42,22 @@ public class ComponentSwitch extends Component {
         grid.stateManager.history.pushAction("Set " + thisSwitch + " " + (state ? "on" : "off"), new UndoProcedure() {
             @Override
             public void performUndo() {
-                state = stateForUndo;
+                setState(stateForUndo);
             }
 
             @Override
             public void performRedo() {
-                state = stateForRedo;
+                setState(stateForRedo);
             }
         });
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
+    }
+
+    public boolean getState() {
+        return state;
     }
 
     @Override
@@ -74,12 +82,12 @@ public class ComponentSwitch extends Component {
 
     @Override
     public void loadAdditionalStorageData(Scanner scanner) {
-        this.state = scanner.nextBoolean();
+        setState(scanner.nextBoolean());
     }
 
     @Override
     public int getRresource() {
-        return state ? R.drawable.switch_on : R.drawable.switch_off;
+        return getState() ? R.drawable.switch_on : R.drawable.switch_off;
     }
 
     @Override
